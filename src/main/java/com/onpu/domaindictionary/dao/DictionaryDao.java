@@ -45,6 +45,7 @@ public class DictionaryDao {
                 DictionaryEntry entry = dictionary.getEntries().get(i);
                 preparedStatement.setString(1, entry.getTerm());
                 preparedStatement.setString(2, entry.getDefinition().toString());
+                preparedStatement.setString(3, dictionary.getId().toString());
             }
 
             @Override

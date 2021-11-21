@@ -14,23 +14,8 @@ public class Constants {
             "    INSERT VALUES (r_seq_next(), new.NAME, new.AUTHOR, new.PATH_TO_FILE)\n";
     public static String CREATE_RULE = "";
     public static String SEARCH_TERM = "select distinct to_char(DEFINITION) from DICTIONARY_ENTRY where (TERM like ? || '_' OR TERM like ?)  and ELECTRONIC_DICTIONARY_Id = ?";
-    public static String CREATE_DICTIONARY_ENTRY = "MERGE INTO DICTIONARY_ENTRY old USING (SELECT seq_next() DICTIONARY_ENTRY_ID,\n" +
-            "                  ?          TERM,\n" +
-            "                  TO_CLOB(?)          DEFINITION,\n" +
-            "                  NULL        DOMAIN_DICTIONARY_ID,\n" +
-            "                  1          ELECTRONIC_DICTIONARY_ID\n" +
-            "           FROM DUAL) new\n" +
-            "    ON (old.DICTIONARY_ENTRY_ID = new.DICTIONARY_ENTRY_ID)\n" +
-            "    WHEN MATCHED THEN\n" +
-            "        UPDATE\n" +
-            "        SET old.TERM                     = new.TERM,\n" +
-            "            old.DEFINITION               = new.DEFINITION,\n" +
-            "            old.ELECTRONIC_DICTIONARY_ID = new.ELECTRONIC_DICTIONARY_ID\n" +
-            "        WHERE old.TERM <> new.TERM\n" +
-            "           OR old.ELECTRONIC_DICTIONARY_ID <> new.ELECTRONIC_DICTIONARY_ID\n" +
-            "    WHEN NOT MATCHED THEN\n" +
-            "        INSERT (old.DICTIONARY_ENTRY_ID, old.TERM, old.DEFINITION, old.DOMAIN_DICTIONARY_ID,old.ELECTRONIC_DICTIONARY_ID)\n" +
-            "        VALUES (seq_curr(), new.TERM, TO_CLOB(new.DEFINITION),null, new.ELECTRONIC_DICTIONARY_ID)";
+    public static String CREATE_DICTIONARY_ENTRY = "INSERT  into dictionary_entry (DICTIONARY_ENTRY_ID, TERM, DEFINITION, DOMAIN_DICTIONARY_ID,ELECTRONIC_DICTIONARY_ID)\n" +
+            "        VALUES (RSEQ.nextval, ?, TO_CLOB(?),null, ?)";
 
     public static final String GET_RESOURCES = "select RESOURCE_ID,ir.name,type,SUBTYPE\n" +
             "from DICTIONARY_BANK db\n" +
@@ -53,26 +38,6 @@ public class Constants {
             "from DD_USER\n" +
             "where EMAIL = ?\n";
 
-    public static final String CREATE_USER = "MERGE INTO DD_USER old\n" +
-            "            USING (SELECT  seq_next()  USER_ID,\n" +
-            "                          ?            NAME,\n" +
-            "                          ?            EMAIL,\n" +
-            "                          ?            PASSWORD,\n" +
-            "                          ?            ROLE\n" +
-            "                   FROM DUAL) new\n" +
-            "            ON (old.USER_ID = new.USER_ID\n" +
-            "                OR old.EMAIL = new.EMAIL)\n" +
-            "            WHEN MATCHED THEN\n" +
-            "                UPDATE\n" +
-            "                SET old.NAME      = new.NAME,\n" +
-            "                    old.PASSWORD = new.PASSWORD,\n" +
-            "                    old.ROLE     = new.ROLE\n" +
-            "                WHERE old.NAME     <> new.NAME\n" +
-            "                  OR  old.PASSWORD <> new.PASSWORD\n" +
-            "                  OR  old.ROLE     <> new.ROLE\n" +
-            "                  OR  old.EMAIL    <> new.EMAIL\n" +
-            "                  OR  old.USER_ID  <> new.USER_ID\n" +
-            "            WHEN NOT MATCHED THEN\n" +
-            "                INSERT (old.USER_ID, old.NAME, old.EMAIL, old.PASSWORD,old.ROLE)\n" +
-            "                VALUES (SEQ_CURR(), new.NAME, new.EMAIL, new.PASSWORD, new.ROLE)";
+    public static final String CREATE_USER = "INSERT INTO DD_USER (USER_ID, NAME, EMAIL, PASSWORD, ROLE)\n" +
+            "                VALUES (SEQ.nextval, ?, ?, ?, ?)";
 }

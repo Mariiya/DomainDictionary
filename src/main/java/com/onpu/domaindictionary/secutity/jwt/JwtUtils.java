@@ -14,10 +14,10 @@ public class JwtUtils {
     private static final Logger logger = Logger.getLogger(JwtUtils.class);
 
     @Value("${dd.app.jwtSecret}")
-    private String jwtSecret;
+    private final String jwtSecret = "ddSecretKey";
 
     @Value("${dd.app.jwtExpirationMs}")
-    private int jwtExpirationMs;
+    private final int jwtExpirationMs = 86400000;
 
     public String generateJwtToken(Authentication authentication) {
 
@@ -31,7 +31,7 @@ public class JwtUtils {
                 .compact();
     }
 
-    public String getUserNameFromJwtToken(String token) {
+    public String getEmailFromJwtToken(String token) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 

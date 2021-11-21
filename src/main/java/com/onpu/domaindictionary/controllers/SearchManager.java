@@ -25,18 +25,19 @@ public class SearchManager {
     @Autowired
     private DomainAnalyzerService analyzerService;
 
-        @GetMapping()
-        public List<DictionaryEntry> search (@RequestParam  List<String> terms , @RequestParam BigInteger resourceId){
-              SearchResource searchResource = bank.getResource(resourceId);
-               return dictionaryService.search(terms,searchResource);
-        }
-
-        public void createDomainDictionary (List < DictionaryEntry > entries) {
-            new DomainDictionary();
-        }
-    @GetMapping("/resources")
-        public Collection<SearchResource> getResources () {
-            return bank.getResources();
-        }
-
+    @GetMapping()
+    public List<DictionaryEntry> search(@RequestParam List<String> terms, @RequestParam BigInteger resourceId) {
+        SearchResource searchResource = bank.getResource(resourceId);
+        return dictionaryService.search(terms, searchResource);
     }
+
+    public void createDomainDictionary(List<DictionaryEntry> entries) {
+        new DomainDictionary();
+    }
+
+    @GetMapping("/resources")
+    public Collection<SearchResource> getResources() {
+        return bank.getResources();
+    }
+
+}

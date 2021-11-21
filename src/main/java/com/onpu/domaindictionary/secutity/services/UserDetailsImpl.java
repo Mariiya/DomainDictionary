@@ -1,16 +1,14 @@
 package com.onpu.domaindictionary.secutity.services;
 
-import java.math.BigInteger;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Objects;
-
 import com.onpu.domaindictionary.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.math.BigInteger;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Objects;
 
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
@@ -53,9 +51,12 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getName();
+        return user.getEmail();
     }
 
+    public User getUser (){
+        return this.user;
+    }
     @Override
     public boolean isAccountNonExpired() {
         return true;
