@@ -1,0 +1,31 @@
+<div class="book-img">
+<div class="row p-5 login-background">
+  <div class="col-md-12">
+    <div fxLayoutAlign="center center" fxFlexFill>
+      <mat-card fxFlex="30" style="background-color: rgba(255, 255, 255, 0.5);  margin-top: 10%;">
+        <mat-card-title>
+          Login
+        </mat-card-title>
+
+        <form fxLayoutAlign="center" [formGroup]="form" (ngSubmit)="onSubmit()" fxLayout="column" name="form">
+
+          <mat-form-field>
+
+            <input matInput type="email" [(ngModel)]="user.email" placeholder="Email" name="email"
+                   formControlName="email"/>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput type="password" [(ngModel)]="user.password" name="password" placeholder="Password" formControlName="password"/>
+          </mat-form-field>
+
+          <button mat-raised-button [disabled]="form.invalid" class="my-3 yellow" type="submit">
+            Login
+          </button>
+        </form>
+      </mat-card>
+      <button (click)="openRegistration()" class="floating-btn">REGISTRATION</button>
+    </div>
+  </div>
+</div>
+</div>

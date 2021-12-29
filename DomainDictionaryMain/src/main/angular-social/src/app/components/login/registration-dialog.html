@@ -1,0 +1,145 @@
+<style>
+  @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500);
+  *:focus {
+    outline: none;
+  }
+  #login-box {
+    position: relative;
+    margin: 5% auto;
+    width: 600px;
+    height: 400px;
+    border-radius: 2px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+
+  .left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    padding: 40px;
+    width: 300px;
+    height: 400px;
+  }
+  ::ng-deep.mat-dialog-container {
+    display: block;
+    padding: 0;
+    opacity: 0.95;
+    border-radius: 0;
+    box-sizing: border-box;
+    overflow: auto;
+    outline: 0;
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    max-height: inherit;
+  }
+
+  h1 {
+    margin: 0 0 20px 0;
+    font-weight: 300;
+    font-size: 28px;
+  }
+
+  .or {
+    position: absolute;
+    top: 180px;
+    left: 280px;
+    width: 40px;
+    height: 40px;
+    background: #DDD;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    line-height: 40px;
+    text-align: center;
+  }
+
+  .right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    box-sizing: border-box;
+    padding: 40px;
+    width: 300px;
+    height: 400px;
+    background: url('https://goo.gl/YbktSj');
+    background-size: cover;
+    background-position: center;
+    border-radius: 0 2px 2px 0;
+  }
+
+  .right .loginwith {
+    display: block;
+    margin-bottom: 40px;
+    font-size: 28px;
+    text-align: center;
+  }
+
+  button.social-signin {
+    margin-bottom: 20px;
+    width: 220px;
+    height: 36px;
+    border: none;
+    border-radius: 2px;
+    color: #FFF;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    transition: 0.2s ease;
+    cursor: pointer;
+  }
+
+  button.social-signin:hover,
+  button.social-signin:focus {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    transition: 0.2s ease;
+  }
+
+  button.social-signin:active {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    transition: 0.2s ease;
+  }
+
+  button.social-signin.facebook {
+    background: #32508E;
+  }
+  .example-section {
+    margin: 12px 0;
+  }
+
+
+  button.social-signin.twitter {
+    background: #55ACEE;
+
+  }
+
+  button.social-signin.google {
+    background: #DD4B39;
+  }
+</style>
+  <div   [formGroup]="form" id="login-box">
+    <div class="left">
+      <h1>Sign up</h1>
+      <mat-form-field>
+      <input matInput formControlName="name" type="text" [(ngModel)]="user.name" name="username" placeholder="Username" />
+      </mat-form-field>
+        <mat-form-field><input formControlName="email" matInput type="text" [(ngModel)]="user.email" name="email" placeholder="E-mail" />
+        </mat-form-field>
+          <mat-form-field><input formControlName="password" matInput type="password" [(ngModel)]="user.password" name="password" placeholder="Password" />
+          </mat-form-field>
+      <section class="example-section">
+        <mat-checkbox [(ngModel)]="isExpert">I want to load my own Electronic Dictionaries</mat-checkbox>
+      </section>
+      <button mat-raised-button (click)="onSubmit()" class="my-3 yellow loginwith" type="submit">
+        Sign me up
+      </button>
+    </div>
+
+    <div class="right">
+    <h1 class="loginwith">Sign in with</h1>
+
+      <button class="social-signin facebook">Log in with facebook</button>
+      <button class="social-signin twitter">Log in with Twitter</button>
+      <button class="social-signin google">Log in with Google+</button>
+    </div>
+    <div class="or">OR</div>
+  </div>

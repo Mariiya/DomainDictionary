@@ -1,0 +1,74 @@
+mat-grid-tile {
+  background: #f7f7f2;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.example-section {
+  margin: 12px 0;
+}
+
+.example-margin {
+  margin: 0 12px;
+}
+
+ul {
+  list-style-type: none;
+  margin-top: 4px;
+}
+
+.grid-container {
+  margin: 0px 20px 20px;
+}
+
+.dashboard-card {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  color: #191923;
+}
+
+.tree {
+  max-height: 250px;
+  overflow-y: scroll;
+}
+
+.example-action-buttons {
+  padding-bottom: 20px;
+}
+
+.example-headers-align .mat-expansion-panel-header-title,
+.example-headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.example-headers-align .mat-form-field + .mat-form-field {
+  margin-left: 8px;
+
+}
+
+.mat-card-dashboard {
+
+}
+
+.example-card {
+
+  max-height: 320px;
+  overflow-y: scroll;
+}
+
+
+.example-header-image {
+  background-size: cover;
+}
+

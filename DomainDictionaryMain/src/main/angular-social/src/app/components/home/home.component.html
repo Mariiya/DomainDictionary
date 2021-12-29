@@ -1,0 +1,37 @@
+<div class="grid-container">
+  <mat-grid-list cols="8" rowHeight="200px">
+
+    <mat-grid-tile [colspan]="tiles[0].cols" [rowspan]="tiles[0].rows">
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>
+            {{tiles[0].title}}
+          </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <app-terms></app-terms>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="tiles[1].cols" [rowspan]="tiles[1].rows">
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>
+            {{tiles[1].title}}
+          </mat-card-title>
+
+        </mat-card-header>
+        <mat-card-content class="mat-card-dashboard">
+          <app-search-main></app-search-main>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+</div>
+
+
+

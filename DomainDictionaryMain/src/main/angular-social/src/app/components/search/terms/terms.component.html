@@ -1,0 +1,18 @@
+<div class="overflow">
+  <div class="example-button-container">
+    <button mat-mini-fab (click)="addInput()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <div *ngFor="let input of inputs;index as i; trackBy:trackByFn" style="margin-top:10px;">
+    <div fxLayout="row">
+      <mat-form-field class="example-full-width">
+        <input matInput  [(ngModel)]="inputs[i]" (ngModelChange) ="update()">
+      </mat-form-field>
+      <button mat-icon-button color="warn" (click)="delete(i)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,57 @@
+table {
+  width: 100%;
+}
+
+button {
+  margin: 16px 8px;
+}
+
+.btn {
+  background-color: #fbaf00;
+  border: 0;
+  border-radius: 50px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  font-size: 16px;
+  padding: 12px 25px;
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  letter-spacing: 1px;
+}
+
+.floating-btn {
+  border-radius: 26.5px;
+  background-color: #fbaf00;
+  border: 1px solid #fbaf00;
+  box-shadow: 0 16px 22px -17px #fbaf00;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 20px;
+  padding: 12px 20px;
+  position: fixed;
+  bottom: 20px;
+  right: 50px;
+  z-index: 999;
+}
+
+.floating-btn:hover {
+  background-color: #d1ac00;
+  color: #ffffff;
+}
+
+.floating-btn:focus {
+  outline: none;
+}
+
+@media screen and (max-width: 480px) {
+
+  .social-panel-container.visible {
+    transform: translateX(0px);
+  }
+
+  .floating-btn {
+    right: 10px;
+  }
+}

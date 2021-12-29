@@ -1,0 +1,103 @@
+
+mat-toolbar {
+  background-color: #ec4e20;
+  position: sticky;
+  width: 100%  !important;
+}
+
+
+
+.btn {
+  background-color: #fbaf00;
+  border: 0;
+  border-radius: 50px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  font-size: 16px;
+  padding: 12px 25px;
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  letter-spacing: 1px;
+}
+
+.floating-btn {
+  border-radius: 26.5px;
+  background-color: #fbaf00;
+  border: 1px solid #fbaf00;
+  box-shadow: 0 16px 22px -17px #fbaf00;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 20px;
+  padding: 12px 20px;
+  position: fixed;
+  bottom: 20px;
+  right: 50px;
+  z-index: 999;
+}
+
+.floating-btn:hover {
+  background-color: #d1ac00;
+  color: #ffffff;
+}
+
+.floating-btn:focus {
+  outline: none;
+}
+
+@media screen and (max-width: 480px) {
+
+  .social-panel-container.visible {
+    transform: translateX(0px);
+  }
+
+  .floating-btn {
+    right: 10px;
+  }
+}
+
+.mat-icon-account {
+  height: 24px;
+  width: 24px;
+  font-size: 50px;
+  margin-right: 50px;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.navbar-text {
+  width: 100%;
+  left: 0;
+  top: 0;
+  text-align: left;
+  z-index: 10;
+  color: white;
+}
+.navbar-search{
+  color: white;
+  margin-left: 30px;
+  width: 60%;
+}
+::placeholder {
+  color: white;
+  opacity: 0.8;
+}
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #5c6bbf;
+}
+
+.page-footer {
+  background: #191923;
+  color: #EBEBEB;
+  text-align: center;
+}
+
+.site {
+  display: flex;
+  flex-direction: column;
+  min-height: 94vh;
+}

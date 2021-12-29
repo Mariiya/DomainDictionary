@@ -1,0 +1,127 @@
+<button class="floating-btn" (click)="search()">SEARCH</button>
+<mat-accordion class="example-headers-align" multi>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Resource
+      </mat-panel-title>
+      <mat-panel-description>
+        Select dictionary for search
+      </mat-panel-description>
+      <mat-panel-description>
+        {{selectedResource}}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <mat-tree class="tree" [dataSource]="dataSource" [treeControl]="treeControl">
+      <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+        <button mat-icon-button disabled></button>
+        <button mat-button (click)="logNode(node)">
+          {{node.name}}
+        </button>
+      </mat-tree-node>
+      <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
+        <button mat-icon-button matTreeNodeToggle
+                [attr.aria-label]="'Toggle ' + node.name">
+          <mat-icon class="mat-icon-rtl-mirror">
+            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+          </mat-icon>
+        </button>
+        {{node.name}}
+      </mat-tree-node>
+    </mat-tree>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Filters
+      </mat-panel-title>
+      <mat-panel-description>
+        Customize search
+      </mat-panel-description>
+      <mat-panel-description>
+
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div class="container" fxLayout="row" fxLayoutGap="20%">
+      <section class="example-section">
+  <span class="example-list-section">
+    <mat-checkbox class="example-margin"
+                  [checked]="allComplete"
+                  [color]="task.color"
+                  [indeterminate]="someComplete()"
+                  (change)="setAll($event.checked)">
+      {{task.name}}
+    </mat-checkbox>
+  </span>
+        <span class="example-list-section">
+    <ul>
+      <li *ngFor="let subtask of task.subtasks">
+        <mat-checkbox [(ngModel)]="subtask.completed"
+                      [color]="subtask.color"
+                      (ngModelChange)="updateAllComplete()">
+          {{subtask.name}}
+          <input *ngIf="subtask.name==='Analyze Domain'" matInput placeholder="Input domain..." style="display: inline">
+        </mat-checkbox>
+      </li>
+    </ul>
+  </span>
+      </section>
+
+      <section class="example-section">
+  <span class="example-list-section">
+    <mat-checkbox class="example-margin">
+      {{language.name}}
+    </mat-checkbox>
+  </span>
+        <span class="example-list-section">
+    <ul>
+      <li *ngFor="let subtask of language.subtasks">
+        <mat-checkbox [(ngModel)]="subtask.completed"
+                      [color]="subtask.color"
+                      (ngModelChange)="updateAllComplete()">
+          {{subtask.name}}
+        </mat-checkbox>
+      </li>
+    </ul>
+  </span>
+      </section>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-card class="example-card" style="margin-top: 20px">
+  <mat-card-header>
+    <mat-card-title>Results</mat-card-title>
+  </mat-card-header>
+  <div class="mat-elevation-z8">
+    <table [dataSource]="datasourceDE" #table class="mat-elevation-z8" mat-table matSort text-align="center">
+      <ng-container matColumnDef="term">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header style="font-size: 16px"> Term</th>
+        <td *matCellDef="let de" mat-cell>
+          <div class="center" fxFlexFill matRipple>
+            {{de.term}}
+          </div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="definition">
+        <th *matHeaderCellDef mat-header-cell style="font-size: 16px"> Definitions</th>
+        <td *matCellDef="let de" mat-cell> {{de.definition}} </td>
+      </ng-container>
+
+      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[10,5,20]" showFirstLastButtons></mat-paginator>
+  </div>
+  <mat-card-content>
+  </mat-card-content>
+</mat-card>
+<mat-card-actions fxLayout="row" fxLayoutGap="20px">
+  <button mat-flat-button color="accent">EDIT</button>
+  <button mat-flat-button (click)="saveDomainDictionary()" color="accent">SAVE</button>
+</mat-card-actions>
+<div *ngIf="loading" style="  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -70px 0 0 -70px;">
+  <mat-spinner></mat-spinner>
+</div>
