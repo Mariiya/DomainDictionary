@@ -51,6 +51,7 @@ public class User {
         this.role = role;
     }
 
+
     public User(BigInteger id, String name, String email, String password, Role role) {
         this.id = id;
         this.name = name;

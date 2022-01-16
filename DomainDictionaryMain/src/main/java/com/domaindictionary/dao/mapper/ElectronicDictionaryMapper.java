@@ -26,7 +26,7 @@ public class ElectronicDictionaryMapper implements RowMapper<ElectronicDictionar
                         .withArticleSeparator(resultSet.getString("article_separator"))
                         .withTermSeparator(resultSet.getString("term_separator"))
                         .withTermSeparator(resultSet.getString("definition_separator"))
-                        .withStylisticZone(resultSet.getString("stylistic_zone"))
+                        .withStylisticZone(resultSet.getBoolean("stylistic_zone"))
                         .build())
                 .build();
         return dictionary;

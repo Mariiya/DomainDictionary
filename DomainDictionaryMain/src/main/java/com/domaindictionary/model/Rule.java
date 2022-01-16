@@ -7,14 +7,17 @@ public class Rule {
     private String articleSeparator;
     private String termSeparator;
     private String definitionSeparator;
-    private String stylisticZone;
+    private boolean stylisticZone;
 
-    public Rule(BigInteger id, String articleSeparator, String termSeparator, String definitionSeparator, String stylisticZone) {
+    public Rule(BigInteger id, String articleSeparator, String termSeparator, String definitionSeparator, boolean stylisticZone) {
         this.id = id;
         this.articleSeparator = articleSeparator;
         this.termSeparator = termSeparator;
         this.definitionSeparator = definitionSeparator;
         this.stylisticZone = stylisticZone;
+    }
+
+    public Rule() {
     }
 
     public String getRegex() {
@@ -45,7 +48,7 @@ public class Rule {
         this.termSeparator = termSeparator;
     }
 
-    public String getStylisticZone() {
+    public boolean getStylisticZone() {
         return stylisticZone;
     }
 
@@ -60,7 +63,7 @@ public class Rule {
         this.definitionSeparator = definitionSeparator;
     }
 
-    public void setStylisticZone(String stylisticZone) {
+    public void setStylisticZone(boolean stylisticZone) {
         this.stylisticZone = stylisticZone;
     }
 }

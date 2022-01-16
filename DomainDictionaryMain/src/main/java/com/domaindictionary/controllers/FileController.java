@@ -1,6 +1,6 @@
 package com.domaindictionary.controllers;
 
-import com.domaindictionary.model.DictionaryEntry;
+import com.domaindictionary.elasticsearch.model.DictionaryEntry;
 import com.domaindictionary.secutity.services.UserDetailsImpl;
 import com.domaindictionary.service.DomainDictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;

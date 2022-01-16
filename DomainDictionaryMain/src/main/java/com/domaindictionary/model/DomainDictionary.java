@@ -1,5 +1,7 @@
 package com.domaindictionary.model;
 
+import com.domaindictionary.elasticsearch.model.DictionaryEntry;
+
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;

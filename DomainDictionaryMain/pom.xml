@@ -10,7 +10,19 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>DomainDictionaryMain</artifactId>
-
+    <dependencies>
+        <dependency>
+            <groupId>com.domaindictionary.elasticsearch</groupId>
+            <artifactId>ElasticSearch</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+            <version>2.10.2</version>
+        </dependency>
+    </dependencies>
     <properties>
         <maven.compiler.source>15</maven.compiler.source>
         <maven.compiler.target>15</maven.compiler.target>

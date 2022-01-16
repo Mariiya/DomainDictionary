@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpRequest} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {Observable, throwError} from "rxjs";
+import {Observable, Subject, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {DictionaryEntry} from "../model/dictionaty-entry";
 
@@ -41,4 +41,24 @@ export class FileService {
       duration: 10000,
     });
   }
+
+  //localStorage
+  private fileList: string[] = new Array<string>();
+  private fileList$: Subject<string[]> = new Subject<string[]>();
+
+
+  public upload(fileName: string): void {
+    this.fileList.push(fileName);
+    this.fileList$.next(this.fileList);
+  }
+
+  public remove(fileName: string): void {
+    this.fileList.splice(this.fileList.findIndex(name => name === fileName), 1);
+    this.fileList$.next(this.fileList);
+  }
+
+  public list(): Observable<string[]> {
+    return this.fileList$;
+  }
+
 }

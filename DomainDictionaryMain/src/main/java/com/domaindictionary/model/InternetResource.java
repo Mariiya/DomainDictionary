@@ -1,6 +1,7 @@
 package com.domaindictionary.model;
 
 
+import com.domaindictionary.elasticsearch.model.DictionaryEntry;
 import com.domaindictionary.model.enumeration.ResourceSybtype;
 import com.domaindictionary.model.enumeration.ResourceType;
 

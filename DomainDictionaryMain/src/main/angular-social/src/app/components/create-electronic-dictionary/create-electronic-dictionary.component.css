@@ -1,0 +1,31 @@
+.mat-stepper-horizontal {
+  margin-top: 8px;
+}
+
+.mat-form-field {
+  margin-top: 16px;
+}
+
+.card {
+  padding-top: 1%;
+  margin: auto;
+  max-width: 80%;
+}
+
+.close-btn {
+  margin-top: 1%;
+  float: right;
+}
+
+.row {
+  display: inline-block;
+}
+
+h1 {
+  color: #7a7c7f;
+  font-size: 24px;
+  font-family: 'Georgia', sans-serif;
+  text-align: center;
+  text-shadow: 0 1px 1px #fff;
+  padding-top: 2%;
+}

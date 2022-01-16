@@ -1,7 +1,7 @@
 package com.domaindictionary.service;
 
 import com.domaindictionary.dao.DictionaryDao;
-import com.domaindictionary.model.DictionaryEntry;
+import com.domaindictionary.elasticsearch.model.DictionaryEntry;
 import com.domaindictionary.model.SearchResource;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +18,6 @@ public class InternetResourceSearchService implements SearchService {
 
     public DictionaryEntry search(String term, SearchResource resource) {
         //not implemented
-        return new DictionaryEntry(new BigInteger("2"),".",new ArrayList<>());
+        return new DictionaryEntry("2",".",new ArrayList<>(),resource.getId());
     }
 }

@@ -10,7 +10,7 @@ public class RuleBuilder {
     private String articleSeparator;
     private String termSeparator;
     private String definitionSeparator;
-    private String stylisticZone;
+    private boolean isStylisticZone;
 
     public RuleBuilder withId(BigInteger id) {
         this.id = id;
@@ -27,18 +27,18 @@ public class RuleBuilder {
         return this;
     }
 
-    public RuleBuilder withStylisticZone(String stylisticZone) {
-        this.stylisticZone = stylisticZone;
+    public RuleBuilder withStylisticZone(boolean isStylisticZone) {
+        this.isStylisticZone = isStylisticZone;
         return this;
     }
 
     public RuleBuilder withDefinitionSeparator(String definitionSeparator) {
-        this.definitionSeparator =definitionSeparator;
+        this.definitionSeparator = definitionSeparator;
         return this;
     }
 
 
     public Rule build() {
-        return new Rule(id, articleSeparator, termSeparator,definitionSeparator, stylisticZone);
+        return new Rule(id, articleSeparator, termSeparator, definitionSeparator, isStylisticZone);
     }
 }

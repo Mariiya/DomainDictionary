@@ -1,0 +1,26 @@
+<div>
+  <p class="subscript">Upload a text file of dictionary. Allowed types: *.txt</p>
+  <mat-form-field>
+    <div>
+      <mat-toolbar>
+        <input matInput disabled required placeholder="Select a file or drag and drop it here" [value]="fileName"/>
+        <button
+          mat-flat-button
+          color="accent" style="color: white"
+          [disabled]="fileName.length==0"
+          (click)="remove(fileName)">
+          Remove
+        </button>
+      </mat-toolbar>
+
+      <input
+        type="file"
+        #fileInput
+        id="fileInput"
+        style="width: 80%"
+        (change)="onFileChange($event)"
+        name="fileInput"
+      />
+    </div>
+  </mat-form-field>
+</div>

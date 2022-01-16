@@ -85,6 +85,11 @@ public class AuthController {
                 signUpRequest.getEmail(),
                 signUpRequest.getPassword(), signUpRequest.getRole());
         userDao.save(user);
-        return ResponseEntity.ok(new MessageResponse());
+        try {
+            return ResponseEntity.ok(new MessageResponse());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
     }
 }

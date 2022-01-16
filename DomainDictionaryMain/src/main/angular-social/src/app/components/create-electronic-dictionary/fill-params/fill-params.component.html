@@ -1,0 +1,37 @@
+    <div style="width: 100%">
+      <mat-form-field appearance="fill">
+        <mat-label>Article Separator (sp)</mat-label>
+          <mat-select required (change)="addNewRule()" [ngModel]="ruleValue.articleSeparator">
+            <mat-option (click)="addCustomSeparator(false)" value="option1">New Line</mat-option>
+            <mat-option (click)="addCustomSeparator(false)" value="option2">Empty Line</mat-option>
+            <mat-option (click)="addCustomSeparator(true)" value="option3">Custom</mat-option>
+          </mat-select>
+        <!--<mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>-->
+      </mat-form-field>
+      <input matInput *ngIf="isCustomArticleSeparator">
+      <mat-form-field appearance="fill">
+        <mat-label>Term Separator (dl)</mat-label>
+        <input matInput placeholder=", . | - " (change)="addNewRule()" [ngModel]="ruleValue.definitionSeparator"
+               required>
+        <!--<mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>-->
+      </mat-form-field>
+    </div>
+    <div class="example-container">
+      <mat-form-field appearance="fill">
+        <mat-label>Enter your email</mat-label>
+        <input matInput placeholder="pat@example.com" (change)="addNewRule()" [ngModel]="ruleValue.stylisticZone"
+               required>
+        <!--<mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>-->
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Enter your email</mat-label>
+        <input matInput placeholder="pat@example.com" (change)="addNewRule()" [ngModel]="ruleValue.termSeparator"
+               required>
+        <!--  <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>-->
+      </mat-form-field>
+    </div>
+    <button mat-stroked-button class = "help-button" (click)="openHelpDialog()">HELP</button>
+
+
+

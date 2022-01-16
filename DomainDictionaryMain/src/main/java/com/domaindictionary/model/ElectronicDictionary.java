@@ -4,8 +4,6 @@ import com.domaindictionary.model.enumeration.ResourceSybtype;
 import com.domaindictionary.model.enumeration.ResourceType;
 
 import java.math.BigInteger;
-import java.util.List;
-
 
 public class ElectronicDictionary implements SearchResource {
     private BigInteger id;
@@ -15,9 +13,21 @@ public class ElectronicDictionary implements SearchResource {
     private ResourceType type;
     private ResourceSybtype sybtype;
     private Rule rule;
-    private List<DictionaryEntry> entries;
 
-    public ElectronicDictionary(BigInteger id, String name, String author, String pathToFile, ResourceType type, ResourceSybtype sybtype, Rule rule, List<DictionaryEntry> entries) {
+    public ElectronicDictionary(BigInteger id, String name, String author, String pathToFile, String type,String sybtype, Rule rule) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.pathToFile = pathToFile;
+        this.type = ResourceType.valueOf(type);
+        this.sybtype = ResourceSybtype.valueOf(sybtype);
+        this.rule = rule;
+    }
+
+    public ElectronicDictionary() {
+       }
+
+    public ElectronicDictionary(BigInteger id, String name, String author, String pathToFile, ResourceType type, ResourceSybtype sybtype, Rule rule) {
         this.id = id;
         this.name = name;
         this.author = author;
@@ -25,9 +35,7 @@ public class ElectronicDictionary implements SearchResource {
         this.type = type;
         this.sybtype = sybtype;
         this.rule = rule;
-        this.entries = entries;
     }
-
     public void setId(BigInteger id) {
         this.id = id;
     }
@@ -70,14 +78,6 @@ public class ElectronicDictionary implements SearchResource {
 
     public void setRule(Rule rule) {
         this.rule = rule;
-    }
-
-    public List<DictionaryEntry> getEntries() {
-        return entries;
-    }
-
-    public void setEntries(List<DictionaryEntry> entries) {
-        this.entries = entries;
     }
 
     public String getName() {

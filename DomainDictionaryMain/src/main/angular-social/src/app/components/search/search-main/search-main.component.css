@@ -2,6 +2,19 @@ table {
   width: 100%;
 }
 
+.tree {
+  max-height: 400px;
+  overflow-y: scroll;
+}
+
+.mat-tree-node {
+  min-height: 3em !important;
+  height: 3em;
+}
+
+.resource-btn{
+color: darkgoldenrod;
+}
 button {
   margin: 16px 8px;
 }
@@ -21,7 +34,7 @@ button {
 }
 
 .floating-btn {
-  border-radius: 26.5px;
+  border-radius: 10px;
   background-color: #fbaf00;
   border: 1px solid #fbaf00;
   box-shadow: 0 16px 22px -17px #fbaf00;
@@ -38,6 +51,10 @@ button {
 
 .floating-btn:hover {
   background-color: #d1ac00;
+  color: #ffffff;
+}
+
+.control-btn {
   color: #ffffff;
 }
 

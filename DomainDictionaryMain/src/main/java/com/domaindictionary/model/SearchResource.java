@@ -14,4 +14,5 @@ public interface SearchResource {
     ResourceSybtype getSubtype();
 
     BigInteger getId();
+
 }

@@ -28,8 +28,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     public router: Router, private route: ActivatedRoute, public dialog: MatDialog,
-    private authService: AuthService, private tokenStorage: TokenStorageService,
-    private navigation: NavigationComponent) {
+    private authService: AuthService, private tokenStorage: TokenStorageService) {
   }
 
 
@@ -65,7 +64,7 @@ export class LoginComponent implements OnInit {
         }
         this.isLoginFailed = false;
         this.isLoggedIn = true;
-        this.navigation.isLoggedIn = true;
+        NavigationComponent.isLoggedIn = true;
         this.roles = this.tokenStorage.getUser().roles;
         this.redirectPage();
       },

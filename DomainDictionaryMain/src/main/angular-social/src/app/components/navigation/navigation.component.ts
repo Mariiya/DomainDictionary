@@ -11,29 +11,24 @@ export class NavigationComponent implements OnInit {
   title = 'dd';
   // @ts-ignore
   private roles: string[];
-  isLoggedIn = false;
-  showAdminBoard = false;
-  showModeratorBoard = false;
-  username: string='';
+ static isLoggedIn = false;
+  public classReference = NavigationComponent;
+  username: string = '';
 
-  constructor(private tokenStorageService: TokenStorageService,public router: Router) { }
+  constructor(private tokenStorageService: TokenStorageService, public router: Router) {
+  }
 
   ngOnInit() {
-    this.isLoggedIn = !!this.tokenStorageService.getToken();
-
-    if (this.isLoggedIn) {
+    NavigationComponent.isLoggedIn = !!this.tokenStorageService.getToken();
+    if (NavigationComponent.isLoggedIn) {
       const user = this.tokenStorageService.getUser();
       this.roles = user.roles;
-
-      this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
-      this.showModeratorBoard = this.roles.includes('ROLE_MODERATOR');
-
       this.username = user.username;
     }
   }
 
   logout() {
     this.tokenStorageService.signOut();
-    this.router.navigate(['/login']).then(r =>  window.location.reload());
+    this.router.navigate(['/login']).then(r => window.location.reload());
   }
 }

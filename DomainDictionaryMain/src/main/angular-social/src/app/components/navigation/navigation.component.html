@@ -1,40 +1,23 @@
-  <mat-toolbar> <!--*ngIf="router.url != '/login'"-->
-    <mat-toolbar-row>
-    <button mat-icon-button class="example-icon" style="margin-right: 15px; color: white;"
-            aria-label="Example icon-button with menu icon">
+<mat-toolbar>
+  <mat-toolbar-row>
+    <button mat-icon-button class ="toolbar-icon">
       <mat-icon>library_books</mat-icon>
     </button>
     <span class="navbar-text">Domain Dictionary
   <mat-form-field class="navbar-search" appearance="standard">
-    <input matInput placeholder="Quick search...">
+    <input matInput class="mat-input-with-line" placeholder="Quick search...">
    </mat-form-field>
 </span>
 
-    <mat-icon class="mat-icon-account" [matMenuTriggerFor]="menu" *ngIf="isLoggedIn">account_circle
+    <mat-icon class="mat-icon-account" [matMenuTriggerFor]="menu" *ngIf="classReference.isLoggedIn">account_circle
     </mat-icon>
     <mat-menu #menu="matMenu">
       <button mat-menu-item>My account</button>
       <button mat-menu-item>Edit</button>
     </mat-menu>
 
-    <button mat-raised-button *ngIf="isLoggedIn" (click)="logout()">LogOut</button>
-      </mat-toolbar-row>
-  </mat-toolbar>
-  <li class="nav-item" *ngIf="showAdminBoard">
- <router-outlet></router-outlet>
-  </li>
-  <li class="nav-item" *ngIf="isLoggedIn">
-    <app-home></app-home>
-  </li>
-
-    <router-outlet *ngIf="!isLoggedIn"></router-outlet>
-
-
-<footer class="page-footer">
-  <div class="footer-copyright text-center py-3">© 2021 Copyright:
-    <a href="">Kozhushan Mariia</a>
-  </div>
-</footer>
-
+    <button mat-button class ="toolbar-btn" *ngIf="classReference.isLoggedIn" (click)="logout()">Logout</button>
+  </mat-toolbar-row>
+</mat-toolbar>
 
 

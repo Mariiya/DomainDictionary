@@ -1,0 +1,10 @@
+example-container .mat-form-field + .mat-form-field {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.help-button{
+ float: left;
+  position: absolute;
+}
+

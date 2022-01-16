@@ -1,7 +1,7 @@
 package com.domaindictionary.model.builders;
 
 
-import com.domaindictionary.model.DictionaryEntry;
+import com.domaindictionary.elasticsearch.model.DictionaryEntry;
 import com.domaindictionary.model.ElectronicDictionary;
 import com.domaindictionary.model.Rule;
 import com.domaindictionary.model.enumeration.ResourceSybtype;
@@ -18,7 +18,6 @@ public class ElectronicDictionaryBuilder {
     private ResourceType type;
     private ResourceSybtype sybtype;
     private Rule rule;
-    private List<DictionaryEntry> entries;
 
     public ElectronicDictionaryBuilder withId(BigInteger id) {
         this.id = id;
@@ -55,12 +54,7 @@ public class ElectronicDictionaryBuilder {
         return this;
     }
 
-    public ElectronicDictionaryBuilder withEntries(List<DictionaryEntry> entries) {
-        this.entries = entries;
-        return this;
-    }
-
     public ElectronicDictionary build() {
-        return new ElectronicDictionary(id, name, author, pathToFile, type, sybtype, rule, entries);
+        return new ElectronicDictionary(id, name, author, pathToFile, type, sybtype, rule);
     }
 }

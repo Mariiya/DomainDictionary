@@ -32,11 +32,12 @@ ul {
   color: #191923;
 }
 
-.tree {
-  max-height: 250px;
-  overflow-y: scroll;
+.new-dictionary-btn{
+  position: absolute;
+  right: 0;
+  margin-right: 2%;
+  margin-top: -1%;
 }
-
 .example-action-buttons {
   padding-bottom: 20px;
 }

@@ -8,11 +8,8 @@ import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {Subscription} from "rxjs";
 import {DataSharedService} from "../../../services/data-shared.service";
-import {DatePipe} from "@angular/common";
-import {TokenStorageService} from "../../../services/token-storage.service";
 import {ActivatedRoute} from "@angular/router";
 import {FileService} from "../../../services/file.service";
-import {HttpParams} from "@angular/common/http";
 
 @Component({
   selector: 'app-search-main',
@@ -42,6 +39,10 @@ export class SearchMainComponent implements OnInit {
 
   ngOnInit() {
     this.datasourceDE.paginator = this.paginator;
+    if(this.datasourceDE.data.length==0){
+      let de = new DictionaryEntry(0, "....", ["..........."]);
+      this.datasourceDE.data.push(de);
+    }
   }
 
   getTerms(): string[] {
@@ -137,8 +138,6 @@ export class SearchMainComponent implements OnInit {
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
   saveDomainDictionary() {
-    console.log("this.datasourceDE.data "+ this.datasourceDE.data)
-
     this.reportService.saveDomainDictionary(this.datasourceDE.data)
       .subscribe(blob => this.subscribeToGetPdf(blob),
         error => {
