@@ -50,6 +50,9 @@ import {
 } from './components/create-electronic-dictionary/fill-params/fill-params.component';
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import { TestDictionaryComponent } from './components/create-electronic-dictionary/test-dictionary/test-dictionary.component';
+import { DictionaryParametersComponent } from './components/create-electronic-dictionary/dictionary-parameters/dictionary-parameters.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +69,9 @@ import {MatSidenavModule} from "@angular/material/sidenav";
     FooterComponent,
     FileUploadComponent,
     FillParamsComponent,
-    ParamsHelperDialog
+    ParamsHelperDialog,
+    TestDictionaryComponent,
+    DictionaryParametersComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -102,7 +107,8 @@ import {MatSidenavModule} from "@angular/material/sidenav";
     MatNativeDateModule,
     MatProgressBarModule,
     MatTabsModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatSlideToggleModule
   ],
   providers: [DatePipe, DataSharedService,
     {

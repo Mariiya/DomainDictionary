@@ -1,7 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {FileService} from "../../../services/file.service";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {Observable} from "rxjs";
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {CreateElectronicDictionaryComponent} from "../create-electronic-dictionary.component";
 
 @Component({
@@ -10,44 +7,38 @@ import {CreateElectronicDictionaryComponent} from "../create-electronic-dictiona
   styleUrls: ['./file-upload.component.css']
 })
 export class FileUploadComponent implements OnInit {
-
   @ViewChild('fileInput')
-  public fileVariable: ElementRef | undefined;
+  public fileVariable?: File;
+
+  @Output('electronicDictionary')
+  dictionaryFile = new EventEmitter<File>();
 
   public fileName = "";
-  createEDClassReference = CreateElectronicDictionaryComponent;
-  constructor(private fb: FormBuilder, private fileService: FileService) {
+
+  constructor() {
   }
 
   public onFileChange(event: Event) {
     const reader = new FileReader();
-    // @ts-ignore
-    if (event.target.files && event.target.files.length) {
+    if (event != null && event.target != null && (event.target as HTMLInputElement).files != null) {
       // @ts-ignore
-      this.fileName = event.target.files[0].name;
+      this.fileName = (event.target as HTMLInputElement).files[0].name;
       // @ts-ignore
       const [file] = event.target.files;
       reader.readAsDataURL(file);
-      this.onSubmit();
+      this.dictionaryFile.emit(file);
       reader.onload = () => {
         //fgdfg
       };
     }
   }
 
-  public onSubmit(): void {
-    // @ts-ignore
-    this.fileService.upload(this.fileName);
-  }
 
+  createEDClassReference = CreateElectronicDictionaryComponent;
   //FileList
-  public fileList$: Observable<string[]> = this.fileService.list();
-
-  public remove(fileName: string): void {
-    // @ts-ignore
+  public remove(): void {
     this.createEDClassReference.formGroup.get('file')?.reset(null);
     this.fileName = "";
-    this.fileService.remove(fileName);
   }
 
   ngOnInit(): void {

@@ -7,13 +7,11 @@
 }
 
 .card {
-  padding-top: 1%;
   margin: auto;
   max-width: 80%;
 }
 
 .close-btn {
-  margin-top: 1%;
   float: right;
 }
 
@@ -27,5 +25,4 @@ h1 {
   font-family: 'Georgia', sans-serif;
   text-align: center;
   text-shadow: 0 1px 1px #fff;
-  padding-top: 2%;
 }

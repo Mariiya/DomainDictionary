@@ -1,0 +1,59 @@
+<form style="max-width: 64em;
+    margin: auto;
+    text-align: center;"
+      [formGroup]="classReference.formGroup">
+  <table class="example-full-width" cellspacing="0">
+    <tr>
+      <td>
+        <mat-form-field class="container-input" appearance="legacy">
+          <mat-label>Dictionary name</mat-label>
+          <input matInput type="text"
+                 formControlName="dname"
+                 placeholder=""
+                 (change)="updateDictionaryParams()">
+          <mat-error *ngIf="classReference.formGroup.controls.dname.invalid">{{getNameErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field class="container-input" appearance="legacy">
+          <mat-label>Dictionary author</mat-label>
+          <input matInput
+                 type="text"
+                 formControlName="author"
+                 placeholder=""
+                 (change)="updateDictionaryParams()">
+          <mat-error *ngIf="classReference.formGroup.controls.author.invalid">{{getAuthorErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+
+  <table cellspacing="0">
+    <tr>
+      <td>
+        <mat-form-field class="container-input" appearance="legacy">
+          <mat-label>Dictionaty type</mat-label>
+          <mat-select required [(value)]="dictionaryInput.type" (selectionChange)="onTypeSelect()">
+            <mat-option *ngFor="let option of type | async" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field class="container-input" appearance="legacy">
+          <mat-label>Dictionary Sybtype</mat-label>
+          <mat-select required [(value)]="dictionaryInput.sybtype" (selectionChange)="updateDictionaryParams()">
+            <mat-option *ngFor="let option of sybtype | async" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+</form>
+
+
+
+

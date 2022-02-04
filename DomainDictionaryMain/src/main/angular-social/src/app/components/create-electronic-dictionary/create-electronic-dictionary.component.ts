@@ -1,8 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {STEPPER_GLOBAL_OPTIONS} from "@angular/cdk/stepper";
 import {Router} from "@angular/router";
 import {Rule} from "../../model/rule";
+import {ElectronicDictionary} from "../../model/electronic-dictionary";
+import {FileService} from "../../services/file.service";
+import {MatHorizontalStepper} from "@angular/material/stepper";
+import {HelperService} from "../../services/helper.service";
+import {DictionaryParametersComponent} from "./dictionary-parameters/dictionary-parameters.component";
+import {FillParamsComponent} from "./fill-params/fill-params.component";
 
 @Component({
   selector: 'app-create-electronic-dictionary',
@@ -22,27 +28,77 @@ export class CreateElectronicDictionaryComponent implements OnInit {
       validators: [Validators.required, Validators.nullValidator]
     })
   });
+
+  dictionary: ElectronicDictionary = new ElectronicDictionary();
 // @ts-ignore
-  selectedFiles: File;
+  selectedFile: File;
   classReference = CreateElectronicDictionaryComponent;
 
-  rule?: Rule;
-
-  onRuleChanged(value: Rule) {
-   this.rule = value;
+  onDictionaryParamsChanged(dictionary: ElectronicDictionary) {
+    console.log("dictionary params changed " + dictionary)
+    this.dictionary.type = dictionary.type;
+    this.dictionary.sybtype = dictionary.sybtype;
+    this.dictionary.name = dictionary.name;
+    this.dictionary.author = dictionary.author;
   }
 
-  constructor(public router: Router, private _formBuilder: FormBuilder) {
+  onRuleChanged(value: Rule) {
+    console.log("Rule updated" + value.definitionSeparator)
+    this.dictionary.rule = value;
+  }
+
+  onFileChanged(file: File) {
+    console.log("FileChanged " + file.name)
+    this.selectedFile = file;
+  }
+
+  create() {
+    if (this.isDictionaryValid()) {
+      this.fileService.createElectronicDictionary(this.dictionary, this.selectedFile);
+      console.log("create called ")
+    }
+  }
+
+  isDictionaryValid() {
+    return this.dictionary != undefined
+      && this.dictionary.rule != undefined
+      && this.selectedFile != undefined
+  }
+
+  testDictionary(term: string) {
+    console.log("test called " + term)
+  }
+
+  constructor(public router: Router, private _formBuilder: FormBuilder,
+              public fileService: FileService, public helper: HelperService) {
   }
 
   ngOnInit() {
   }
 
-  selectFile(event: Event) {
-
-  }
-
   returnHome() {
     this.router.navigate(['/home']);
+  }
+
+  @ViewChild('stepper') stepper?: MatHorizontalStepper;
+
+  onFileFilled() {
+    if (this.stepper != undefined && this.selectedFile != undefined)
+      this.stepper.next();
+    else this.helper.openSnackBar("Please upload dictionary file", "OK")
+  }
+
+  dictionaryInfoReference = DictionaryParametersComponent;
+  onDictionaryInfoFilled() {
+    console.log(this.dictionaryInfoReference.formGroup.errors)
+    if (this.stepper != undefined && this.dictionaryInfoReference.formGroup.valid)
+      this.stepper.next();
+  }
+
+  dictionaryParametersReference = FillParamsComponent;
+  onDictionaryParamsFilled() {
+    console.log(this.dictionaryParametersReference.formGroup.valid)
+    if (this.stepper != undefined && this.dictionaryParametersReference.formGroup.valid)
+      this.stepper.next();
   }
 }

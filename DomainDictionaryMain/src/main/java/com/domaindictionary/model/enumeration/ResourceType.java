@@ -1,5 +1,6 @@
 package com.domaindictionary.model.enumeration;
 
 public enum ResourceType {
-    DEFAULT
+    GENERAL,
+    DOMAIN
 }

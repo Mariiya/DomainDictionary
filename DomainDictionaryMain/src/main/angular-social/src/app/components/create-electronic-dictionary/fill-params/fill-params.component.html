@@ -1,37 +1,92 @@
-    <div style="width: 100%">
-      <mat-form-field appearance="fill">
-        <mat-label>Article Separator (sp)</mat-label>
-          <mat-select required (change)="addNewRule()" [ngModel]="ruleValue.articleSeparator">
-            <mat-option (click)="addCustomSeparator(false)" value="option1">New Line</mat-option>
-            <mat-option (click)="addCustomSeparator(false)" value="option2">Empty Line</mat-option>
-            <mat-option (click)="addCustomSeparator(true)" value="option3">Custom</mat-option>
+<form style="max-width: 64em;
+    margin: auto;
+    text-align: center;"
+[formGroup]="reference.formGroup">
+  <table class="example-full-width" cellspacing="0">
+    <tr>
+      <td>
+        <mat-form-field class="container-input" appearance="legacy">
+          <mat-label>Article Separator (sp)</mat-label>
+          <mat-select formControlName="articleSeparator" required (change)="addNewRule()">
+            <mat-option
+              (click)="addCustomSeparator(true)"
+              *ngFor="let option of articleSeparators | async"
+              [value]="option">
+              {{option}}
+            </mat-option>
+            <mat-option (click)="addCustomSeparator(false)" value="option3">Custom</mat-option>
           </mat-select>
-        <!--<mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>-->
-      </mat-form-field>
-      <input matInput *ngIf="isCustomArticleSeparator">
-      <mat-form-field appearance="fill">
-        <mat-label>Term Separator (dl)</mat-label>
-        <input matInput placeholder=", . | - " (change)="addNewRule()" [ngModel]="ruleValue.definitionSeparator"
-               required>
-        <!--<mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>-->
-      </mat-form-field>
-    </div>
-    <div class="example-container">
-      <mat-form-field appearance="fill">
-        <mat-label>Enter your email</mat-label>
-        <input matInput placeholder="pat@example.com" (change)="addNewRule()" [ngModel]="ruleValue.stylisticZone"
-               required>
-        <!--<mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>-->
-      </mat-form-field>
+          <mat-error *ngIf="reference.formGroup.controls. articleSeparator.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field  class="container-input" appearance="legacy">
+          <input matInput type="text" placeholder="Type char for 'Custom' case"
+                 formControlName="articleSeparatorInput"
+                 [readonly]="isCustomArticleSeparator">
+          <mat-error *ngIf="reference.formGroup.controls.articleSeparatorInput.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Enter your email</mat-label>
-        <input matInput placeholder="pat@example.com" (change)="addNewRule()" [ngModel]="ruleValue.termSeparator"
-               required>
-        <!--  <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>-->
-      </mat-form-field>
-    </div>
-    <button mat-stroked-button class = "help-button" (click)="openHelpDialog()">HELP</button>
+  <table cellspacing="0">
+    <tr>
+      <td>
+        <mat-form-field class="container-input" appearance="legacy">
+          <mat-label>Definition Separator (Rl)</mat-label>
+          <mat-select required formControlName="definitionSeparator" (change)="addNewRule()">
+            <mat-option *ngFor="let option of relators | async" [value]="option">
+              {{option}}
+            </mat-option>
+            <mat-option>
+             Custom
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="reference.formGroup.controls.definitionSeparator.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field  class="container-input" appearance="legacy">
+          <mat-label>Type char for Custom Rl</mat-label>
+          <input matInput
+                 formControlName="definitionSeparatorInput"
+                 placeholder="Ex: \ | - ~"
+                 [readonly]="isCustomDefinitionSeparator">
+          <mat-error *ngIf="reference.formGroup.controls.definitionSeparatorInput.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+
+  <table cellspacing="0">
+    <tr>
+      <td>
+        <mat-form-field class="container-input" appearance="legacy">
+          <mat-label>Term Separator (dl)</mat-label>
+          <input matInput
+                 formControlName="termSeparator"
+                 placeholder=", . | - "
+                 (change)="addNewRule()"
+                 required>
+          <mat-error *ngIf="reference.formGroup.controls.termSeparator.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-slide-toggle
+          (change)="addNewRule()"
+          formControlName="stylisticZone">
+          Stylistic Zone
+        </mat-slide-toggle>
+        <mat-error *ngIf="reference.formGroup.controls.stylisticZone.invalid">{{getErrorMessage()}}</mat-error>
+      </td>
+    </tr>
+  </table>
+
+
+</form>
+
+<button mat-stroked-button class="help-button" (click)="openHelpDialog()">HELP</button>
 
 
 

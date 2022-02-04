@@ -6,6 +6,7 @@ import com.domaindictionary.model.ElectronicDictionary;
 import com.domaindictionary.model.SearchResource;
 import com.domaindictionary.model.enumeration.ResourceSybtype;
 import com.domaindictionary.model.enumeration.ResourceType;
+import com.domaindictionary.utils.RegexConstants;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.util.Collection;
+import java.util.EnumSet;
+import java.util.List;
 
 @Service
 public class ResourcesBank {
@@ -62,5 +65,23 @@ public class ResourcesBank {
         throw new FileNotFoundException("Resource not found");
     }
 
+    public List<ResourceType> getPossibleResourceTypes() {
+        return List.of(ResourceType.values());
+    }
+
+    public Collection<ResourceSybtype> getPossibleResourceSybtypes(ResourceType resourceType) {
+        if (ResourceType.GENERAL.equals(resourceType)) {
+            return ResourceSybtype.language;
+        }
+        return ResourceSybtype.domain;
+    }
+
+    public Collection<String> getPossibleRelators() {
+         return RegexConstants.getTemplatesForRelator();
+    }
+
+    public Collection<String> getPossibleArticleSeparator() {
+        return RegexConstants.getTemplatesForArticleSeparator();
+    }
 
 }

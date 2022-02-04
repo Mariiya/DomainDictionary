@@ -1,28 +1,38 @@
 <h1>Create New Electronic Dictionary</h1>
 <div class="card">
   <mat-card>
-    <mat-horizontal-stepper labelPosition="bottom" #stepper>
+    <mat-horizontal-stepper labelPosition="bottom" #stepper  [linear]="true">
       <mat-step label="File"
-                [stepControl]="classReference.formGroup"
                 errorMessage="File is required."
                 state="attach_file"
-                [editable]="!isEditable">
+                [editable]="!isEditable"
+      [stepControl]="classReference.formGroup">
         <form [formGroup]="classReference.formGroup">
-          <app-file-upload formControlName='file' ngDefaultControl></app-file-upload>
+          <app-file-upload formControlName='file' (electronicDictionary)="onFileChanged($event)"
+                           ngDefaultControl></app-file-upload>
         </form>
         <div>
-          <button mat-button style="float: right;" matStepperNext>Next</button>
+          <button mat-button style="float: right;" (click)="onFileFilled()">Next</button>
         </div>
       </mat-step>
-      <mat-step label="Params" state="settings">
+      <mat-step [stepControl]="dictionaryInfoReference.formGroup" label="Parameters" state="settings">
+        <app-dictionary-parameters (dictionaryParam)="onDictionaryParamsChanged($event)"></app-dictionary-parameters>
+        <div style="float: right">
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button (click)="onDictionaryInfoFilled()">Next</button>
+        </div>
+      </mat-step>
+      <mat-step label="Analyze" state="settings" [stepControl]="dictionaryParametersReference.formGroup">
         <app-fill-params (ruleEvent)="onRuleChanged($event)"></app-fill-params>
         <div style="float: right">
-          <button  mat-button matStepperPrevious>Back</button>
-          <button  mat-button matStepperNext>Next</button>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button (click)="onDictionaryParamsFilled()">Next</button>
         </div>
       </mat-step>
       <mat-step label="Test">
-
+        <app-test-dictionary
+          (createBtn)="create()"
+          (testBtn)="testDictionary($event)"></app-test-dictionary>
       </mat-step>
 
       <!-- Icon overrides. -->

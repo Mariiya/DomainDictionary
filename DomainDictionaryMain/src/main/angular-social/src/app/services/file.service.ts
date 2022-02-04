@@ -5,6 +5,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {Observable, Subject, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {DictionaryEntry} from "../model/dictionaty-entry";
+import {ElectronicDictionary} from "../model/electronic-dictionary";
 
 @Injectable({
   providedIn: 'root'
@@ -23,10 +24,10 @@ export class FileService {
               private _snackBar: MatSnackBar) {
   }
 
-  private url = environment.url + 'file';
+  private url = environment.url;
 
   saveDomainDictionary(datasourceDE: DictionaryEntry[]): Observable<Blob> {
-   return  this.http.post(`${this.url}/save-domain-dictionary`,   datasourceDE, {responseType: 'blob'}).pipe(
+    return this.http.post(`${this.url}file/save-domain-dictionary`, datasourceDE, {responseType: 'blob'}).pipe(
       catchError((err) => {
         console.log(err)
         console.error(err.message);
@@ -36,29 +37,36 @@ export class FileService {
     );
   }
 
+  createElectronicDictionary(dictionary: ElectronicDictionary, file: File) {
+    console.log("create ED start")
+    const formData = new FormData();
+    formData.append("dictionary", JSON.stringify(dictionary));
+    formData.append("file", file);
+    console.log("file " + file.name)
+    return this.http.post<any>(`${this.url}dictionary/create-dictionary`, formData).subscribe(
+      (res) => console.log(res),
+      (err) => console.log(err)
+    );
+  /*  return this.http.post(`${this.url}dictionary/create-dictionary`, formData, {responseType: 'blob'}).pipe(
+      catchError((err) => {
+        console.log(err)
+        console.error(err.message);
+        this.openSnackBar('Error during creating new Dictionary', 'OK')
+        return throwError(err);    //Rethrow it back to component
+      })
+    );*/
+
+  }
+
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
       duration: 10000,
     });
   }
 
-  //localStorage
-  private fileList: string[] = new Array<string>();
-  private fileList$: Subject<string[]> = new Subject<string[]>();
 
 
-  public upload(fileName: string): void {
-    this.fileList.push(fileName);
-    this.fileList$.next(this.fileList);
-  }
 
-  public remove(fileName: string): void {
-    this.fileList.splice(this.fileList.findIndex(name => name === fileName), 1);
-    this.fileList$.next(this.fileList);
-  }
 
-  public list(): Observable<string[]> {
-    return this.fileList$;
-  }
 
 }

@@ -2,8 +2,8 @@ mat-toolbar {
   background-color: #ec4e20;
   position: sticky;
   width: 100% !important;
-  min-height: 8% !important;
-  height: 8% !important;
+  min-height: 70% !important;
+  height: 70% !important;
   margin: 0 !important;
   padding: 0 !important;
 }

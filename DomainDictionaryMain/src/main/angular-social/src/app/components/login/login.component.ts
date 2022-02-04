@@ -6,7 +6,6 @@ import {AuthService} from "../../services/auth.service";
 import {TokenStorageService} from "../../services/token-storage.service";
 import {User} from "../../model/user";
 import {NavigationComponent} from "../navigation/navigation.component";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {HelperService} from "../../services/helper.service";
 
 @Component({
@@ -28,7 +27,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     public router: Router, private route: ActivatedRoute, public dialog: MatDialog,
-    private authService: AuthService, private tokenStorage: TokenStorageService) {
+    private authService: AuthService, private tokenStorage: TokenStorageService,
+    public helper:HelperService) {
   }
 
 
@@ -91,7 +91,7 @@ export class RegistrationDialog {
     password: new FormControl('', [Validators.required, Validators.minLength(6)])
   });
 
-  constructor(public dialogRef: MatDialogRef<RegistrationDialog>, private authService: AuthService) {
+  constructor(public dialogRef: MatDialogRef<RegistrationDialog>, private authService: AuthService, public helper: HelperService) {
   }
 
   user: User = new User('', '', '', '');
@@ -120,7 +120,7 @@ export class RegistrationDialog {
           this.isSuccessful = true;
           this.isSignUpFailed = false;
           this.dialogRef.close();
-          HelperService.openSnackBar("You have been successfully registered. Please, check your email for confirmation. ", "OK");
+          this.helper.openSnackBar("You have been successfully registered. Please, check your email for confirmation. ", "OK");
         },
         err => {
           this.errorMessage = err.error.message;
@@ -130,7 +130,7 @@ export class RegistrationDialog {
       );
     }else {
       console.log("NO")
-      HelperService.openSnackBar("Please fill all required fields","")
+      this.helper.openSnackBar("Please fill all required fields","")
     }
   }
 }
