@@ -10,6 +10,7 @@ import java.io.*;
 import java.nio.Buffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -69,7 +70,7 @@ public class ParseDictionaryFileToStorage {
 
     private BufferedReader readFile(String filePath) throws FileNotFoundException {
         FileInputStream fstream = null;
-        if (Files.isReadable(Path.of(filePath))) {
+        if (Files.exists(Paths.get((filePath)))) {
             fstream = new FileInputStream(filePath);
 
         } else {

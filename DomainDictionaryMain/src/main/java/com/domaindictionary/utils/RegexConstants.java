@@ -13,7 +13,7 @@ public class RegexConstants {
         return articleSeparatorTemplates.keySet();
     }
 
-    public static Map<String, String> relatorTemplates = new HashMap<>() {{
+    public static Map<String, String> relatorTemplates = new HashMap<String, String>() {{
         put("1. 2. 3. 4. ....", "");
         put("1) 2) 3) 4) ....", "");
         put("I. II. III. IV. ....", "");
@@ -25,7 +25,7 @@ public class RegexConstants {
         put("A) B) C) D) ....", "");
     }};
 
-    public static Map<String, String> articleSeparatorTemplates = new HashMap<>() {{
+    public static Map<String, String> articleSeparatorTemplates = new HashMap<String, String>() {{
         put("New Line", "");
         put("Empty Line", "");
     }};

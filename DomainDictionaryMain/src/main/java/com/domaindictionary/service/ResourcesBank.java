@@ -51,15 +51,15 @@ public class ResourcesBank {
 
         for (SearchResource r : getResources()) {
             if (result.get(r.getType()) == null) {
-                result.put(r.getType(), new HashMap<>() {{
-                    put(r.getSubtype(), new ArrayList<>() {{
+                result.put(r.getType(), new HashMap() {{
+                    put(r.getSubtype(), new ArrayList() {{
                         add(r);
                     }});
                 }});
             } else {
                 if (result.get(r.getType()).get(r.getSubtype()) == null) {
                     result.get(r.getType()).put(r.getSubtype(),
-                            new ArrayList<>() {{
+                            new ArrayList() {{
                                 add(r);
                             }});
                 }else{
@@ -89,7 +89,7 @@ public class ResourcesBank {
     }
 
     public List<ResourceType> getPossibleResourceTypes() {
-        return List.of(ResourceType.values());
+        return Arrays.asList(ResourceType.values());
     }
 
     public Collection<ResourceSubtype> getPossibleResourceSubtypes(ResourceType resourceType) {
