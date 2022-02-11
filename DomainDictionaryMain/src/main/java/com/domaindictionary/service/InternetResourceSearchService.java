@@ -5,7 +5,6 @@ import com.domaindictionary.elasticsearch.model.DictionaryEntry;
 import com.domaindictionary.model.SearchResource;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 @Service

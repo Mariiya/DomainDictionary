@@ -52,16 +52,19 @@ public class EntriesLoader {
                     .source(mapper.writeValueAsString(dictionaryEntry), XContentType.JSON));
         }
 
-        try {
-            restHighLevelClient.bulkAsync(bulkRequest, RequestOptions.DEFAULT, new ActionListener<>() {
-                @Override
-                public void onResponse(BulkResponse bulkResponse) {
-                }
+        ActionListener listener = new ActionListener() {
+            @Override
+            public void onResponse(Object o) {
 
-                @Override
-                public void onFailure(Exception e) {
-                }
-            });
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        };
+        try {
+            restHighLevelClient.bulkAsync(bulkRequest, RequestOptions.DEFAULT, listener);
         } catch (ElasticsearchException e) {
             LOG.error(e.getMessage(), e);
         }
