@@ -12,8 +12,8 @@
     <artifactId>ElasticSearch</artifactId>
     <groupId>com.domaindictionary.elasticsearch</groupId>
     <properties>
-        <maven.compiler.source>15</maven.compiler.source>
-        <maven.compiler.target>15</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <elasticsearch.version>7.12.1</elasticsearch.version>
         <jackson.version>2.9.4</jackson.version>
         <java.version>1.8</java.version>
