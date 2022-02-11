@@ -9,6 +9,7 @@ import com.domaindictionary.service.parser.ParseDictionaryFileToStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class DictionaryService {
         this.internetResourceSearchService = internetResourceSearchService;
     }
 
-    public List<DictionaryEntry> search(List<String> terms, SearchResource resource) {
+    public List<DictionaryEntry> search(List<String> terms, SearchResource resource) throws IOException {
         List<DictionaryEntry> result = new ArrayList<>();
         SearchService searchService;
         if (resource instanceof InternetResource) {

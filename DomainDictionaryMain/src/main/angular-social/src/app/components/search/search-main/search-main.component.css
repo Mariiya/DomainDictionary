@@ -2,16 +2,6 @@ table {
   width: 100%;
 }
 
-.tree {
-  max-height: 400px;
-  overflow-y: scroll;
-}
-
-.mat-tree-node {
-  min-height: 3em !important;
-  height: 3em;
-}
-
 .resource-btn{
 color: darkgoldenrod;
 }
@@ -63,7 +53,6 @@ button {
 }
 
 @media screen and (max-width: 480px) {
-
   .social-panel-container.visible {
     transform: translateX(0px);
   }

@@ -1,10 +1,9 @@
 package com.domaindictionary.dao.mapper;
 
-
 import com.domaindictionary.model.ElectronicDictionary;
 import com.domaindictionary.model.builders.ElectronicDictionaryBuilder;
 import com.domaindictionary.model.builders.RuleBuilder;
-import com.domaindictionary.model.enumeration.ResourceSybtype;
+import com.domaindictionary.model.enumeration.ResourceSubtype;
 import com.domaindictionary.model.enumeration.ResourceType;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -20,7 +19,7 @@ public class ElectronicDictionaryMapper implements RowMapper<ElectronicDictionar
                 .withAuthor(resultSet.getString("author"))
                 .withPathToFile(resultSet.getString("path_to_file"))
                 .withType(ResourceType.valueOf(resultSet.getString("type")))
-                .withSybType(ResourceSybtype.valueOf(resultSet.getString("sybtype")))
+                .withSubType(ResourceSubtype.valueOf(resultSet.getString("subtype")))
                 .withRule(new RuleBuilder()
                         .withId(new BigInteger(resultSet.getString("rule_id")))
                         .withArticleSeparator(resultSet.getString("article_separator"))

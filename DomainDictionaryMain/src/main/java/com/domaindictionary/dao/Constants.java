@@ -10,13 +10,13 @@ public class Constants {
 
 
 
-    public static final String GET_RESOURCES = "select RESOURCE_ID,ir.name,type,SUBTYPE\n" +
-            "from DICTIONARY_BANK db\n" +
-            "    left join INTERNET_RESOURCE ir on(db.RESOURCE_ID = ir.INTERNET_RESOURCE_ID)\n" +
-            "    union all\n" +
-            "select RESOURCE_ID,ed.name,type,SUBTYPE\n" +
-            "from DICTIONARY_BANK db\n" +
-            "left join ELECTRONIC_DICTIONARY ED on ed.ELECTRONIC_DICTIONARY_ID = db.RESOURCE_ID";
+    public static final String GET_RESOURCES = "select RESOURCE_ID, ir.name, type, SUBTYPE\n" +
+            "from RESOURCE_BANK db\n" +
+            "         left join INTERNET_RESOURCE ir on (db.RESOURCE_ID = ir.INTERNET_RESOURCE_ID)\n" +
+            "union all\n" +
+            "select RESOURCE_ID, ed.name, type, SUBTYPE\n" +
+            "from RESOURCE_BANK db\n" +
+            "         left join ELECTRONIC_DICTIONARY ED on ed.ELECTRONIC_DICTIONARY_ID = db.RESOURCE_ID";
 
     public static final String GET_USER_BY_NAME_OR_EMAIL = "select user_id id, name, email, role, password\n" +
             "from USERS \n" +

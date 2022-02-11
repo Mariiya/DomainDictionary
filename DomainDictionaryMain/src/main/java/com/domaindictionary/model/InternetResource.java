@@ -2,7 +2,7 @@ package com.domaindictionary.model;
 
 
 import com.domaindictionary.elasticsearch.model.DictionaryEntry;
-import com.domaindictionary.model.enumeration.ResourceSybtype;
+import com.domaindictionary.model.enumeration.ResourceSubtype;
 import com.domaindictionary.model.enumeration.ResourceType;
 
 import java.math.BigInteger;
@@ -14,7 +14,7 @@ public class InternetResource implements SearchResource {
     private String name;
     private String url;
     private ResourceType type;
-    private ResourceSybtype sybtype;
+    private ResourceSubtype subtype;
     private Rule rule;
     private List<DictionaryEntry> entries;
 
@@ -38,12 +38,8 @@ public class InternetResource implements SearchResource {
         this.type = type;
     }
 
-    public ResourceSybtype getSybtype() {
-        return sybtype;
-    }
-
-    public void setSybtype(ResourceSybtype sybtype) {
-        this.sybtype = sybtype;
+    public void setSubtype(ResourceSubtype subtype) {
+        this.subtype = subtype;
     }
 
     public Rule getRule() {
@@ -70,7 +66,7 @@ public class InternetResource implements SearchResource {
         return null;
     }
 
-    public ResourceSybtype getSubtype() {
+    public ResourceSubtype getSubtype() {
         return null;
     }
 

@@ -1,0 +1,17 @@
+.resource-btn{
+  color: darkgoldenrod;
+}
+
+button {
+  margin: 16px 8px;
+}
+
+.tree {
+  max-height: 400px;
+  overflow-y: scroll;
+}
+
+.mat-tree-node {
+  min-height: 3em !important;
+  height: 3em;
+}

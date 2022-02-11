@@ -2,7 +2,7 @@ package com.domaindictionary.model.enumeration;
 
 import java.util.EnumSet;
 
-public enum ResourceSybtype {
+public enum ResourceSubtype {
     ENGLISH,
     RUSSIAN,
     UKRAINIAN,
@@ -23,8 +23,8 @@ public enum ResourceSybtype {
     PSYCHOLOGY,
     OTHER;
 
-    public static EnumSet<ResourceSybtype> language = EnumSet.of(ENGLISH, RUSSIAN, UKRAINIAN);
-    public static EnumSet<ResourceSybtype> domain =
+    public static EnumSet<ResourceSubtype> language = EnumSet.of(ENGLISH, RUSSIAN, UKRAINIAN);
+    public static EnumSet<ResourceSubtype> domain =
             EnumSet.of(GEOLOGY, JURISPRUDENCE, MEDICINE,
                     TECHNOLOGY, ENGINEERING, BIOLOGY, HISTORY,
                     PHYSICS, CHEMISTRY, CYBER, COMPUTER,

@@ -6,6 +6,8 @@ import com.domaindictionary.elasticsearch.model.DictionaryEntry;
 import com.domaindictionary.model.SearchResource;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
 @Service
 public class ElectronicDictionarySearchService implements SearchService {
 
@@ -18,7 +20,7 @@ public class ElectronicDictionarySearchService implements SearchService {
         this.searchManager = searchManager;
     }
 
-    public DictionaryEntry search(String term, SearchResource resource) {
+    public DictionaryEntry search(String term, SearchResource resource) throws IOException {
         return searchManager.search(term, resource.getId());
     }
 }

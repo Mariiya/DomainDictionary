@@ -1,6 +1,7 @@
 package com.domaindictionary.dao;
 
 import com.domaindictionary.dao.mapper.ElectronicDictionaryMapper;
+import com.domaindictionary.dao.mapper.SearchResourceMapper;
 import com.domaindictionary.model.ElectronicDictionary;
 import com.domaindictionary.model.SearchResource;
 import com.domaindictionary.service.parser.ParseDictionaryFileToStorage;
@@ -10,7 +11,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.List;
@@ -57,7 +57,7 @@ public class DictionaryDao {
     }
 
     public List<SearchResource> getResources() {
-        List resources = jdbcTemplate.query(Constants.GET_RESOURCES, new ElectronicDictionaryMapper());
+        List resources = jdbcTemplate.query(Constants.GET_RESOURCES, new SearchResourceMapper());
         return resources;
     }
 

@@ -9,6 +9,7 @@ import com.domaindictionary.service.DomainAnalysisService;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
@@ -27,18 +28,13 @@ public class SearchController {
     }
 
     @GetMapping()
-    public List<DictionaryEntry> search(@RequestParam List<String> terms, @RequestParam BigInteger resourceId) throws FileNotFoundException {
+    public List<DictionaryEntry> search(@RequestParam List<String> terms, @RequestParam BigInteger resourceId) throws IOException {
         SearchResource searchResource = bank.getResource(resourceId);
         return dictionaryService.search(terms, searchResource);
     }
 
     public void createDomainDictionary(List<DictionaryEntry> entries) {
         new DomainDictionary();
-    }
-
-    @GetMapping("/resources")
-    public Collection<SearchResource> getResources() {
-        return bank.getResources();
     }
 
 }

@@ -1,7 +1,7 @@
 package com.domaindictionary.model;
 
 
-import com.domaindictionary.model.enumeration.ResourceSybtype;
+import com.domaindictionary.model.enumeration.ResourceSubtype;
 import com.domaindictionary.model.enumeration.ResourceType;
 
 import java.math.BigInteger;
@@ -11,7 +11,7 @@ public interface SearchResource {
 
     ResourceType getType();
 
-    ResourceSybtype getSubtype();
+    ResourceSubtype getSubtype();
 
     BigInteger getId();
 

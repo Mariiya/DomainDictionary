@@ -1,17 +1,18 @@
 package com.domaindictionary.elasticsearch.model;
 
 import java.math.BigInteger;
+import java.util.Collection;
 import java.util.List;
 
 public class DictionaryEntry {
     private static final String INDEX = "entity";
     private String id;
     private String term;
-    private List<String> definition;
+    private Collection<String> definition;
     private String isStylisticZone;
     private BigInteger resourceId;
 
-    public DictionaryEntry(String id, String term, List<String> definition, BigInteger resourceId) {
+    public DictionaryEntry(String id, String term, Collection<String> definition, BigInteger resourceId) {
         this.id = id;
         this.term = term;
         this.definition = definition;
@@ -26,11 +27,11 @@ public class DictionaryEntry {
         this.term = term;
     }
 
-    public List<String> getDefinition() {
+    public Collection<String> getDefinition() {
         return definition;
     }
 
-    public void setDefinition(List<String> definition) {
+    public void setDefinition(Collection<String> definition) {
         this.definition = definition;
     }
 

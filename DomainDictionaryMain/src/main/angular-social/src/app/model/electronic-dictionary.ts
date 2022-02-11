@@ -1,11 +1,8 @@
 import {Rule} from "./rule";
+import {SearchResource} from "./search-resource";
 
-export class ElectronicDictionary {
-  id?: number;
-  name?: string;
+export class ElectronicDictionary extends SearchResource{
   author?: string;
   pathToFile = '';
-  type?: string;
-  sybtype?: string;
   rule?: Rule;
 }

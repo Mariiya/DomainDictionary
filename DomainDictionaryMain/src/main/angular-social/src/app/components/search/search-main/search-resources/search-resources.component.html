@@ -1,0 +1,34 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Resource
+    </mat-panel-title>
+    <mat-panel-description>
+      Select dictionary for search
+    </mat-panel-description>
+    <mat-panel-description class="resource-btn" >
+    {{selectedResourceName}}
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+      <button mat-icon-button disabled></button>
+      <button class="resource-btn" mat-raised-button (click)="logNode(node)">
+        {{node.item}}
+      </button>
+    </mat-tree-node>
+    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+      <button mat-icon-button
+              [attr.aria-label]="'Toggle ' + node.item" matTreeNodeToggle>
+        <mat-icon class="mat-icon-rtl-mirror">
+          {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+        </mat-icon>
+      </button>
+      {{node.item}}
+      <mat-progress-bar *ngIf="node.isLoading"
+                        mode="indeterminate"
+                        class="example-tree-progress-bar"></mat-progress-bar>
+    </mat-tree-node>
+  </mat-tree>
+
+</mat-expansion-panel>

@@ -53,6 +53,8 @@ import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { TestDictionaryComponent } from './components/create-electronic-dictionary/test-dictionary/test-dictionary.component';
 import { DictionaryParametersComponent } from './components/create-electronic-dictionary/dictionary-parameters/dictionary-parameters.component';
+import { SearchResourcesComponent } from './components/search/search-main/search-resources/search-resources.component';
+import { SearchParamsComponent } from './components/search/search-main/search-params/search-params.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +73,9 @@ import { DictionaryParametersComponent } from './components/create-electronic-di
     FillParamsComponent,
     ParamsHelperDialog,
     TestDictionaryComponent,
-    DictionaryParametersComponent
+    DictionaryParametersComponent,
+    SearchResourcesComponent,
+    SearchParamsComponent
   ],
   imports: [
     BrowserAnimationsModule,

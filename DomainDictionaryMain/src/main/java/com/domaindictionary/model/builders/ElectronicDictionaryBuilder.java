@@ -1,14 +1,12 @@
 package com.domaindictionary.model.builders;
 
 
-import com.domaindictionary.elasticsearch.model.DictionaryEntry;
 import com.domaindictionary.model.ElectronicDictionary;
 import com.domaindictionary.model.Rule;
-import com.domaindictionary.model.enumeration.ResourceSybtype;
+import com.domaindictionary.model.enumeration.ResourceSubtype;
 import com.domaindictionary.model.enumeration.ResourceType;
 
 import java.math.BigInteger;
-import java.util.List;
 
 public class ElectronicDictionaryBuilder {
     private BigInteger id;
@@ -16,7 +14,7 @@ public class ElectronicDictionaryBuilder {
     private String author;
     private String pathToFile;
     private ResourceType type;
-    private ResourceSybtype sybtype;
+    private ResourceSubtype subtype;
     private Rule rule;
 
     public ElectronicDictionaryBuilder withId(BigInteger id) {
@@ -44,8 +42,8 @@ public class ElectronicDictionaryBuilder {
         return this;
     }
 
-    public ElectronicDictionaryBuilder withSybType(ResourceSybtype sybtype) {
-        this.sybtype = sybtype;
+    public ElectronicDictionaryBuilder withSubType(ResourceSubtype subtype) {
+        this.subtype = subtype;
         return this;
     }
 
@@ -55,6 +53,6 @@ public class ElectronicDictionaryBuilder {
     }
 
     public ElectronicDictionary build() {
-        return new ElectronicDictionary(id, name, author, pathToFile, type, sybtype, rule);
+        return new ElectronicDictionary(id, name, author, pathToFile, type, subtype, rule);
     }
 }

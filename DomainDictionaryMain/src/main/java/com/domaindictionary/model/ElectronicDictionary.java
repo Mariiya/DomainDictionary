@@ -1,6 +1,6 @@
 package com.domaindictionary.model;
 
-import com.domaindictionary.model.enumeration.ResourceSybtype;
+import com.domaindictionary.model.enumeration.ResourceSubtype;
 import com.domaindictionary.model.enumeration.ResourceType;
 
 import java.math.BigInteger;
@@ -11,29 +11,29 @@ public class ElectronicDictionary implements SearchResource {
     private String author;
     private String pathToFile;
     private ResourceType type;
-    private ResourceSybtype sybtype;
+    private ResourceSubtype subtype;
     private Rule rule;
 
-    public ElectronicDictionary(BigInteger id, String name, String author, String pathToFile, String type,String sybtype, Rule rule) {
+    public ElectronicDictionary(BigInteger id, String name, String author, String pathToFile, String type,String subtype, Rule rule) {
         this.id = id;
         this.name = name;
         this.author = author;
         this.pathToFile = pathToFile;
         this.type = ResourceType.valueOf(type);
-        this.sybtype = ResourceSybtype.valueOf(sybtype);
+        this.subtype = ResourceSubtype.valueOf(subtype);
         this.rule = rule;
     }
 
     public ElectronicDictionary() {
        }
 
-    public ElectronicDictionary(BigInteger id, String name, String author, String pathToFile, ResourceType type, ResourceSybtype sybtype, Rule rule) {
+    public ElectronicDictionary(BigInteger id, String name, String author, String pathToFile, ResourceType type, ResourceSubtype subtype, Rule rule) {
         this.id = id;
         this.name = name;
         this.author = author;
         this.pathToFile = pathToFile;
         this.type = type;
-        this.sybtype = sybtype;
+        this.subtype = subtype;
         this.rule = rule;
     }
     public void setId(BigInteger id) {
@@ -64,12 +64,12 @@ public class ElectronicDictionary implements SearchResource {
         this.type = type;
     }
 
-    public ResourceSybtype getSybtype() {
-        return sybtype;
+    public ResourceSubtype getSubtype() {
+        return subtype;
     }
 
-    public void setSybtype(ResourceSybtype sybtype) {
-        this.sybtype = sybtype;
+    public void setSubtype(ResourceSubtype subtype) {
+        this.subtype = subtype;
     }
 
     public Rule getRule() {
@@ -86,10 +86,6 @@ public class ElectronicDictionary implements SearchResource {
 
     public ResourceType getType() {
         return type;
-    }
-
-    public ResourceSybtype getSubtype() {
-        return sybtype;
     }
 
     public BigInteger getId() {

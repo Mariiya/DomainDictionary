@@ -12,10 +12,10 @@ export class ResourceBankService {
   constructor(private http: HttpClient) {
   }
 
-  getPossibleResourceSybtypes(type: string): Observable<any> {
+  getPossibleResourceSubtypes(type: string): Observable<any> {
     let queryParams = new HttpParams();
     queryParams = queryParams.append("type", type);
-    return this.http.get(this.url + 'possible-resource-sybtypes', {params: queryParams});
+    return this.http.get(this.url + 'possible-resource-subtypes', {params: queryParams});
   }
 
   getPossibleResourceTypes(): Observable<any> {
@@ -26,7 +26,22 @@ export class ResourceBankService {
     return this.http.get(this.url + 'possible-relators');
   }
 
+  getSearchResources(): Observable<any> {
+    return this.http.get(this.url + 'search-resources');
+  }
+
+  getCatalog(): Observable<any> {
+    return this.http.get(this.url + 'catalog');
+  }
+
+
   getPossibleArticleSeparator(): Observable<any> {
     return this.http.get(this.url + 'possible-article-separator');
   }
+
+  geNumberOfResources(): Observable<any> {
+    return this.http.get(this.url + 'number-of-resources');
+  }
+
+
 }

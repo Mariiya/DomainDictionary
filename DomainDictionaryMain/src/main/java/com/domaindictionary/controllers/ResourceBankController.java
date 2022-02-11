@@ -1,7 +1,8 @@
 package com.domaindictionary.controllers;
 
 import com.domaindictionary.model.ElectronicDictionary;
-import com.domaindictionary.model.enumeration.ResourceSybtype;
+import com.domaindictionary.model.SearchResource;
+import com.domaindictionary.model.enumeration.ResourceSubtype;
 import com.domaindictionary.model.enumeration.ResourceType;
 import com.domaindictionary.secutity.services.UserDetailsImpl;
 import com.domaindictionary.service.ResourcesBank;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/dictionary")
@@ -31,9 +34,24 @@ public class ResourceBankController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/possible-resource-sybtypes")
-    public Collection<ResourceSybtype> getPossibleResourceSybtypes(@RequestParam ResourceType type) {
-        return resourcesBack.getPossibleResourceSybtypes(type);
+    @GetMapping("/possible-resource-subtypes")
+    public Collection<ResourceSubtype> getPossibleResourceSubtypes(@RequestParam ResourceType type) {
+        return resourcesBack.getPossibleResourceSubtypes(type);
+    }
+
+    @GetMapping("/catalog")
+    public Map<ResourceType, Map<ResourceSubtype, Collection<SearchResource>>> getCatalog() {
+        return resourcesBack.getCatalog();
+    }
+
+    @GetMapping("/search-resources")
+    public Collection<SearchResource> getSearchResources() {
+        return resourcesBack.getResources();
+    }
+
+    @GetMapping("/number-of-resources")
+    public int getNumberOfRsources() {
+        return resourcesBack.getResources().size();
     }
 
     @GetMapping("/possible-resource-types")

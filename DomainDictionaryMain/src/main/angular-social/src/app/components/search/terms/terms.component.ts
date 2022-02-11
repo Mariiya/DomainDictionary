@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {Subscription} from "rxjs";
+import {Component, OnInit} from "@angular/core";
 import {DataSharedService} from "../../../services/data-shared.service";
+
 
 @Component({
   selector: 'app-terms',

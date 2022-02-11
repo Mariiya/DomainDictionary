@@ -37,7 +37,7 @@ export class CreateElectronicDictionaryComponent implements OnInit {
   onDictionaryParamsChanged(dictionary: ElectronicDictionary) {
     console.log("dictionary params changed " + dictionary)
     this.dictionary.type = dictionary.type;
-    this.dictionary.sybtype = dictionary.sybtype;
+    this.dictionary.subtype = dictionary.subtype;
     this.dictionary.name = dictionary.name;
     this.dictionary.author = dictionary.author;
   }

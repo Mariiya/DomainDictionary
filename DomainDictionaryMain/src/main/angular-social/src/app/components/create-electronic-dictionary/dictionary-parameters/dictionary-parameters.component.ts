@@ -16,11 +16,11 @@ import {MatHorizontalStepper} from "@angular/material/stepper";
 export class DictionaryParametersComponent implements OnInit {
   classReference =  DictionaryParametersComponent;
   type: Observable<string[]>;
-  sybtype: Observable<string[]>;
+  subtype: Observable<string[]>;
 
   static formGroup: FormGroup = new FormGroup({
-    dname: new FormControl('', [Validators.required, Validators.pattern("^[А-Яа-яa-z0-9_-]{8,200}$")]),
-    author: new FormControl('', [Validators.required, Validators.pattern("^[А-Яа-яa-z0-9_-]{8,100}$")]),
+    dname: new FormControl('', [Validators.required]),
+    author: new FormControl('', [Validators.required]),
   });
 
   @Output("dictionaryParam") dictionary = new EventEmitter<ElectronicDictionary>();
@@ -50,7 +50,7 @@ export class DictionaryParametersComponent implements OnInit {
 
   constructor(public dialog: MatDialog, public resourceBankService: ResourceBankService) {
     this.type = new Observable<string[]>();
-    this.sybtype = new Observable<string[]>();
+    this.subtype = new Observable<string[]>();
   }
 
   ngOnInit(): void {
@@ -60,7 +60,7 @@ export class DictionaryParametersComponent implements OnInit {
   onTypeSelect() {
     console.log("Selected value " + this.dictionaryInput.type)
     if (this.dictionaryInput.type != undefined) {
-      this.sybtype = this.resourceBankService.getPossibleResourceSybtypes(this.dictionaryInput.type);
+      this.subtype = this.resourceBankService.getPossibleResourceSubtypes(this.dictionaryInput.type);
     }
     this.updateDictionaryParams();
   }

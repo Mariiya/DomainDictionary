@@ -42,9 +42,9 @@
       </td>
       <td>
         <mat-form-field class="container-input" appearance="legacy">
-          <mat-label>Dictionary Sybtype</mat-label>
-          <mat-select required [(value)]="dictionaryInput.sybtype" (selectionChange)="updateDictionaryParams()">
-            <mat-option *ngFor="let option of sybtype | async" [value]="option">
+          <mat-label>Dictionary Subtype</mat-label>
+          <mat-select required [(value)]="dictionaryInput.subtype" (selectionChange)="updateDictionaryParams()">
+            <mat-option *ngFor="let option of subtype | async" [value]="option">
               {{option}}
             </mat-option>
           </mat-select>
