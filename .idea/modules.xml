@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/DiplomProject.iml" filepath="$PROJECT_DIR$/DiplomProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DomainDictionaryMain/DomainDictionaryMain.iml" filepath="$PROJECT_DIR$/DomainDictionaryMain/DomainDictionaryMain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DomainDictionaryWeb/DomainDictionaryWeb.iml" filepath="$PROJECT_DIR$/DomainDictionaryWeb/DomainDictionaryWeb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ElasticSearch/ElasticSearch.iml" filepath="$PROJECT_DIR$/ElasticSearch/ElasticSearch.iml" />
+    </modules>
+  </component>
+</project>
