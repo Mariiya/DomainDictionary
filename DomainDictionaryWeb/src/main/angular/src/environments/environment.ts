@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  url : 'http://localhost:8888/'
+  url : 'https://domain-dictionary.herokuapp.com/'
 };
 
 /*

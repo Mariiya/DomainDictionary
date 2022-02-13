@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/file")
 public class FileController {
 
-    private final DomainDictionaryService domainDictionaryService;
+    private final  DomainDictionaryService domainDictionaryService;
 
     @Autowired
     public FileController(DomainDictionaryService domainDictionaryService) {

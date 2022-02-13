@@ -1,0 +1,5 @@
+com\domaindictionary\elasticsearch\model\DictionaryEntry.class
+com\domaindictionary\elasticsearch\api\EntriesLoader.class
+com\domaindictionary\elasticsearch\api\SearchManager.class
+com\domaindictionary\elasticsearch\api\EntriesLoader$1.class
+com\domaindictionary\elasticsearch\config\ConnectionConfig.class
