@@ -7,7 +7,7 @@
   },
   "files": [
     "./src/main.ts",
-    "../../polyfills.ts"
+    "./src/polyfills.ts"
   ],
   "include": [
     "../src/main/angular-social/src/**/*.d.ts"
