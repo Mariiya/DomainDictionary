@@ -14,7 +14,6 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'home', component: HomeComponent},
   {path: 'create-electronic-dictionary', component: CreateElectronicDictionaryComponent},
-  {path: 'resources', component: SearchResourcesComponent},
   {path: '**', component: NotFoundComponent},
 
 ];
