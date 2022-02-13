@@ -10,6 +10,6 @@
     "../../polyfills.ts"
   ],
   "include": [
-    "./src/main/angular-social/src/**/*.d.ts"
+    "../src/main/angular-social/src/**/*.d.ts"
   ]
 }
