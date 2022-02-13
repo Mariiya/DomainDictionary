@@ -1,1 +1,0 @@
-web:java -jar target/DomainDictionaryMain-1.0.jar
