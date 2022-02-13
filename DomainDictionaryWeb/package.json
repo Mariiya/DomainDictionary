@@ -2,9 +2,9 @@
   "name": "angular-social",
   "version": "0.0.0",
   "scripts": {
-    "start": "node --optimize_for_size --max_old_space_size=2048 dist/main.js",
     "ng": "ng",
-    "build": "ng build",
+    "start": "ng serve",
+    "build": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build --prod && npm install -g http-server-spa",
     "postinstall": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
