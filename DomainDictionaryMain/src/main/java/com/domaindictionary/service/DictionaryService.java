@@ -2,7 +2,6 @@ package com.domaindictionary.service;
 
 import com.domaindictionary.dao.DictionaryDao;
 import com.domaindictionary.elasticsearch.model.DictionaryEntry;
-import com.domaindictionary.model.ElectronicDictionary;
 import com.domaindictionary.model.InternetResource;
 import com.domaindictionary.model.SearchResource;
 import com.domaindictionary.service.parser.ParseDictionaryFileToStorage;
