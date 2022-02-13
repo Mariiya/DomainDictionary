@@ -2,14 +2,17 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./out-tsc/app",
-    "types": []
+    "outDir": "./out-tsc/spec",
+    "types": [
+      "jasmine"
+    ]
   },
   "files": [
-    "./src/main.ts",
-    "./src/polyfills.ts"
+    "./src/test.ts",
+    "../../polyfills.ts"
   ],
   "include": [
-    "./src/main/angular-social/src/**/*.d.ts"
+    "./src/**/*.spec.ts",
+    "./src/**/*.d.ts"
   ]
 }
