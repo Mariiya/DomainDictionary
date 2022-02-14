@@ -8,10 +8,8 @@ import com.domaindictionary.model.DomainDictionary;
 import com.domaindictionary.service.DomainAnalysisService;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.List;
 
 @RestController

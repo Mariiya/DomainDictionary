@@ -5,12 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.common.unit.Fuzziness;
-import org.elasticsearch.index.query.MatchQueryBuilder;
-import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -21,8 +17,6 @@ import org.elasticsearch.index.query.QueryBuilders;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.*;
-
-import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 
 @Service
 public class SearchManager {

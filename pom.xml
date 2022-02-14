@@ -14,7 +14,6 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <modules>
-        <module>ElasticSearch</module>
         <module>DomainDictionaryMain</module>
     </modules>
     <name>diplom</name>
