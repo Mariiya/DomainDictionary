@@ -1,1 +1,0 @@
-web: java -Dspring.profiles.active=default -Dserver.port=$PORT -jar DomainDictionaryMain/target/DomainDictionaryMain-1.0.jar
