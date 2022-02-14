@@ -57,7 +57,6 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.authService.login(this.user.email, this.user.password).subscribe(
       data => {
-        console.log("DAATA " + data)
         if (data.token != undefined && data.user != undefined) {
           this.tokenStorage.saveToken(data.token);
           this.tokenStorage.saveUser(data.user);
@@ -71,7 +70,7 @@ export class LoginComponent implements OnInit {
       err => {
         this.errorMessage = err.error.message;
         this.isLoginFailed = true;
-        alert("АШИБКААААА" + err.errorMessage)
+        alert("Unexpected server error." + err.errorMessage)
       }
     );
   }
@@ -119,8 +118,8 @@ export class RegistrationDialog {
           console.log(data);
           this.isSuccessful = true;
           this.isSignUpFailed = false;
-          this.dialogRef.close();
           this.helper.openSnackBar("You have been successfully registered. Please, check your email for confirmation. ", "OK");
+          this.dialogRef.close();
         },
         err => {
           this.errorMessage = err.error.message;
@@ -129,7 +128,6 @@ export class RegistrationDialog {
         }
       );
     }else {
-      console.log("NO")
       this.helper.openSnackBar("Please fill all required fields","")
     }
   }
