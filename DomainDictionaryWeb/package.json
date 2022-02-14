@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "node --max_old_space_size=8048 ng serve",
+    "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -11,10 +11,10 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-devkit/build-angular": "^0.1102.17",
     "@angular/animations": "~11.2.6",
     "@angular/cdk": "^11.2.5",
     "@angular/cli": "~11.2.5",
-    "@angular-devkit/build-angular": "^0.1102.17",
     "@angular/common": "~11.2.6",
     "@angular/compiler": "~11.2.6",
     "@angular/compiler-cli": "~11.2.6",
