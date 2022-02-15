@@ -131,4 +131,8 @@ export class RegistrationDialog {
       this.helper.openSnackBar("Please fill all required fields","")
     }
   }
+
+  notImpl(){
+    this.helper.openSnackBar("Not yet implemented","")
+  }
 }
