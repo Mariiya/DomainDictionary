@@ -18,8 +18,9 @@ export class SearchServiceService {
   }
 
   searchTerms(terms: String[], resourceId: number): Observable<DictionaryEntry[]> | null {
-    if (resourceId == -1) {
+    if (resourceId == -1 || terms == undefined || terms.length==0) {
       this.helper.openSnackBar("Select Search Resource", "OK");
+      return;
     } else {
       for (var j = 0; j < terms.length; j++) {
         terms[j] = terms[j].toUpperCase();

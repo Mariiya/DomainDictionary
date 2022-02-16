@@ -61,6 +61,7 @@ export class SearchMainComponent implements OnInit {
             console.log('ERROR ' + error.message);
             this.loading = false;
           });
+    this.loading = false;
   }
 
 
