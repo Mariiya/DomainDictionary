@@ -49,7 +49,7 @@ export class SearchMainComponent implements OnInit {
 
   search() {
     const t = this.getTerms();
-      this.loading = true;
+    //  this.loading = true;
       // @ts-ignore
       this.service.searchTerms(t, this.selectedResource)
         .subscribe(data => {
