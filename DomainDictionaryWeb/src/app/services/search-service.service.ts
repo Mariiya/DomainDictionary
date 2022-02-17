@@ -18,8 +18,13 @@ export class SearchServiceService {
   }
 
   searchTerms(terms: String[], resourceId: number): Observable<DictionaryEntry[]> | null {
+    if(terms == undefined || terms.length == 0){
+      this.helper.openSnackBar("Terms list is empty", "OK");
+      return null;
+    }
     if (resourceId == -1) {
       this.helper.openSnackBar("Select Search Resource", "OK");
+      return null;
     } else {
       for (var j = 0; j < terms.length; j++) {
         terms[j] = terms[j].toUpperCase();
