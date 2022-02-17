@@ -37,8 +37,9 @@ public class ResourcesBank {
             if (!generatedFilePath.isEmpty()) {
                 dictionary.setPathToFile(generatedFilePath);
                 for (SearchResource searcresource : dictionaryDao.getResources()) {
-                    if (searcresource.getName().equals(dictionary.getName())) {
-                        return false;
+                    if (searcresource != null && searcresource.getName() != null
+                            && searcresource.getName().equals(dictionary.getName())){
+                        dictionary.setName(dictionary.getName() + "_" + searcresource.getId());
                     }
                 }
                 dictionaryDao.createElectronicDictionary(dictionary);
@@ -77,7 +78,14 @@ public class ResourcesBank {
     }
 
     public Collection<SearchResource> getResources() {
-        return dictionaryDao.getResources();
+        List<SearchResource> result = new ArrayList<>();
+        List<SearchResource> temp = dictionaryDao.getResources();
+        for (SearchResource searchResource : temp) {
+            if (searchResource.getName() != null && !searchResource.getName().isEmpty()) {
+                result.add(searchResource);
+            }
+        }
+        return result;
     }
 
     public ElectronicDictionary getElectronicDictionary(BigInteger resourceId) {

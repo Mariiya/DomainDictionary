@@ -54,12 +54,13 @@ public class EntriesLoader {
         ActionListener listener = new ActionListener() {
             @Override
             public void onResponse(Object o) {
-
+                System.out.println(o);
             }
 
             @Override
             public void onFailure(Exception e) {
-
+                LOG.error(e.getMessage(), e);
+                throw new RuntimeException("Elastic search initialisation error");
             }
         };
         try {
@@ -67,6 +68,6 @@ public class EntriesLoader {
         } catch (ElasticsearchException e) {
             LOG.error(e.getMessage(), e);
         }
-                return de;
+        return de;
     }
 }

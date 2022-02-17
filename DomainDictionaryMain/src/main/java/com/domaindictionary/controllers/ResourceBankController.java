@@ -8,13 +8,11 @@ import com.domaindictionary.secutity.services.UserDetailsImpl;
 import com.domaindictionary.service.ResourcesBank;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -27,11 +25,10 @@ public class ResourceBankController {
     }
 
     @PostMapping("/create-dictionary")
-    public ResponseEntity<?> createElectronicDictionary(@AuthenticationPrincipal UserDetailsImpl creator, @RequestParam String dictionary, @RequestParam MultipartFile file) throws JsonProcessingException {
+    public boolean createElectronicDictionary(@AuthenticationPrincipal UserDetailsImpl creator, @RequestParam String dictionary, @RequestParam MultipartFile file) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         ElectronicDictionary electronicDictionary = objectMapper.readValue(dictionary, ElectronicDictionary.class);
-        resourcesBack.createElectronicDictionary(electronicDictionary, file);
-        return ResponseEntity.ok().build();
+        return resourcesBack.createElectronicDictionary(electronicDictionary, file);
     }
 
     @GetMapping("/possible-resource-subtypes")
