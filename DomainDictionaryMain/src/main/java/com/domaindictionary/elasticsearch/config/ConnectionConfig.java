@@ -4,25 +4,25 @@ import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.mapper.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 
 import java.io.IOException;
 
 @Configuration
+@PropertySource({"classpath:application.properties"})
 public class ConnectionConfig {
+    @Autowired
+    Environment environment;
     //The config parameters for the connection
-    private static final String HOST = "localhost";
+    private static String HOST = "localhost";
     private static final int PORT_ONE = 9200;
-    private static final String SCHEME = "http";
+    private static final String SCHEME = "https";
 
     public  RestHighLevelClient restHighLevelClient;
-    private  ObjectMapper objectMapper;
-
-    private static final String INDEX = "persondata";
-    private static final String TYPE = "person";
-
-
     /**
      * Implemented Singleton pattern here
      * so that there is just one connection at a time.
@@ -31,12 +31,14 @@ public class ConnectionConfig {
      */
     @Bean
     public synchronized RestHighLevelClient makeConnection() {
-        if (restHighLevelClient == null) {
-            restHighLevelClient = new RestHighLevelClient(
-                    RestClient.builder(
-                            new HttpHost(HOST, PORT_ONE, SCHEME)));
+        this.HOST = environment.getProperty("spring.elasticsearch.rest.uris");
+        if(HOST!=null && !HOST.isEmpty()) {
+            if (restHighLevelClient == null) {
+                restHighLevelClient = new RestHighLevelClient(
+                        RestClient.builder(
+                                new HttpHost(HOST, PORT_ONE, SCHEME)));
+            }
         }
-
         return restHighLevelClient;
     }
 

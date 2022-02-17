@@ -14,7 +14,7 @@ import {HelperService} from "../../services/helper.service";
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
+  loading: boolean = false;
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
@@ -55,9 +55,10 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
+    this.loading = true;
     this.authService.login(this.user.email, this.user.password).subscribe(
       data => {
-        console.log("DAATA " + data)
+        this.loading = false;
         if (data.token != undefined && data.user != undefined) {
           this.tokenStorage.saveToken(data.token);
           this.tokenStorage.saveUser(data.user);
@@ -69,6 +70,7 @@ export class LoginComponent implements OnInit {
         this.redirectPage();
       },
       err => {
+        this.loading = false;
         this.errorMessage = err.error.message;
         this.isLoginFailed = true;
         alert("АШИБКААААА" + err.errorMessage)
