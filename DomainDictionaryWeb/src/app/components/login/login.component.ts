@@ -98,6 +98,9 @@ export class RegistrationDialog {
 
   user: User = new User('', '', '', '');
 
+  notImpl(){
+    this.helper.openSnackBar("Not yet implemented",'OK');
+  }
   onNoClick(): void {
     this.dialogRef.close();
   }
