@@ -22,6 +22,7 @@ import {FillParamsComponent} from "./fill-params/fill-params.component";
   ],
 })
 export class CreateElectronicDictionaryComponent implements OnInit {
+  loading: boolean = false;
   isEditable = false;
   static formGroup: FormGroup = new FormGroup({
     file: new FormControl(null, {
@@ -35,7 +36,6 @@ export class CreateElectronicDictionaryComponent implements OnInit {
   classReference = CreateElectronicDictionaryComponent;
 
   onDictionaryParamsChanged(dictionary: ElectronicDictionary) {
-    console.log("dictionary params changed " + dictionary)
     this.dictionary.type = dictionary.type;
     this.dictionary.subtype = dictionary.subtype;
     this.dictionary.name = dictionary.name;
@@ -43,19 +43,27 @@ export class CreateElectronicDictionaryComponent implements OnInit {
   }
 
   onRuleChanged(value: Rule) {
-    console.log("Rule updated" + value.definitionSeparator)
     this.dictionary.rule = value;
   }
 
   onFileChanged(file: File) {
-    console.log("FileChanged " + file.name)
     this.selectedFile = file;
   }
 
   create() {
+    this.loading = true;
     if (this.isDictionaryValid()) {
-      this.fileService.createElectronicDictionary(this.dictionary, this.selectedFile);
-      console.log("create called ")
+      this.fileService.createElectronicDictionary(this.dictionary, this.selectedFile).subscribe(
+        (res) => {
+          this.helper.openSnackBar("Dictionary created", "OK")
+          this.loading = false;
+          this.returnHome();
+        },
+        (err) => {
+          this.helper.openSnackBar("Error during creating dictionary", "OK")
+          this.loading = false;
+        }
+      );
     }
   }
 
@@ -66,7 +74,7 @@ export class CreateElectronicDictionaryComponent implements OnInit {
   }
 
   testDictionary(term: string) {
-    console.log("test called " + term)
+   this.helper.openSnackBar("Not yet implemented",'OK');
   }
 
   constructor(public router: Router, private _formBuilder: FormBuilder,
@@ -89,6 +97,7 @@ export class CreateElectronicDictionaryComponent implements OnInit {
   }
 
   dictionaryInfoReference = DictionaryParametersComponent;
+
   onDictionaryInfoFilled() {
     console.log(this.dictionaryInfoReference.formGroup.errors)
     if (this.stepper != undefined && this.dictionaryInfoReference.formGroup.valid)
@@ -96,6 +105,7 @@ export class CreateElectronicDictionaryComponent implements OnInit {
   }
 
   dictionaryParametersReference = FillParamsComponent;
+
   onDictionaryParamsFilled() {
     console.log(this.dictionaryParametersReference.formGroup.valid)
     if (this.stepper != undefined && this.dictionaryParametersReference.formGroup.valid)
