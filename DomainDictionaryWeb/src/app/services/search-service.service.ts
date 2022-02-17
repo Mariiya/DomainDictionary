@@ -14,17 +14,12 @@ export class SearchServiceService {
   private baseURL = this.url + 'search';
 
 
-  constructor(private httpClient: HttpClient, public helper: HelperService) {
+  constructor(private httpClient: HttpClient, public helper:HelperService) {
   }
 
   searchTerms(terms: String[], resourceId: number): Observable<DictionaryEntry[]> | null {
-    if (terms == undefined || terms.length == 0) {
-      this.helper.openSnackBar("List of terms is empty", "OK");
-      return null;
-    }
     if (resourceId == -1) {
       this.helper.openSnackBar("Select Search Resource", "OK");
-      return null;
     } else {
       for (var j = 0; j < terms.length; j++) {
         terms[j] = terms[j].toUpperCase();
@@ -51,7 +46,7 @@ export class SearchServiceService {
     error = error.error;
     errorMessage = errorMessage.concat(error.error);
 
-    this.helper.openSnackBar(errorMessage, "OK");
+   this.helper.openSnackBar(errorMessage, "OK");
   }
 
 }

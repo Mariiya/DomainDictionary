@@ -9,7 +9,6 @@ import {MatHorizontalStepper} from "@angular/material/stepper";
 import {HelperService} from "../../services/helper.service";
 import {DictionaryParametersComponent} from "./dictionary-parameters/dictionary-parameters.component";
 import {FillParamsComponent} from "./fill-params/fill-params.component";
-import {SearchServiceService} from "../../services/search-service.service";
 
 @Component({
   selector: 'app-create-electronic-dictionary',
@@ -55,15 +54,7 @@ export class CreateElectronicDictionaryComponent implements OnInit {
 
   create() {
     if (this.isDictionaryValid()) {
-      this.fileService.createElectronicDictionary(this.dictionary, this.selectedFile).subscribe(
-        (res) => {
-          this.returnHome();
-          this.dictionary.id = res.id;
-        },
-        () => {
-          this.helper.openSnackBar("Error during creating dictionary", 'OK');
-        }
-      );
+      this.fileService.createElectronicDictionary(this.dictionary, this.selectedFile);
       console.log("create called ")
     }
   }
@@ -75,17 +66,11 @@ export class CreateElectronicDictionaryComponent implements OnInit {
   }
 
   testDictionary(term: string) {
-    if (this.dictionary.id != undefined)
-      return this.searchService.searchTerms([term], this.dictionary.id);
-    else {
-      this.helper.openSnackBar('Error during test', 'OK');
-      return null;
-    }
+    console.log("test called " + term)
   }
 
   constructor(public router: Router, private _formBuilder: FormBuilder,
-              public fileService: FileService, public helper: HelperService,
-              public searchService: SearchServiceService) {
+              public fileService: FileService, public helper: HelperService) {
   }
 
   ngOnInit() {
@@ -104,7 +89,6 @@ export class CreateElectronicDictionaryComponent implements OnInit {
   }
 
   dictionaryInfoReference = DictionaryParametersComponent;
-
   onDictionaryInfoFilled() {
     console.log(this.dictionaryInfoReference.formGroup.errors)
     if (this.stepper != undefined && this.dictionaryInfoReference.formGroup.valid)
@@ -112,7 +96,6 @@ export class CreateElectronicDictionaryComponent implements OnInit {
   }
 
   dictionaryParametersReference = FillParamsComponent;
-
   onDictionaryParamsFilled() {
     console.log(this.dictionaryParametersReference.formGroup.valid)
     if (this.stepper != undefined && this.dictionaryParametersReference.formGroup.valid)

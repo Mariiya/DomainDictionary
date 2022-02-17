@@ -14,7 +14,7 @@ import {HelperService} from "../../services/helper.service";
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
+  loading: boolean = false;
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
@@ -55,8 +55,10 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
+    this.loading = true;
     this.authService.login(this.user.email, this.user.password).subscribe(
       data => {
+        this.loading = false;
         if (data.token != undefined && data.user != undefined) {
           this.tokenStorage.saveToken(data.token);
           this.tokenStorage.saveUser(data.user);
@@ -68,9 +70,10 @@ export class LoginComponent implements OnInit {
         this.redirectPage();
       },
       err => {
+        this.loading = false;
         this.errorMessage = err.error.message;
         this.isLoginFailed = true;
-        alert("Unexpected server error." + err.errorMessage)
+        alert("АШИБКААААА" + err.errorMessage)
       }
     );
   }
@@ -118,8 +121,8 @@ export class RegistrationDialog {
           console.log(data);
           this.isSuccessful = true;
           this.isSignUpFailed = false;
-          this.helper.openSnackBar("You have been successfully registered. Please, check your email for confirmation. ", "OK");
           this.dialogRef.close();
+          this.helper.openSnackBar("You have been successfully registered. Please, check your email for confirmation. ", "OK");
         },
         err => {
           this.errorMessage = err.error.message;
@@ -128,11 +131,8 @@ export class RegistrationDialog {
         }
       );
     }else {
+      console.log("NO")
       this.helper.openSnackBar("Please fill all required fields","")
     }
-  }
-
-  notImpl(){
-    this.helper.openSnackBar("Not yet implemented","")
   }
 }

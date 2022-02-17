@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {ThemePalette} from "@angular/material/core";
-import {HelperService} from "../../../../services/helper.service";
 
 @Component({
   selector: 'app-search-params',
@@ -9,7 +8,7 @@ import {HelperService} from "../../../../services/helper.service";
 })
 export class SearchParamsComponent implements OnInit {
 
-  constructor(public helper: HelperService) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
@@ -35,9 +34,6 @@ export class SearchParamsComponent implements OnInit {
     this.task.subtasks.forEach((t: { completed: boolean; }) => t.completed = completed);
   }
 
-  notImpl(){
-    this.helper.openSnackBar("Not yet implemented","")
-  }
 
   task: Task = {
     name: 'Search settings',
