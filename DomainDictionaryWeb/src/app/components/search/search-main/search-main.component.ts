@@ -7,6 +7,7 @@ import {Subscription} from "rxjs";
 import {DataSharedService} from "../../../services/data-shared.service";
 import {ActivatedRoute} from "@angular/router";
 import {FileService} from "../../../services/file.service";
+import {HelperService} from "../../../services/helper.service";
 
 @Component({
   selector: 'app-search-main',
@@ -24,7 +25,8 @@ export class SearchMainComponent implements OnInit {
   constructor(private service: SearchServiceService,
               private data: DataSharedService,
               private route: ActivatedRoute,
-              private reportService: FileService) {
+              private reportService: FileService,
+              private helper: HelperService){
   }
 
   termsUnsplited: string = ' ';
@@ -53,12 +55,16 @@ export class SearchMainComponent implements OnInit {
       // @ts-ignore
       this.service.searchTerms(t, this.selectedResource)
         .subscribe(data => {
-            console.log("data" + data);
+          if(data == null || data == undefined || data.length==0){
+            this.helper.openSnackBar("Nothing found", "OK");
+            this.loading = false;
+          }else {
             this.datasourceDE.data = data;
+          }
             this.loading = false;
           },
           error => {
-            console.log('ERROR ' + error.message);
+            this.helper.openSnackBar("Nothing found", "OK");
             this.loading = false;
           });
   }

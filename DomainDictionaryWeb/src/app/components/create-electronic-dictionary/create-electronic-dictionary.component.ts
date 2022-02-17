@@ -55,9 +55,14 @@ export class CreateElectronicDictionaryComponent implements OnInit {
     if (this.isDictionaryValid()) {
       this.fileService.createElectronicDictionary(this.dictionary, this.selectedFile).subscribe(
         (res) => {
-          this.helper.openSnackBar("Dictionary created", "OK")
-          this.loading = false;
-          this.returnHome();
+          if(res == false || res == null){
+            this.helper.openSnackBar("Error during creating dictionary", "OK")
+            this.loading = false;
+          }else {
+            this.helper.openSnackBar("Dictionary created", "OK")
+            this.loading = false;
+            this.returnHome();
+          }
         },
         (err) => {
           this.helper.openSnackBar("Error during creating dictionary", "OK")
@@ -99,15 +104,12 @@ export class CreateElectronicDictionaryComponent implements OnInit {
   dictionaryInfoReference = DictionaryParametersComponent;
 
   onDictionaryInfoFilled() {
-    console.log(this.dictionaryInfoReference.formGroup.errors)
     if (this.stepper != undefined && this.dictionaryInfoReference.formGroup.valid)
       this.stepper.next();
   }
-
   dictionaryParametersReference = FillParamsComponent;
 
   onDictionaryParamsFilled() {
-    console.log(this.dictionaryParametersReference.formGroup.valid)
     if (this.stepper != undefined && this.dictionaryParametersReference.formGroup.valid)
       this.stepper.next();
   }
