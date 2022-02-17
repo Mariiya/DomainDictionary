@@ -36,6 +36,11 @@ public class ResourcesBank {
             String generatedFilePath = fileUploadService.saveFile(file, dictionary.getPathToFile());
             if (!generatedFilePath.isEmpty()) {
                 dictionary.setPathToFile(generatedFilePath);
+                for (SearchResource searcresource : dictionaryDao.getResources()) {
+                    if (searcresource.getName().equals(dictionary.getName())) {
+                        return false;
+                    }
+                }
                 dictionaryDao.createElectronicDictionary(dictionary);
                 return true;
             }
@@ -62,7 +67,7 @@ public class ResourcesBank {
                             new ArrayList() {{
                                 add(r);
                             }});
-                }else{
+                } else {
                     result.get(r.getType()).get(r.getSubtype()).add(r);
                 }
             }

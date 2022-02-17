@@ -47,13 +47,16 @@ public class DictionaryDao {
             addToDictionaryBank(dictionary);
         }
         parser.parse(dictionary);
+        jdbcTemplate.execute("commit");
         return true;
     }
 
     private boolean addToDictionaryBank(SearchResource resource) {
-        return jdbcTemplate.update(Constants.ADD_TO_RESOURCE_BANK,
+      int result = jdbcTemplate.update(Constants.ADD_TO_RESOURCE_BANK,
                 resource.getType().name(),
-                resource.getSubtype().name()) > 0;
+                resource.getSubtype().name());
+      jdbcTemplate.execute("commit");
+      return result > 0;
     }
 
     public List<SearchResource> getResources() {
