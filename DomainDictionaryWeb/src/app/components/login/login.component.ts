@@ -73,7 +73,7 @@ export class LoginComponent implements OnInit {
         this.loading = false;
         this.errorMessage = err.error.message;
         this.isLoginFailed = true;
-        alert("АШИБКААААА" + err.errorMessage)
+        this.helper.openSnackBar("Error during login. Please create account are check your credits.","OK")
       }
     );
   }
@@ -98,6 +98,9 @@ export class RegistrationDialog {
 
   user: User = new User('', '', '', '');
 
+  notImpl(){
+    this.helper.openSnackBar("Not yet implemented",'OK');
+  }
   onNoClick(): void {
     this.dialogRef.close();
   }

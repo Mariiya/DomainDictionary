@@ -6,11 +6,11 @@
   </mat-accordion>
 </div>
 
-<mat-card class="example-card" style="margin-top: 20px">
+<mat-card class="example-card" >
   <mat-card-header>
     <mat-card-title>Results</mat-card-title>
   </mat-card-header>
-  <div class="mat-elevation-z8">
+  <div class="mat-elevation-z8" >
     <table [dataSource]="datasourceDE" #table class="mat-elevation-z8" mat-table matSort text-align="center">
       <ng-container matColumnDef="term">
         <th *matHeaderCellDef mat-header-cell mat-sort-header style="font-size: 16px"> Term</th>
@@ -34,7 +34,7 @@
   </mat-card-content>
 </mat-card>
 <mat-card-actions fxLayout="row" fxLayoutGap="20px">
-  <button mat-flat-button class = "control-btn" color="primary">EDIT</button>
+  <button mat-flat-button class = "control-btn" color="primary" (click)="notImpl()">EDIT</button>
   <button mat-flat-button class = "control-btn" (click)="saveDomainDictionary()" color="primary">SAVE</button>
 </mat-card-actions>
 <div *ngIf="loading" style="  position: absolute;

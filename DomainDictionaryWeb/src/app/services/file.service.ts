@@ -42,11 +42,7 @@ export class FileService {
     const formData = new FormData();
     formData.append("dictionary", JSON.stringify(dictionary));
     formData.append("file", file);
-    console.log("file " + file.name)
-    return this.http.post<any>(`${this.url}dictionary/create-dictionary`, formData).subscribe(
-      (res) => console.log(res),
-      (err) => console.log(err)
-    );
+    return this.http.post<any>(`${this.url}dictionary/create-dictionary`, formData);
   /*  return this.http.post(`${this.url}dictionary/create-dictionary`, formData, {responseType: 'blob'}).pipe(
       catchError((err) => {
         console.log(err)

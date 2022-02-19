@@ -1,19 +1,19 @@
 <mat-toolbar>
   <mat-toolbar-row>
-    <button mat-icon-button class ="toolbar-icon">
+    <button mat-icon-button class ="toolbar-icon" (click)="goHome()">
       <mat-icon>library_books</mat-icon>
     </button>
     <span class="navbar-text">Domain Dictionary
   <mat-form-field class="navbar-search" appearance="standard">
-    <input matInput class="mat-input-with-line" placeholder="Quick search...">
+    <input matInput class="mat-input-with-line" placeholder="Quick search..." (input)="notImpl()">
    </mat-form-field>
 </span>
 
     <mat-icon class="mat-icon-account" [matMenuTriggerFor]="menu" *ngIf="classReference.isLoggedIn">account_circle
     </mat-icon>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item>My account</button>
-      <button mat-menu-item>Edit</button>
+      <button mat-menu-item (click)="notImpl()">My account</button>
+      <button mat-menu-item (click)="notImpl()">Edit</button>
     </mat-menu>
 
     <button mat-button class ="toolbar-btn" *ngIf="classReference.isLoggedIn" (click)="logout()">Logout</button>

@@ -67,7 +67,7 @@ public class SearchManager {
                 return new DictionaryEntry(id, termFound, definitionFound, resourceIdFound);
             }
         }
-        return null;
+        return new DictionaryEntry(null,term,Collections.EMPTY_LIST,resourceId);
     }
 
     protected List<DictionaryEntry> searchWithOutResource(Collection<String> terms) {

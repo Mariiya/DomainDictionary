@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Injectable, Output} from '@angular/core';
+import {Component, EventEmitter, Injectable, OnInit, Output} from '@angular/core';
 import {ResourceBankService} from "../../../../services/resource-bank.service";
 import {FlatTreeControl} from "@angular/cdk/tree";
 import {CollectionViewer, DataSource, SelectionChange} from "@angular/cdk/collections";
@@ -161,7 +161,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
   templateUrl: './search-resources.component.html',
   styleUrls: ['./search-resources.component.css']
 })
-export class SearchResourcesComponent {
+export class SearchResourcesComponent implements OnInit{
   @Output('selectedResource')
   resourceId = new EventEmitter <number>();
   selectedResourceName: string = 'none';
@@ -187,8 +187,14 @@ export class SearchResourcesComponent {
   logNode(node: DynamicFlatNode) {
     this.selectedResourceName = node.item;
     if(typeof node.content === 'number'){
-      console.log('node.log'+ node.content)
       this.resourceId.emit(node.content);}
+  }
+
+  ngOnInit(): void {
+    this.database.Ready.then(() => {
+        this.dataSource.data = this.database.initialData();
+      }
+    );
   }
 }
 

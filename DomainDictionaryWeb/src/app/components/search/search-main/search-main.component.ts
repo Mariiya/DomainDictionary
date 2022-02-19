@@ -3,10 +3,11 @@ import {SearchServiceService} from "../../../services/search-service.service";
 import {DictionaryEntry} from "../../../model/dictionaty-entry";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {DataSharedService} from "../../../services/data-shared.service";
 import {ActivatedRoute} from "@angular/router";
 import {FileService} from "../../../services/file.service";
+import {HelperService} from "../../../services/helper.service";
 
 @Component({
   selector: 'app-search-main',
@@ -24,7 +25,8 @@ export class SearchMainComponent implements OnInit {
   constructor(private service: SearchServiceService,
               private data: DataSharedService,
               private route: ActivatedRoute,
-              private reportService: FileService) {
+              private reportService: FileService,
+              private helper: HelperService){
   }
 
   termsUnsplited: string = ' ';
@@ -47,18 +49,36 @@ export class SearchMainComponent implements OnInit {
     return this.termsUnsplited.split('###');
   }
 
+  notImpl(){
+    this.helper.openSnackBar("Not yet implemented",'OK');
+  }
+
   search() {
     const t = this.getTerms();
-      this.loading = true;
+    if(t==null || t.length == 0){
+      this.helper.openSnackBar("Terms list is empty", "OK");
+      return;
+    }
+
+    if (this.selectedResource == -1) {
+      this.helper.openSnackBar("Select Search Resource", "OK");
+      return;
+    }
+
+    this.loading = true;
       // @ts-ignore
       this.service.searchTerms(t, this.selectedResource)
         .subscribe(data => {
-            console.log("data" + data);
-            this.datasourceDE.data = data;
+          if(data == null || data.length==0){
+            this.helper.openSnackBar("Nothing found", "OK");
+            this.loading = false;
+          }else {
+                this.datasourceDE.data=data;
+          }
             this.loading = false;
           },
           error => {
-            console.log('ERROR ' + error.message);
+            this.helper.openSnackBar("Nothing found", "OK");
             this.loading = false;
           });
   }
