@@ -55,11 +55,13 @@ export class SearchMainComponent implements OnInit {
       // @ts-ignore
       this.service.searchTerms(t, this.selectedResource)
         .subscribe(data => {
-          if(data == null || data == undefined || data.length==0){
+          if(data == null || data.length==0){
             this.helper.openSnackBar("Nothing found", "OK");
             this.loading = false;
+            console.log("data " + data);
           }else {
             this.datasourceDE.data = data;
+            console.log("data " + this.datasourceDE.data);
           }
             this.loading = false;
           },
