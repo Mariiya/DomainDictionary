@@ -32,7 +32,6 @@ export class TermsComponent implements OnInit {
   }
 
   getTerms():string{
-    console.log(this.inputs)
     return this.inputs.join('###');
   }
 

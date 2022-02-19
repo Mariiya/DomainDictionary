@@ -15,7 +15,7 @@
       </mat-card>
     </mat-grid-tile>
 
-    <mat-grid-tile [colspan]="tiles[1].cols" [rowspan]="tiles[1].rows">
+    <mat-grid-tile [colspan]="tiles[1].cols" [rowspan]="numberOfDE+1" style="min-height: 600px;">
       <mat-card class="dashboard-card">
         <mat-card-header>
           <mat-card-title>
@@ -24,8 +24,8 @@
           </mat-card-title>
 
         </mat-card-header>
-        <mat-card-content class="mat-card-dashboard">
-          <app-search-main></app-search-main>
+        <mat-card-content class="mat-card-dashboard" >
+          <app-search-main (numberOfDE)="onResourceChanged($event)"></app-search-main>
         </mat-card-content>
       </mat-card>
     </mat-grid-tile>

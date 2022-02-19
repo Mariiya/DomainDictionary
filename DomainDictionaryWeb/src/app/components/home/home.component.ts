@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
   isLoggedIn = false;
   results: DictionaryEntry [] = [];
   content: string = '';
-
+  numberOfDE:number=0;
   constructor(private userService: UserService,
               private tokenStorageService: TokenStorageService,
               public router: Router,) {  }
@@ -46,5 +46,9 @@ export class HomeComponent implements OnInit {
         this.content = JSON.parse(err.error).message;
       }
     );
+  }
+
+  onResourceChanged(value:number){
+    this.numberOfDE=value;
   }
 }

@@ -21,6 +21,7 @@ ul {
 
 .grid-container {
   margin: 0px 20px 20px;
+  height: fit-content;
 }
 
 .dashboard-card {
@@ -59,7 +60,7 @@ ul {
 }
 
 .mat-card-dashboard {
-
+height: fit-content;
 }
 
 .example-card {
