@@ -10,6 +10,7 @@ import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.stereotype.Service;
 import org.elasticsearch.client.RequestOptions;
@@ -45,6 +46,7 @@ public class EntriesLoader {
 
     public List<DictionaryEntry> insertDictionaryEntry(List<DictionaryEntry> de) throws IOException {
         BulkRequest bulkRequest = new BulkRequest();
+        bulkRequest.timeout(TimeValue.timeValueMinutes(30));
         for (DictionaryEntry dictionaryEntry : de) {
             dictionaryEntry.setId(UUID.randomUUID().toString());
             bulkRequest.add(new IndexRequest(DictionaryEntry.getIndex())
