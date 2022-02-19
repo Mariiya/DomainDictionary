@@ -124,13 +124,13 @@ export class RegistrationDialog {
           console.log(data);
           this.isSuccessful = true;
           this.isSignUpFailed = false;
-          this.dialogRef.close();
           this.helper.openSnackBar("You have been successfully registered. Please, check your email for confirmation. ", "OK");
-        },
+          this.dialogRef.close();
+          },
         err => {
           this.errorMessage = err.error.message;
           this.isSignUpFailed = true;
-          this.dialogRef.close();
+          this.helper.openSnackBar(err.error, "OK");
         }
       );
     }else {

@@ -40,6 +40,7 @@ public class UserDao{
             user.setRole(Role.ROLE_USER);
         }
        jdbcTemplate.update(Constants.CREATE_USER, user.getName(),user.getEmail(),user.getPassword(),user.getRole().name());
+        jdbcTemplate.execute("commit");
     }
 
     public Boolean existsByUsername(String username) {
