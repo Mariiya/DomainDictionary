@@ -6,12 +6,12 @@
   </mat-accordion>
 </div>
 
-<mat-card class="example-card" >
+<mat-card class="example-card" style="margin-top: 20px;">
   <mat-card-header>
     <mat-card-title>Results</mat-card-title>
   </mat-card-header>
   <div class="mat-elevation-z8" >
-    <table [dataSource]="datasourceDE" #table class="mat-elevation-z8" mat-table matSort text-align="center">
+    <table [dataSource]="datasourceDE" #table class="mat-elevation-z8" mat-table matSort text-align="center" >
       <ng-container matColumnDef="term">
         <th *matHeaderCellDef mat-header-cell mat-sort-header style="font-size: 16px"> Term</th>
         <td *matCellDef="let de" mat-cell>

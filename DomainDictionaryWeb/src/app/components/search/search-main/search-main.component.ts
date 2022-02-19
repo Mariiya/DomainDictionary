@@ -15,6 +15,8 @@ import {HelperService} from "../../../services/helper.service";
   styleUrls: ['./search-main.component.css']
 })
 export class SearchMainComponent implements OnInit {
+  @Output()
+  numberOfDE = new EventEmitter <number>();
 
   displayedColumns: string[] = ['term', 'definition'];
 
@@ -26,7 +28,7 @@ export class SearchMainComponent implements OnInit {
               private data: DataSharedService,
               private route: ActivatedRoute,
               private reportService: FileService,
-              private helper: HelperService){
+              private helper: HelperService) {
   }
 
   termsUnsplited: string = ' ';
@@ -46,41 +48,45 @@ export class SearchMainComponent implements OnInit {
 
   getTerms(): string[] {
     this.subscription = this.data.currentMessage.subscribe(message => this.termsUnsplited = message);
-    return this.termsUnsplited.split('###');
+    var temp = this.termsUnsplited.split('###');
+    return temp.filter(t => {
+      return !(t == undefined || t.trim().length == 0);
+    })
   }
 
-  notImpl(){
-    this.helper.openSnackBar("Not yet implemented",'OK');
+  notImpl() {
+    this.helper.openSnackBar("Not yet implemented", 'OK');
   }
 
   search() {
     const t = this.getTerms();
-    if(t==null || t.length == 0){
+    if (t.length == 0 || t.length == 1 && t[0] == '') {
       this.helper.openSnackBar("Terms list is empty", "OK");
       return;
+    } else {
+      if (this.selectedResource == -1) {
+        this.helper.openSnackBar("Select Search Resource", "OK");
+        return;
+      } else {
+        this.loading = true;
+        // @ts-ignore
+        this.service.searchTerms(t, this.selectedResource)
+          .subscribe(data => {
+              if (data == null || data.length == 0) {
+                this.helper.openSnackBar("Nothing found", "OK");
+                this.loading = false;
+              } else {
+                this.datasourceDE.data = data;
+                this.numberOfDE.emit(data.length);
+              }
+              this.loading = false;
+            },
+            error => {
+              this.helper.openSnackBar("Nothing found", "OK");
+              this.loading = false;
+            });
+      }
     }
-
-    if (this.selectedResource == -1) {
-      this.helper.openSnackBar("Select Search Resource", "OK");
-      return;
-    }
-
-    this.loading = true;
-      // @ts-ignore
-      this.service.searchTerms(t, this.selectedResource)
-        .subscribe(data => {
-          if(data == null || data.length==0){
-            this.helper.openSnackBar("Nothing found", "OK");
-            this.loading = false;
-          }else {
-                this.datasourceDE.data=data;
-          }
-            this.loading = false;
-          },
-          error => {
-            this.helper.openSnackBar("Nothing found", "OK");
-            this.loading = false;
-          });
   }
 
 
@@ -103,10 +109,10 @@ export class SearchMainComponent implements OnInit {
     link.click();
   }
 
-  onResourceChanged(value: number){
-      this.selectedResource = value;
-      console.log('selectedResource ' + this.selectedResource)
-    }
+  onResourceChanged(value: number) {
+    this.selectedResource = value;
+    console.log('selectedResource ' + this.selectedResource)
+  }
 
 }
 
