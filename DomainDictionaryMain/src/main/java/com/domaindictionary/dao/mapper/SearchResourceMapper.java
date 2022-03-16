@@ -16,7 +16,7 @@ import java.sql.SQLException;
 public class SearchResourceMapper implements RowMapper<SearchResource> {
     public SearchResource mapRow(ResultSet resultSet, int i) throws SQLException {
         if ("INTERNET_RESOURCE".equals(resultSet.getString("type"))) {
-            return new InternetResource();
+            return null;//new InternetResource();
         }
         ElectronicDictionary dictionary = new ElectronicDictionaryBuilder()
                 .withId(new BigInteger(resultSet.getString("RESOURCE_ID")))

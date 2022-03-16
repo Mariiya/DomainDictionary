@@ -25,8 +25,9 @@ public class ConnectionConfig {
     Environment environment;
     //The config parameters for the connection
     private static String HOST = "localhost";
-    private static final int PORT_ONE = 9243;
-    private static final String SCHEME = "https";
+    private static final int PORT_ONE = 9200;
+    //private static final String SCHEME = "https";
+    private static final String SCHEME = "http";
 
     public  RestHighLevelClient restHighLevelClient;
     /**
@@ -39,10 +40,10 @@ public class ConnectionConfig {
     public synchronized RestHighLevelClient makeConnection() {
         final CredentialsProvider credentialsProvider =
                 new BasicCredentialsProvider();
-        credentialsProvider.setCredentials(AuthScope.ANY,
-                new UsernamePasswordCredentials(environment.getProperty("spring.elasticsearch.rest.username"),
-                        environment.getProperty("spring.elasticsearch.rest.password")));
-        this.HOST = environment.getProperty("spring.elasticsearch.rest.uris");
+       // credentialsProvider.setCredentials(AuthScope.ANY,
+             //   new UsernamePasswordCredentials(environment.getProperty("spring.elasticsearch.rest.username"),
+                //        environment.getProperty("spring.elasticsearch.rest.password")));
+       // this.HOST = environment.getProperty("spring.elasticsearch.rest.uris");
         if(HOST!=null && !HOST.isEmpty()) {
             if (restHighLevelClient == null) {
                 restHighLevelClient = new RestHighLevelClient(

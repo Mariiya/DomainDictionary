@@ -7,6 +7,9 @@ import com.domaindictionary.model.SearchResource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.util.Collection;
+import java.util.Map;
 
 @Service
 public class ElectronicDictionarySearchService implements SearchService {
@@ -20,7 +23,11 @@ public class ElectronicDictionarySearchService implements SearchService {
         this.searchManager = searchManager;
     }
 
-    public DictionaryEntry search(String term, SearchResource resource) throws IOException {
-        return searchManager.search(term, resource.getId());
+    public DictionaryEntry search(String term, Map<String,Object> params) throws IOException {
+        return searchManager.search(term, new BigInteger((String) params.get("resourceId")));
+    }
+
+    public Collection<DictionaryEntry> search(Collection<String> term,  Map<String,Object> params) throws IOException {
+        return searchManager.search(term, new BigInteger((String) params.get("resourceId")));
     }
 }

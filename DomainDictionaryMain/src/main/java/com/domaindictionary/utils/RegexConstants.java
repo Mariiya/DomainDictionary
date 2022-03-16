@@ -26,8 +26,8 @@ public class RegexConstants {
     }};
 
     public static Map<String, String> articleSeparatorTemplates = new HashMap<String, String>() {{
-        put("New Line", "");
-        put("Empty Line", "");
+        put("New Line", "\\n");
+        put("Empty Line", "\\n\\n");
     }};
 
 }

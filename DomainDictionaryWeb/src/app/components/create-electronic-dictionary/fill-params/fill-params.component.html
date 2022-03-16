@@ -9,12 +9,12 @@
           <mat-label>Article Separator (sp)</mat-label>
           <mat-select formControlName="articleSeparator" required (change)="addNewRule()">
             <mat-option
-              (click)="addCustomSeparator(true)"
+              (click)="addCustomSeparator(false)"
               *ngFor="let option of articleSeparators | async"
               [value]="option">
               {{option}}
             </mat-option>
-            <mat-option (click)="addCustomSeparator(false)" value="option3">Custom</mat-option>
+            <mat-option (click)="addCustomSeparator(true)" value="option3">Custom</mat-option>
           </mat-select>
           <mat-error *ngIf="reference.formGroup.controls. articleSeparator.invalid">{{getErrorMessage()}}</mat-error>
         </mat-form-field>
@@ -23,7 +23,7 @@
         <mat-form-field  class="container-input" appearance="legacy">
           <input matInput type="text" placeholder="Type char for 'Custom' case"
                  formControlName="articleSeparatorInput"
-                 [readonly]="isCustomArticleSeparator">
+                 [readonly]="!isCustomArticleSeparator">
           <mat-error *ngIf="reference.formGroup.controls.articleSeparatorInput.invalid">{{getErrorMessage()}}</mat-error>
         </mat-form-field>
       </td>

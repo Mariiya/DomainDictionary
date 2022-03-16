@@ -6,8 +6,6 @@ import {LoginComponent} from "./components/login/login.component";
 import {
   CreateElectronicDictionaryComponent
 } from "./components/create-electronic-dictionary/create-electronic-dictionary.component";
-import {SearchResource} from "./model/search-resource";
-import {SearchResourcesComponent} from "./components/search/search-main/search-resources/search-resources.component";
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},

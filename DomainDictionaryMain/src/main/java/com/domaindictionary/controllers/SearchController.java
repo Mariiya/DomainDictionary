@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/search")
@@ -26,13 +27,12 @@ public class SearchController {
     }
 
     @GetMapping()
-    public List<DictionaryEntry> search(@RequestParam List<String> terms, @RequestParam BigInteger resourceId) throws IOException {
+    public List<DictionaryEntry> search(@RequestParam List<String> terms, @RequestParam Map<String,Object> params) throws IOException {
+        BigInteger resourceId = new BigInteger((String) params.get("resourceId"));
         SearchResource searchResource = bank.getResource(resourceId);
-        return dictionaryService.search(terms, searchResource);
+        params.put("searchResource", searchResource);
+        return dictionaryService.search(terms, params);
     }
 
-    public void createDomainDictionary(List<DictionaryEntry> entries) {
-        new DomainDictionary();
-    }
 
 }

@@ -13,43 +13,53 @@
   <div class="container" fxLayout="row" fxLayoutGap="20%">
     <section class="example-section">
   <span class="example-list-section">
-    <mat-checkbox class="example-margin"
-                  [checked]="allComplete"
-                  [color]="task.color"
-                  [indeterminate]="someComplete()"
-                  (change)="setAll($event.checked)">
-      {{task.name}}
-    </mat-checkbox>
+   Customise search
   </span>
       <span class="example-list-section">
     <ul>
-      <li *ngFor="let subtask of task.subtasks">
-        <mat-checkbox [(ngModel)]="subtask.completed"
-                      [color]="subtask.color"
-                      (ngModelChange)="updateAllComplete()">
-          {{subtask.name}}
-          <input *ngIf="subtask.name==='Analyze Domain'" matInput placeholder="Input domain..." style="display: inline">
+        <mat-checkbox [(ngModel)]="isDomainAnalyzeParam" #d
+                      (ngModelChange)="setSearchInInternetParam(!d.checked)">
+        Analyze Domain
+          <input matInput placeholder="Input domain..." style="display: inline">
         </mat-checkbox>
-      </li>
+    </ul>
+         <ul>
+        <mat-checkbox [(ngModel)]="isSearchInInternetParam" #s
+                      (ngModelChange)="setSearchInInternetParam(!s.checked)">
+        Search on Web
+        </mat-checkbox>
+    </ul>
+         <ul>
+        <mat-checkbox [(ngModel)]="isFullTextSearchParam" #f
+                      (ngModelChange)="setFullTextSearchParam(!f.checked)">
+        Full text search
+        </mat-checkbox>
     </ul>
   </span>
     </section>
 
     <section class="example-section">
   <span class="example-list-section">
-    <mat-checkbox class="example-margin">
-      {{language.name}}
-    </mat-checkbox>
+  Select language
   </span>
       <span class="example-list-section">
     <ul>
-      <li *ngFor="let subtask of language.subtasks">
-        <mat-checkbox [(ngModel)]="subtask.completed"
-                      [color]="subtask.color"
-                      (ngModelChange)="updateAllComplete()">
-          {{subtask.name}}
+        <mat-checkbox [(ngModel)]="languageUA"
+                      (ngModelChange)="languageChange('languageUA',true)">
+        Ukrainian
         </mat-checkbox>
-      </li>
+    </ul>
+         <ul>
+        <mat-checkbox [(ngModel)]="languageEN"
+                      (ngModelChange)="languageChange('languageEN',true)">
+        English
+        </mat-checkbox>
+    </ul>
+         <ul>
+        <mat-checkbox [(ngModel)]="languageRU"
+                      (ngModelChange)="languageChange('languageRU',true)">
+        Russian
+        </mat-checkbox>
     </ul>
   </span>
     </section>

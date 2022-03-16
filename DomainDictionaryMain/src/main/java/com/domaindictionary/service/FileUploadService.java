@@ -49,7 +49,7 @@ public class FileUploadService {
     }
 
     public String saveFile(MultipartFile file, String filePath) {
-        File fileToSave = new File("DomainDictionaryMain\\src\\main\\resources\\dictionaries"+ file.getOriginalFilename());
+        File fileToSave = new File("DomainDictionaryMain\\src\\main\\resources\\dictionaries\\"+ file.getOriginalFilename());
 
         try (OutputStream os = new FileOutputStream(fileToSave)) {
             os.write(file.getBytes());

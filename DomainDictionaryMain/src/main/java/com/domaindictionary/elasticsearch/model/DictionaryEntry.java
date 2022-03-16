@@ -19,6 +19,9 @@ public class DictionaryEntry {
         this.resourceId = resourceId;
     }
 
+    public DictionaryEntry() {
+    }
+
     public String getTerm() {
         return term;
     }

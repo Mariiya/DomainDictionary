@@ -1,12 +1,9 @@
 package com.domaindictionary.model;
 
-
-import com.domaindictionary.elasticsearch.model.DictionaryEntry;
 import com.domaindictionary.model.enumeration.ResourceSubtype;
 import com.domaindictionary.model.enumeration.ResourceType;
-
 import java.math.BigInteger;
-import java.util.List;
+
 
 public class InternetResource implements SearchResource {
 
@@ -16,7 +13,6 @@ public class InternetResource implements SearchResource {
     private ResourceType type;
     private ResourceSubtype subtype;
     private Rule rule;
-    private List<DictionaryEntry> entries;
 
     public void setId(BigInteger id) {
         this.id = id;
@@ -50,27 +46,32 @@ public class InternetResource implements SearchResource {
         this.rule = rule;
     }
 
-    public List<DictionaryEntry> getEntries() {
-        return entries;
-    }
-
-    public void setEntries(List<DictionaryEntry> entries) {
-        this.entries = entries;
-    }
-
-    public String getName() {
-        return null;
-    }
-
-    public ResourceType getType() {
-        return null;
-    }
-
-    public ResourceSubtype getSubtype() {
-        return null;
-    }
-
+    @Override
     public BigInteger getId() {
-        return null;
+        return id;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public ResourceType getType() {
+        return type;
+    }
+
+    @Override
+    public ResourceSubtype getSubtype() {
+        return subtype;
+    }
+
+    public InternetResource(BigInteger id, String name, String url, ResourceType type, ResourceSubtype subtype, Rule rule) {
+        this.id = id;
+        this.name = name;
+        this.url = url;
+        this.type = type;
+        this.subtype = subtype;
+        this.rule = rule;
     }
 }
