@@ -53,10 +53,10 @@ public class Rule {
     }
 
     public String getDefinitionSeparator() {
-        if(definitionSeparator.contains("num")){
-            return "\\d"+definitionSeparator.replace("num","");
+        if (definitionSeparator != null) {
+            return definitionSeparator;
         }
-        return definitionSeparator;
+        return "";
     }
 
     public void setDefinitionSeparator(String definitionSeparator) {

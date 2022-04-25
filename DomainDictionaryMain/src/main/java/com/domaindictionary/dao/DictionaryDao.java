@@ -19,13 +19,11 @@ import java.util.List;
 public class DictionaryDao {
 
     private final JdbcTemplate jdbcTemplate;
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private ParseDictionaryFileToStorage parser;
 
     @Autowired
     public DictionaryDao(DataSource dataSource, ParseDictionaryFileToStorage parser) {
         jdbcTemplate = new JdbcTemplate(dataSource);
-        namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         this.parser = parser;
     }
 

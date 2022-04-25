@@ -45,8 +45,9 @@ public class EntriesLoader {
     }
 
     public List<DictionaryEntry> insertDictionaryEntry(List<DictionaryEntry> de) throws IOException {
+        System.out.println("DE to insert "+ de.size());
         BulkRequest bulkRequest = new BulkRequest();
-        bulkRequest.timeout(TimeValue.timeValueMinutes(30));
+        bulkRequest.timeout(TimeValue.timeValueMinutes(1));
         for (DictionaryEntry dictionaryEntry : de) {
             dictionaryEntry.setId(UUID.randomUUID().toString());
             bulkRequest.add(new IndexRequest(DictionaryEntry.getIndex())
@@ -66,7 +67,10 @@ public class EntriesLoader {
             }
         };
         try {
-            restHighLevelClient.bulkAsync(bulkRequest, RequestOptions.DEFAULT, listener);
+
+            System.out.println("INSERT START" + bulkRequest);
+                restHighLevelClient.bulkAsync(bulkRequest, RequestOptions.DEFAULT, listener);
+            System.out.println("INSERT END" + bulkRequest);
         } catch (ElasticsearchException e) {
             LOG.error(e.getMessage(), e);
         }

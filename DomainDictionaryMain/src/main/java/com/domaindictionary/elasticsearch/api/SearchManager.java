@@ -66,11 +66,9 @@ public class SearchManager {
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
 
         QueryBuilder query = QueryBuilders.boolQuery()
-                .must(
-                        QueryBuilders.matchQuery("term", term))
-                .should(
-                        QueryBuilders.matchQuery("resourceId", resourceId)
-                ).filter(QueryBuilders.fuzzyQuery("term", term));
+                .must(QueryBuilders.matchQuery("term", term))
+                .should(QueryBuilders.matchQuery("resourceId", resourceId))
+                .filter(QueryBuilders.fuzzyQuery("term", term));
 
         sourceBuilder.query(query);
         searchRequest.source(sourceBuilder);

@@ -25,10 +25,14 @@ public class InternetResourceSearchService implements SearchService {
     }
 
     public DictionaryEntry search(String term, Map<String, Object> params) {
-        System.out.println(Constants.internetResources);
-        System.out.println(Constants.internetResources.get(Constants.WIKIPEDIA));
-        InternetResourceSearchAPI searchResource = applicationContext.getBean(Constants.internetResources.get(Constants.WIKIPEDIA));
-        try {
+        InternetResourceSearchAPI searchResource;
+        //TODO: select bu subtype!!!
+        if(params.get("language").equals("ua")){
+            searchResource = applicationContext.getBean(Constants.internetResources.get(Constants.SUMINUA));
+        }else {
+            searchResource = applicationContext.getBean(Constants.internetResources.get(Constants.WIKIPEDIA));
+        }
+       try {
             return searchResource.search(term, (String) params.get("language"));
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);

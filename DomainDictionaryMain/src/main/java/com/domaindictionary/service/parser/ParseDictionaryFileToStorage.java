@@ -31,23 +31,14 @@ public class ParseDictionaryFileToStorage {
     }
 
     private void initializeEntriesNoStylisticZone(ElectronicDictionary dictionary) throws IOException {
-        List<DictionaryEntry> entries = initializeEntries(dictionary);
-        entriesLoader.insertDictionaryEntry(entries);
-    }
-
-    private void initializeEntriesWithStylisticZone(ElectronicDictionary dictionary) throws IOException {
-        List<DictionaryEntry> entries = initializeEntries(dictionary);
-        entriesLoader.insertDictionaryEntry(entries);
-    }
-
-    private List<DictionaryEntry> initializeEntries(ElectronicDictionary dictionary) throws FileNotFoundException {
         BufferedReader br = readFile(dictionary.getPathToFile());
         List<DictionaryEntry> entries = new ArrayList<>();
         StringBuffer builder = new StringBuffer();
         String line;
         try {
             while ((line = br.readLine()) != null) {
-                if (!line.contains(dictionary.getRule().getArticleSeparator())) {
+                if (!line.trim().contains(dictionary.getRule().getArticleSeparator())
+                        || !line.trim().equals(dictionary.getRule().getArticleSeparator())) {
                     builder.append(line);
                 } else {
                     DictionaryEntry entry = createEntry(dictionary, String.valueOf(builder));
@@ -55,15 +46,37 @@ public class ParseDictionaryFileToStorage {
                         continue;
                     if (isTermValid(entry.getTerm()) && entry.getDefinition().toString().length() < 1999) {
                         entries.add(entry);
+                        if (entries.size() > 1000) {
+                            entriesLoader.insertDictionaryEntry(entries);
+                            entries.clear();
+                        }
+                        System.out.println(entries.size());
+                        if(entries.size()==4) {
+                            System.out.println(entries.get(2).getTerm()+" " + entries.get(2).getDefinition());
+                            System.out.println(entries.get(3).getTerm()+" " + entries.get(3).getDefinition());
+                        }
                     }
                     builder.delete(0, builder.length());
                 }
             }
+            entriesLoader.insertDictionaryEntry(entries);
             br.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return entries;
+
+        entriesLoader.insertDictionaryEntry(entries);
+    }
+
+
+
+    private void initializeEntriesWithStylisticZone(ElectronicDictionary dictionary) throws IOException {
+        List<DictionaryEntry> entries = initializeEntries(dictionary);
+        entriesLoader.insertDictionaryEntry(entries);
+    }
+
+    private List<DictionaryEntry> initializeEntries(ElectronicDictionary dictionary) throws FileNotFoundException {
+return null;
     }
 
     private BufferedReader readFile(String filePath) throws FileNotFoundException {
@@ -91,9 +104,10 @@ public class ParseDictionaryFileToStorage {
         return new DictionaryEntry("", term, Collections.singletonList(definition), electronicDictionary.getId());
     }
 
-    private boolean isTermValid(String term){
+    private boolean isTermValid(String term) {
         return term.length() < 100;
     }
+
     public List<String> splitDefinitions(String definition, String definitionSeparator) {
         String[] arr = definition.split(definitionSeparator);
         return Arrays.asList(arr);

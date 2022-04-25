@@ -135,6 +135,7 @@ export class SearchMainComponent implements OnInit {
   }
 
   setLanguage(value: string) {
+    console.log("l: "+ value)
     this.searchParams.set('language', value);
   }
 

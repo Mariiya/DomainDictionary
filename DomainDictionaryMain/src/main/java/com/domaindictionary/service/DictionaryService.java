@@ -2,13 +2,14 @@ package com.domaindictionary.service;
 
 import com.domaindictionary.dao.DictionaryDao;
 import com.domaindictionary.elasticsearch.model.DictionaryEntry;
-import com.domaindictionary.model.SearchResource;
-import com.domaindictionary.service.parser.ParseDictionaryFileToStorage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +36,18 @@ public class DictionaryService {
             result.add(searchService.search(terms.get(0), params));
         } else {
             result.addAll(searchService.search(terms, params));
+        }
+        for(String t: terms) {
+            boolean isDe =false;
+            for(DictionaryEntry de: result){
+               if(de.getTerm().equalsIgnoreCase(t)){
+                   isDe=true;
+                   break;
+               }
+            }
+            if (!isDe){
+                result.add(new DictionaryEntry(null, t, Collections.emptyList(), BigInteger.ONE));
+            }
         }
         if (Boolean.parseBoolean((String) params.get("isSearchInInternet"))) {
             searchService = internetResourceSearchService;

@@ -3,6 +3,7 @@ package com.domaindictionary.service;
 
 import com.domaindictionary.dao.DictionaryDao;
 import com.domaindictionary.model.ElectronicDictionary;
+import com.domaindictionary.model.Rule;
 import com.domaindictionary.model.SearchResource;
 import com.domaindictionary.model.enumeration.ResourceSubtype;
 import com.domaindictionary.model.enumeration.ResourceType;

@@ -2,7 +2,9 @@ package com.domaindictionary.dao;
 
 public class Constants {
 
-    public static String GET_ELECTRONIC_DICTIONARY = "select * from electronic_dictionary";
+    public static String GET_ELECTRONIC_DICTIONARY = "select * from electronic_dictionary  ed left join resource_bank rb\n" +
+            "on ed.electronic_dictionary_id=rb.resource_id\n" +
+            "left join rule r on r.rule_id = rb.rule_id where ed.electronic_dictionary_id =?";
     public static String CREATE_ELECTRONIC_DICTIONARY = "insert into electronic_dictionary values (nextval('resource_seq'), ?,?,?) ON CONFLICT DO NOTHING";
     public static String CREATE_RULE = "INSERT INTO RULE VALUES (nextval('rule_seq'),?,?,?,?) ON CONFLICT DO NOTHING";
     public static String ADD_TO_RESOURCE_BANK = "insert into resource_bank values " +

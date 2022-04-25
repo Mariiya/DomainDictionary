@@ -34,8 +34,7 @@ public class WikipediaAPI implements InternetResourceSearchAPI {
     public DictionaryEntry search(String term, String language) throws IOException, MediaWikiApiErrorException {
         DictionaryEntry de = new DictionaryEntry();
         WikibaseDataFetcher wbdf = WikibaseDataFetcher.getWikidataDataFetcher();
-
-        wbdf.getFilter().setLanguageFilter(Collections.singleton("ru"));
+        wbdf.getFilter().setLanguageFilter(Collections.singleton(language));
         List<WbSearchEntitiesResult> articles = wbdf.searchEntities(term, language);
         List<String> titles = new ArrayList<>();
         for (WbSearchEntitiesResult article : articles) {
@@ -48,20 +47,27 @@ public class WikipediaAPI implements InternetResourceSearchAPI {
         Map<String, EntityDocument> results = wbdf.getEntityDocuments(titles);
         Collection<String> definitions = new ArrayList<>();
         String id = "";
-        for (Map.Entry<String, EntityDocument> entry : results.entrySet()) {
-            if (entry != null) {
-                if (((ItemDocument) entry.getValue()).getDescriptions().get(language) != null) {
-                    definitions.add(((ItemDocument) entry.getValue()).getDescriptions().get(language).getText());
-                } else {
-                    definitions.add(((ItemDocument) entry.getValue()).getDescriptions().entrySet().iterator().next().getValue().getText());
+        try {
+            for (Map.Entry<String, EntityDocument> entry : results.entrySet()) {
+                if (entry != null) {
+                    if (((ItemDocument) entry.getValue()).getDescriptions().get(language) != null) {
+                        definitions.add(((ItemDocument) entry.getValue()).getDescriptions().get(language).getText());
+                    } else {
+                        if (entry instanceof ItemDocument) {
+                            definitions.add(((ItemDocument) entry.getValue()).getDescriptions().entrySet().iterator().next().getValue().getText());
+                        }
+                    }
+                    id = ((ItemDocument) entry.getValue()).getEntityId().getId();
                 }
-                id = ((ItemDocument) entry.getValue()).getEntityId().getId();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            de.setTerm(term);
+            de.setDefinition(definitions);
+            de.setId(id);
+            return de;
         }
-        de.setTerm(term);
-        de.setDefinition(definitions);
-        de.setId(id);
-        return de;
     }
 
 

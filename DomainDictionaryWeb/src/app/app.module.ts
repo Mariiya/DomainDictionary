@@ -55,6 +55,7 @@ import { TestDictionaryComponent } from './components/create-electronic-dictiona
 import { DictionaryParametersComponent } from './components/create-electronic-dictionary/dictionary-parameters/dictionary-parameters.component';
 import { SearchResourcesComponent } from './components/search/search-main/search-resources/search-resources.component';
 import { SearchParamsComponent } from './components/search/search-main/search-params/search-params.component';
+import {MyAccountComponent} from "./components/my-account/my-account.component";
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { SearchParamsComponent } from './components/search/search-main/search-pa
     HomeComponent,
     TermsComponent,
     SearchMainComponent,
+    MyAccountComponent,
     RegistrationDialog,
     CreateElectronicDictionaryComponent,
     FooterComponent,

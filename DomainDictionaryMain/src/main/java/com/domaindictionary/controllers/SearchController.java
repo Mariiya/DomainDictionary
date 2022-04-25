@@ -2,9 +2,8 @@ package com.domaindictionary.controllers;
 
 import com.domaindictionary.elasticsearch.model.DictionaryEntry;
 import com.domaindictionary.model.SearchResource;
-import com.domaindictionary.service.ResourcesBank;
 import com.domaindictionary.service.DictionaryService;
-import com.domaindictionary.model.DomainDictionary;
+import com.domaindictionary.service.ResourcesBank;
 import com.domaindictionary.service.DomainAnalysisService;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,5 +1,5 @@
 <button class="floating-btn" (click)="search()">SEARCH</button>
-<div mat-dialog-actions>
+<div mat-dialog-actions style="width: 100%">
   <mat-accordion>
     <app-search-resources (selectedResource)="onResourceChanged($event)"></app-search-resources>
     <app-search-params

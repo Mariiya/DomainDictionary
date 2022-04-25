@@ -36,7 +36,9 @@ export class NavigationComponent implements OnInit {
     this.tokenStorageService.signOut();
     this.router.navigate(['/login']).then(r => window.location.reload());
   }
-
+  goToMyAccount(){
+    this.router.navigate(['/my-account', this.tokenStorageService.getUser().id]);
+  }
   notImpl(){
     this.helper.openSnackBar("Not yet implemented",'OK');
   }
