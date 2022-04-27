@@ -2,18 +2,21 @@ package com.domaindictionary.service;
 
 
 import com.domaindictionary.dao.DictionaryDao;
+import com.domaindictionary.elasticsearch.model.DictionaryEntry;
 import com.domaindictionary.model.ElectronicDictionary;
-import com.domaindictionary.model.Rule;
 import com.domaindictionary.model.SearchResource;
 import com.domaindictionary.model.enumeration.ResourceSubtype;
 import com.domaindictionary.model.enumeration.ResourceType;
 import com.domaindictionary.utils.RegexConstants;
+import com.itextpdf.text.DocumentException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.*;
 
@@ -21,13 +24,13 @@ import java.util.*;
 public class ResourcesBank {
     private static final Logger LOG = Logger.getLogger(ResourcesBank.class);
     private final DictionaryDao dictionaryDao;
-    private final DictionaryService dictionaryService;
+    private final DictionaryManager dictionaryManager;
     private final FileUploadService fileUploadService;
 
 
     @Autowired
-    public ResourcesBank(DictionaryDao dictionaryDao, DictionaryService service, FileUploadService fileUploadService) {
-        this.dictionaryService = service;
+    public ResourcesBank(DictionaryDao dictionaryDao, DictionaryManager service, FileUploadService fileUploadService) {
+        this.dictionaryManager = service;
         this.dictionaryDao = dictionaryDao;
         this.fileUploadService = fileUploadService;
     }
@@ -121,4 +124,12 @@ public class ResourcesBank {
         return RegexConstants.getTemplatesForArticleSeparator();
     }
 
+    public ByteArrayInputStream createDomainDictionary(List<DictionaryEntry> entries) {
+        try {
+            return  fileUploadService.createFileForDomainDictionary(entries);
+        } catch (DocumentException | IOException e) {
+            LOG.error(e.getMessage(),e);
+        }
+        throw new RuntimeException("Error during file creation");
+    }
 }

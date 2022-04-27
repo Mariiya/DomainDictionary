@@ -26,7 +26,6 @@ public class InternetResourceSearchService implements SearchService {
 
     public DictionaryEntry search(String term, Map<String, Object> params) {
         InternetResourceSearchAPI searchResource;
-        //TODO: select bu subtype!!!
         if(params.get("language").equals("ua")){
             searchResource = applicationContext.getBean(Constants.internetResources.get(Constants.SUMINUA));
         }else {

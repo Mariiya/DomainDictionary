@@ -2,7 +2,6 @@ package com.domaindictionary.elasticsearch.model;
 
 import java.math.BigInteger;
 import java.util.Collection;
-import java.util.List;
 
 public class DictionaryEntry {
     private static final String INDEX = "entity";

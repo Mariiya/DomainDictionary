@@ -3,7 +3,6 @@ package com.domaindictionary.service;
 import com.domaindictionary.dao.DictionaryDao;
 import com.domaindictionary.elasticsearch.model.DictionaryEntry;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -15,14 +14,12 @@ import java.util.Map;
 
 
 @Service
-public class DictionaryService {
-    private final DictionaryDao dictionaryDao;
+public class DictionaryManager {
     private final ElectronicDictionarySearchService electronicDictionarySearchService;
     private final InternetResourceSearchService internetResourceSearchService;
 
     @Autowired
-    public DictionaryService(DictionaryDao dictionaryDao, ElectronicDictionarySearchService electronicDictionarySearchService, InternetResourceSearchService internetResourceSearchService) {
-        this.dictionaryDao = dictionaryDao;
+    public DictionaryManager(ElectronicDictionarySearchService electronicDictionarySearchService, InternetResourceSearchService internetResourceSearchService) {
         this.electronicDictionarySearchService = electronicDictionarySearchService;
         this.internetResourceSearchService = internetResourceSearchService;
     }
@@ -37,24 +34,23 @@ public class DictionaryService {
         } else {
             result.addAll(searchService.search(terms, params));
         }
-        for(String t: terms) {
-            boolean isDe =false;
-            for(DictionaryEntry de: result){
-               if(de.getTerm().equalsIgnoreCase(t)){
-                   isDe=true;
-                   break;
-               }
+        for (String t : terms) {
+            boolean isDe = false;
+            for (DictionaryEntry de : result) {
+                if (de.getTerm().equalsIgnoreCase(t)) {
+                    isDe = true;
+                    break;
+                }
             }
-            if (!isDe){
+            if (!isDe) {
                 result.add(new DictionaryEntry(null, t, Collections.emptyList(), BigInteger.ONE));
             }
         }
-        if (Boolean.parseBoolean((String) params.get("isSearchInInternet"))) {
-            searchService = internetResourceSearchService;
-            for (DictionaryEntry entry : result) {
-                if (entry.getDefinition().isEmpty()) {
-                    entry.setDefinition(searchService.search(entry.getTerm(),params).getDefinition());
-                }
+        for (DictionaryEntry dictionaryEntry : result) {
+            if (dictionaryEntry.getDefinition().isEmpty() && Boolean.parseBoolean((String) params.get("isSearchInInternet"))) {
+                searchService = internetResourceSearchService;
+                dictionaryEntry.setDefinition(
+                        searchService.search(dictionaryEntry.getTerm(), params).getDefinition());
             }
         }
         return result;

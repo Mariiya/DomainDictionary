@@ -2,22 +2,10 @@ package com.domaindictionary.elasticsearch.api;
 
 import com.domaindictionary.elasticsearch.model.DictionaryEntry;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.jose.shaded.json.JSONObject;
 import org.apache.log4j.Logger;
-import org.elasticsearch.action.DocWriteResponse;
-import org.elasticsearch.action.bulk.BulkItemResponse;
-import org.elasticsearch.action.bulk.BulkRequest;
-import org.elasticsearch.action.bulk.BulkResponse;
-import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.*;
-import org.elasticsearch.client.Request;
 import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.client.indices.AnalyzeRequest;
-import org.elasticsearch.common.unit.Fuzziness;
-import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -32,11 +20,9 @@ import java.util.*;
 @Service
 public class SearchManager {
     private static final Logger LOG = Logger.getLogger(SearchManager.class);
-    private ObjectMapper mapper;
     private RestHighLevelClient client;
 
-    public SearchManager(ObjectMapper mapper, RestHighLevelClient client) {
-        this.mapper = mapper;
+    public SearchManager(RestHighLevelClient client) {
         this.client = client;
     }
 
@@ -93,7 +79,7 @@ public class SearchManager {
                         resourceIdFound = new BigInteger(sourceMap.get("resourceId").toString());
                     }
                     if (!termFound.isEmpty() && !definitionFound.isEmpty() && !id.isEmpty()) {
-                        return new DictionaryEntry(id, termFound, definitionFound, resourceIdFound);
+                        return new DictionaryEntry(id, term, definitionFound, resourceIdFound);
                     }
                 }
             }

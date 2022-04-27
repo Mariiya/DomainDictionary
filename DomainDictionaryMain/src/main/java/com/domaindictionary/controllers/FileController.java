@@ -2,7 +2,7 @@ package com.domaindictionary.controllers;
 
 import com.domaindictionary.elasticsearch.model.DictionaryEntry;
 import com.domaindictionary.secutity.services.UserDetailsImpl;
-import com.domaindictionary.service.DomainDictionaryService;
+import com.domaindictionary.service.ResourcesBank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -19,16 +19,16 @@ import java.util.List;
 @RequestMapping("/file")
 public class FileController {
 
-    private final  DomainDictionaryService domainDictionaryService;
+    private final ResourcesBank resourcesBank;
 
     @Autowired
-    public FileController(DomainDictionaryService domainDictionaryService) {
-        this.domainDictionaryService = domainDictionaryService;
+    public FileController(ResourcesBank resourcesBank) {
+        this.resourcesBank = resourcesBank;
     }
 
     @PostMapping("/save-domain-dictionary")
     public ResponseEntity saveDomainDictionaryToFile(@AuthenticationPrincipal UserDetailsImpl user, @RequestBody List<DictionaryEntry> datasourceDE) {
-        ByteArrayInputStream arrayInputStream = domainDictionaryService.createDomainDictionary(datasourceDE);
+        ByteArrayInputStream arrayInputStream = resourcesBank.createDomainDictionary(datasourceDE);
         HttpHeaders headers = new HttpHeaders();
         String fileName = new Date().getTime() + "DomainDictionary" + ".pdf";
         if(user!=null) {
