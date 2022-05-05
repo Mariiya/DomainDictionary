@@ -64,8 +64,6 @@ height: fit-content;
 }
 
 .example-card {
-
-  max-height: 320px;
   overflow-y: scroll;
 }
 

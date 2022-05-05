@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     private static final Logger log = Logger.getLogger(UserDetailsServiceImpl.class.getName());
@@ -23,7 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = null;
         try {
-             user = userRepository.findByUsernameOrEmail(email);
+            user = userRepository.findByUsernameOrEmail(email);
         } catch (EmptyResultDataAccessException e) {
             log.error(e.getMessage(), e);
             throw new UsernameNotFoundException("User Not Found with email: " + email);
@@ -34,6 +36,27 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         log.info("User found " + user.getEmail());
         return UserDetailsImpl.build(user);
+    }
+
+    public User getUserById(BigInteger id) throws UsernameNotFoundException {
+       return userRepository.getUserById(id);
+    }
+
+    public User findByUsernameOrEmail(String username) {
+       return userRepository.findByUsernameOrEmail(username);
+    }
+
+    public void save(User user) {
+       userRepository.save(user);
+    }
+
+    public Boolean existsByUsername(String username) {
+       return  userRepository.existsByUsername(username);
+    }
+
+
+    public Boolean existsByEmail(String email) {
+      return userRepository.existsByEmail(email);
     }
 
 }

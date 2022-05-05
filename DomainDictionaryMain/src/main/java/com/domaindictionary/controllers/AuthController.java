@@ -6,18 +6,18 @@ import com.domaindictionary.secutity.jwt.JwtUtils;
 import com.domaindictionary.secutity.services.UserDetailsImpl;
 import com.domaindictionary.model.JwtResponse;
 import com.domaindictionary.model.LoginRequest;
-import com.domaindictionary.model.MessageResponse;
 import com.domaindictionary.model.User;
+import com.domaindictionary.secutity.services.UserDetailsServiceImpl;
 import org.apache.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -27,16 +27,13 @@ public class AuthController {
     private static final Logger log = Logger.getLogger(AuthController.class.getName());
     private final AuthenticationManager authenticationManager;
 
-    private final UserDao userDao;
-
-    private final PasswordEncoder encoder;
+    private final UserDetailsServiceImpl userDetailsService;
 
     private final JwtUtils jwtUtils;
 
-    public AuthController(AuthenticationManager authenticationManager, UserDao userDao, PasswordEncoder encoder, JwtUtils jwtUtils) {
+    public AuthController(AuthenticationManager authenticationManager, UserDetailsServiceImpl userDetailsService, JwtUtils jwtUtils) {
         this.authenticationManager = authenticationManager;
-        this.userDao = userDao;
-        this.encoder = encoder;
+        this.userDetailsService = userDetailsService;
         this.jwtUtils = jwtUtils;
     }
 
@@ -68,13 +65,13 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody User signUpRequest) {
-        if (userDao.existsByUsername(signUpRequest.getName())) {
+        if (userDetailsService.existsByUsername(signUpRequest.getName())) {
             return ResponseEntity
                     .badRequest()
                     .body("Error: Username is already taken!");
         }
 
-        if (userDao.existsByEmail(signUpRequest.getEmail())) {
+        if (userDetailsService.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
                     .body("Error: Email is already in use!");
@@ -84,12 +81,18 @@ public class AuthController {
         User user = new User(BigInteger.ONE, signUpRequest.getName(),
                 signUpRequest.getEmail(),
                 signUpRequest.getPassword(), signUpRequest.getRole());
-        userDao.save(user);
+        userDetailsService.save(user);
         try {
             return (ResponseEntity<?>) ResponseEntity.ok();
         } catch (Exception e) {
             System.out.println(e);
         }
         return null;
+    }
+
+    @GetMapping("{number}")
+    public User getUserById(@PathVariable @NotNull BigInteger number) {
+        User user = userDetailsService.getUserById(number);
+        return user;
     }
 }

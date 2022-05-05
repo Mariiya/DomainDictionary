@@ -1,7 +1,9 @@
 package com.domaindictionary.controllers;
 
 import com.domaindictionary.elasticsearch.model.DictionaryEntry;
+import com.domaindictionary.model.User;
 import com.domaindictionary.secutity.services.UserDetailsImpl;
+import com.domaindictionary.secutity.services.UserDetailsServiceImpl;
 import com.domaindictionary.service.ResourcesBank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -20,21 +22,24 @@ import java.util.List;
 public class FileController {
 
     private final ResourcesBank resourcesBank;
+    private final UserDetailsServiceImpl userService;
 
     @Autowired
-    public FileController(ResourcesBank resourcesBank) {
+    public FileController(ResourcesBank resourcesBank, UserDetailsServiceImpl userService) {
         this.resourcesBank = resourcesBank;
+        this.userService = userService;
     }
 
     @PostMapping("/save-domain-dictionary")
     public ResponseEntity saveDomainDictionaryToFile(@AuthenticationPrincipal UserDetailsImpl user, @RequestBody List<DictionaryEntry> datasourceDE) {
-        ByteArrayInputStream arrayInputStream = resourcesBank.createDomainDictionary(datasourceDE);
+        User userFromDB = userService.getUserById(user.getId());
+        ByteArrayInputStream arrayInputStream = resourcesBank.createDomainDictionary(userFromDB, datasourceDE);
         HttpHeaders headers = new HttpHeaders();
         String fileName = new Date().getTime() + "DomainDictionary" + ".pdf";
-        if(user!=null) {
-            fileName = new Date().getTime() + user.getUser().getName()+ user.hashCode() + ".pdf";
+        if (user != null) {
+            fileName = new Date().getTime() + user.getUser().getName() + user.hashCode() + ".pdf";
         }
-        headers.add("Content-Disposition", "inline; filename="+fileName);
+        headers.add("Content-Disposition", "inline; filename=" + fileName);
 
         return ResponseEntity
                 .ok()

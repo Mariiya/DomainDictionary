@@ -10,6 +10,7 @@ public class DomainDictionary {
     private BigInteger id;
     private Date createdAt;
     private User author;
+    private String pathToFile;
     private List<DictionaryEntry> entries;
 
     public BigInteger getId() {
@@ -42,5 +43,13 @@ public class DomainDictionary {
 
     public void setEntries(List<DictionaryEntry> entries) {
         this.entries = entries;
+    }
+
+    public String getPathToFile() {
+        return pathToFile;
+    }
+
+    public void setPathToFile(String pathToFile) {
+        this.pathToFile = pathToFile;
     }
 }

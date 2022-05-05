@@ -2,7 +2,7 @@ package com.domaindictionary.controllers;
 
 import com.domaindictionary.elasticsearch.model.DictionaryEntry;
 import com.domaindictionary.model.SearchResource;
-import com.domaindictionary.service.DictionaryManager;
+import com.domaindictionary.service.SearchManager;
 import com.domaindictionary.service.ResourcesBank;
 import com.domaindictionary.service.DomainAnalysisService;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +16,11 @@ import java.util.Map;
 @RequestMapping("/search")
 public class SearchController {
     private final ResourcesBank bank;
-    private final DictionaryManager dictionaryManager;
+    private final SearchManager searchManager;
     private final DomainAnalysisService analyzerService;
 
-    public SearchController(DictionaryManager dictionaryManager, ResourcesBank bank, DomainAnalysisService analyzerService) {
-        this.dictionaryManager = dictionaryManager;
+    public SearchController(SearchManager searchManager, ResourcesBank bank, DomainAnalysisService analyzerService) {
+        this.searchManager = searchManager;
         this.bank = bank;
         this.analyzerService = analyzerService;
     }
@@ -30,7 +30,7 @@ public class SearchController {
         BigInteger resourceId = new BigInteger((String) params.get("resourceId"));
         SearchResource searchResource = bank.getResource(resourceId);
         params.put("searchResource", searchResource);
-        return dictionaryManager.search(terms, params);
+        return searchManager.search(terms, params);
     }
 
 

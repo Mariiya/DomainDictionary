@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.action.ActionRequestValidationException;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
@@ -45,7 +46,7 @@ public class EntriesLoader {
     }
 
     public List<DictionaryEntry> insertDictionaryEntry(List<DictionaryEntry> de) throws IOException {
-        System.out.println("DE to insert "+ de.size());
+        System.out.println("DE to insert " + de.size());
         BulkRequest bulkRequest = new BulkRequest();
         bulkRequest.timeout(TimeValue.timeValueMinutes(1));
         for (DictionaryEntry dictionaryEntry : de) {
@@ -62,14 +63,23 @@ public class EntriesLoader {
 
             @Override
             public void onFailure(Exception e) {
-                LOG.error(e.getMessage(), e);
-                throw new RuntimeException("Elastic search initialisation error");
+                if(e instanceof ActionRequestValidationException){
+                    LOG.error(e.getMessage(), e);
+                }else {
+                    throw new RuntimeException("Elastic search initialisation error");
+                }
             }
         };
         try {
 
             System.out.println("INSERT START" + bulkRequest);
-                restHighLevelClient.bulkAsync(bulkRequest, RequestOptions.DEFAULT, listener);
+            try {
+                bulkRequest.validate();
+            } catch (ActionRequestValidationException e) {
+                LOG.error(e.getMessage(), e);
+                return null;
+            }
+            restHighLevelClient.bulkAsync(bulkRequest, RequestOptions.DEFAULT, listener);
             System.out.println("INSERT END" + bulkRequest);
         } catch (ElasticsearchException e) {
             LOG.error(e.getMessage(), e);

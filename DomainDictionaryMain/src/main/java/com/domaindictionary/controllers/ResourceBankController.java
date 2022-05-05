@@ -12,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Map;
 
@@ -64,5 +65,10 @@ public class ResourceBankController {
     @GetMapping("/possible-article-separator")
     public Collection<String> getPossibleArticleSeparator() {
         return resourcesBack.getPossibleArticleSeparator();
+    }
+
+    @GetMapping("/number-or-dd/{id}")
+    public int getNumberOfDDByUser(@PathVariable BigInteger id) {
+        return resourcesBack.getNumberOfDDByUser(id);
     }
 }

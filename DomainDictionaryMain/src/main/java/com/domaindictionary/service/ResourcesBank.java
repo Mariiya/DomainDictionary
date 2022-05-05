@@ -3,8 +3,10 @@ package com.domaindictionary.service;
 
 import com.domaindictionary.dao.DictionaryDao;
 import com.domaindictionary.elasticsearch.model.DictionaryEntry;
+import com.domaindictionary.model.DomainDictionary;
 import com.domaindictionary.model.ElectronicDictionary;
 import com.domaindictionary.model.SearchResource;
+import com.domaindictionary.model.User;
 import com.domaindictionary.model.enumeration.ResourceSubtype;
 import com.domaindictionary.model.enumeration.ResourceType;
 import com.domaindictionary.utils.RegexConstants;
@@ -24,13 +26,13 @@ import java.util.*;
 public class ResourcesBank {
     private static final Logger LOG = Logger.getLogger(ResourcesBank.class);
     private final DictionaryDao dictionaryDao;
-    private final DictionaryManager dictionaryManager;
+    private final SearchManager searchManager;
     private final FileUploadService fileUploadService;
 
 
     @Autowired
-    public ResourcesBank(DictionaryDao dictionaryDao, DictionaryManager service, FileUploadService fileUploadService) {
-        this.dictionaryManager = service;
+    public ResourcesBank(DictionaryDao dictionaryDao, SearchManager service, FileUploadService fileUploadService) {
+        this.searchManager = service;
         this.dictionaryDao = dictionaryDao;
         this.fileUploadService = fileUploadService;
     }
@@ -42,7 +44,7 @@ public class ResourcesBank {
                 dictionary.setPathToFile(generatedFilePath);
                 for (SearchResource searcresource : dictionaryDao.getResources()) {
                     if (searcresource != null && searcresource.getName() != null
-                            && searcresource.getName().equals(dictionary.getName())){
+                            && searcresource.getName().equals(dictionary.getName())) {
                         dictionary.setName(dictionary.getName() + "_" + searcresource.getId());
                     }
                 }
@@ -124,12 +126,24 @@ public class ResourcesBank {
         return RegexConstants.getTemplatesForArticleSeparator();
     }
 
-    public ByteArrayInputStream createDomainDictionary(List<DictionaryEntry> entries) {
+    public ByteArrayInputStream createDomainDictionary(User user, List<DictionaryEntry> entries) {
         try {
-            return  fileUploadService.createFileForDomainDictionary(entries);
+            ByteArrayInputStream byteArrayInputStream = fileUploadService.createFileForDomainDictionary(entries);
+            String path = fileUploadService.saveToFile(byteArrayInputStream, user.getName());
+            DomainDictionary dd = new DomainDictionary();
+            dd.setPathToFile(path);
+            dd.setCreatedAt(new Date());
+            dd.setAuthor(user);
+            dd.setEntries(entries);
+            dictionaryDao.createDomainDictionary(dd);
+            return byteArrayInputStream;
         } catch (DocumentException | IOException e) {
-            LOG.error(e.getMessage(),e);
+            LOG.error(e.getMessage(), e);
         }
         throw new RuntimeException("Error during file creation");
+    }
+
+    public int getNumberOfDDByUser(BigInteger userId) {
+        return dictionaryDao.getNumberOfDDByUser(userId);
     }
 }

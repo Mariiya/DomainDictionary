@@ -12,6 +12,7 @@ import java.util.Map;
 
 @Service
 public class DomainAnalysisService {
+
     public DomainDictionary analyze(DomainDictionary dd, Collection<String> searchTerms) {
         for (DictionaryEntry de : dd.getEntries()) {
             filterDictionaryEntry(de, searchTerms);
@@ -27,9 +28,8 @@ public class DomainAnalysisService {
         Map<String, Integer> definitionToCount = new HashMap<>();
         for (String definition : entry.getDefinition()) {
             int count = getNumberOfMatches(definition, searchTerms);
-            definitionToCount.put(definition,count);
+            definitionToCount.put(definition, count);
         }
-
 
     }
 

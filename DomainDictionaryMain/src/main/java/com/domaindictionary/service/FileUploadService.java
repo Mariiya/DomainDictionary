@@ -4,6 +4,7 @@ import com.domaindictionary.elasticsearch.model.DictionaryEntry;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
+import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,14 +50,29 @@ public class FileUploadService {
     }
 
     public String saveFile(MultipartFile file, String filePath) {
-        File fileToSave = new File("DomainDictionaryMain\\src\\main\\resources\\dictionaries\\"+ file.getOriginalFilename());
+        File fileToSave = new File("DomainDictionaryMain\\src\\main\\resources\\dictionaries\\" + file.getOriginalFilename());
 
         try (OutputStream os = new FileOutputStream(fileToSave)) {
             os.write(file.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(Files.exists(Paths.get(fileToSave.getAbsolutePath()))){
+        if (Files.exists(Paths.get(fileToSave.getAbsolutePath()))) {
+            return fileToSave.getAbsolutePath();
+        }
+        return "";
+    }
+
+    public String saveToFile(ByteArrayInputStream stream, String name) {
+        File fileToSave = new File("DomainDictionaryMain\\src\\main\\resources\\dictionaries\\"
+                + name + System.currentTimeMillis() + ".txt");
+
+        try {
+            IOUtils.copy(stream, new FileOutputStream(fileToSave));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (Files.exists(Paths.get(fileToSave.getAbsolutePath()))) {
             return fileToSave.getAbsolutePath();
         }
         return "";

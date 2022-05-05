@@ -1,6 +1,5 @@
 package com.domaindictionary.service;
 
-import com.domaindictionary.dao.DictionaryDao;
 import com.domaindictionary.elasticsearch.model.DictionaryEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,12 +13,12 @@ import java.util.Map;
 
 
 @Service
-public class DictionaryManager {
+public class SearchManager {
     private final ElectronicDictionarySearchService electronicDictionarySearchService;
     private final InternetResourceSearchService internetResourceSearchService;
 
     @Autowired
-    public DictionaryManager(ElectronicDictionarySearchService electronicDictionarySearchService, InternetResourceSearchService internetResourceSearchService) {
+    public SearchManager(ElectronicDictionarySearchService electronicDictionarySearchService, InternetResourceSearchService internetResourceSearchService) {
         this.electronicDictionarySearchService = electronicDictionarySearchService;
         this.internetResourceSearchService = internetResourceSearchService;
     }
