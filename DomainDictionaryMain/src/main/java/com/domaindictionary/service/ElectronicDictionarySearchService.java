@@ -1,7 +1,7 @@
 package com.domaindictionary.service;
 
 import com.domaindictionary.dao.DictionaryDao;
-import com.domaindictionary.elasticsearch.model.DictionaryEntry;
+import com.domaindictionary.model.DictionaryEntry;
 import com.domaindictionary.model.ElectronicDictionary;
 import com.domaindictionary.model.Rule;
 import org.apache.log4j.Logger;
@@ -11,8 +11,10 @@ import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.reindex.ScrollableHitSource;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.stereotype.Service;
@@ -33,24 +35,30 @@ public class ElectronicDictionarySearchService implements SearchService {
     }
 
     public DictionaryEntry search(String term, Map<String, Object> params) throws IOException {
-        DictionaryEntry de = search(term, new BigInteger((String) params.get("resourceId")));
-        de.setTerm(term);
-        return de;
+        Collection<DictionaryEntry> dictionaryEntries = elasticSearchOneTerm(term, new BigInteger((String) params.get("resourceId")));
+        if (!dictionaryEntries.isEmpty()) {
+            return dictionaryEntries.iterator().next();
+        }
+        return new DictionaryEntry(term);
     }
 
-    public Collection<DictionaryEntry> search(Collection<String> term, Map<String, Object> params) throws IOException {
-        Collection<DictionaryEntry> result = search(term, new BigInteger((String) params.get("resourceId")));
-        extractDefinitions(result);
-        return result;
+    public Collection<DictionaryEntry> search(Collection<String> terms, Map<String, Object> params) throws IOException {
+        // Collection<DictionaryEntry> result = elasticSearchBatchTerms(terms, new BigInteger((String) params.get("resourceId")));
+        Collection<DictionaryEntry> dictionaryEntries = new ArrayList<>();
+        for (String t : terms) {
+            dictionaryEntries.add(search(t, params));
+        }
+        splitDefinitions(dictionaryEntries);
+        return dictionaryEntries;
     }
 
-    protected void extractDefinitions(Collection<DictionaryEntry> dictionaryEntries) {
+    protected void splitDefinitions(Collection<DictionaryEntry> dictionaryEntries) {
         ElectronicDictionary electronicDictionary = dictionaryDao.getElectronicDictionary(dictionaryEntries.iterator().next().getResourceId());
         if (electronicDictionary != null) {
             Rule rule = electronicDictionary.getRule();
 
             for (DictionaryEntry de : dictionaryEntries) {
-                if (de.getDefinition().size() == 1) {
+                if (de!=null && de.getDefinition()!=null && de.getDefinition().size() == 1) {
                     String definition = de.getDefinition().iterator().next();
                     String[] definitions = definition.split("\\d{1,2}\\.");//rule.getDefinitionSeparator());
                     List<String> toList = Arrays.asList(definitions);
@@ -63,13 +71,14 @@ public class ElectronicDictionarySearchService implements SearchService {
         }
     }
 
-    public Collection<DictionaryEntry> search(Collection<String> terms, BigInteger resourceId) throws IOException {
-        Collection<DictionaryEntry> result = new ArrayList<>();
-        MultiSearchRequest request = new MultiSearchRequest();
+    public Collection<DictionaryEntry> elasticSearchBatchTerms(Collection<String> terms, BigInteger resourceId) throws IOException {
+       Collection<DictionaryEntry> result = new ArrayList<>();
+      /*   MultiSearchRequest request = new MultiSearchRequest();
         for (String t : terms) {
             SearchRequest firstSearchRequest = new SearchRequest(DictionaryEntry.getIndex());
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-            searchSourceBuilder.query(QueryBuilders.matchQuery("term", t));
+            searchSourceBuilder.query(QueryBuilders.matchQuery("term", t).fuzziness(Fuzziness.AUTO).boost(1.0f)
+                    .prefixLength(0).fuzzyTranspositions(true));
             firstSearchRequest.source(searchSourceBuilder);
             request.add(firstSearchRequest);
         }
@@ -78,17 +87,45 @@ public class ElectronicDictionarySearchService implements SearchService {
         for (MultiSearchResponse.Item item : response.getResponses()) {
             for (SearchHit hit : item.getResponse().getHits().getHits()) {
                 Map<String, Object> sourceMap = hit.getSourceAsMap();
-                DictionaryEntry extractedDE = extractDictionaryEntry(sourceMap, hit.getIndex(), resourceId);
+                Collection<DictionaryEntry> fuzzyEntries = new ArrayList<>();
+                fuzzyEntries.add(extractDictionaryEntry(sourceMap, hit.getIndex(), resourceId));
+                DictionaryEntry extractedDE = collapseIntoOne(terms., fuzzyEntries);
+
                 for (String t : terms) {
                     if (extractedDE.getTerm().toLowerCase().contains(t.toLowerCase())) {
                         extractedDE.setTerm(t);
                     }
                 }
                 result.add(extractedDE);
+                break;
             }
         }
-        removeDuplicates(result);
+        removeDuplicates(result);*/
         return result;
+    }
+
+    public Collection<DictionaryEntry> elasticSearchOneTerm(String term, BigInteger resourceId) throws IOException {
+        SearchRequest searchRequest = new SearchRequest(DictionaryEntry.getIndex());
+        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+
+        QueryBuilder query = QueryBuilders.boolQuery()
+                .must(QueryBuilders.matchQuery("term", term).fuzziness(Fuzziness.ONE).boost(1.0f)
+                        .prefixLength(0).fuzzyTranspositions(true))
+                .should(QueryBuilders.matchQuery("resourceId", resourceId));
+
+        sourceBuilder.query(query);
+        searchRequest.source(sourceBuilder);
+
+        SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
+        Collection<DictionaryEntry> res = new ArrayList<>();
+        for (SearchHit hit : searchResponse.getHits().getHits()) {
+            DictionaryEntry de = extractDictionaryEntry(hit.getSourceAsMap(), term, resourceId);
+            de.setTerm(term);
+            res.add(de);
+        }
+
+        removeDuplicates(res);
+        return res;
     }
 
     private void removeDuplicates(Collection<DictionaryEntry> dictionaryEntries) {
@@ -103,27 +140,6 @@ public class ElectronicDictionarySearchService implements SearchService {
             }
         }
         dictionaryEntries.removeAll(toRemove);
-    }
-
-    public DictionaryEntry search(String term, BigInteger resourceId) throws IOException {
-        SearchRequest searchRequest = new SearchRequest(DictionaryEntry.getIndex());
-        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-
-        QueryBuilder query = QueryBuilders.boolQuery()
-                .must(QueryBuilders.matchQuery("term", term))
-                .should(QueryBuilders.matchQuery("resourceId", resourceId))
-                .filter(QueryBuilders.fuzzyQuery("term", term));
-
-        sourceBuilder.query(query);
-        searchRequest.source(sourceBuilder);
-
-        SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
-        for (SearchHit hit : searchResponse.getHits().getHits()) {
-            DictionaryEntry de = extractDictionaryEntry(hit.getSourceAsMap(), term, resourceId);
-            de.setTerm(term);
-            return de;
-        }
-        return new DictionaryEntry(null, term, Collections.EMPTY_LIST, resourceId);
     }
 
     private DictionaryEntry extractDictionaryEntry(Map<String, Object> sourceMap, String term, BigInteger resourceId) {

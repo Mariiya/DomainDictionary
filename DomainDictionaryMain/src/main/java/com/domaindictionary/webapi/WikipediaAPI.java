@@ -1,6 +1,6 @@
 package com.domaindictionary.webapi;
 
-import com.domaindictionary.elasticsearch.model.DictionaryEntry;
+import com.domaindictionary.model.DictionaryEntry;
 import com.domaindictionary.model.InternetResource;
 import com.domaindictionary.model.Rule;
 import com.domaindictionary.model.enumeration.ResourceSubtype;
@@ -32,7 +32,7 @@ public class WikipediaAPI implements InternetResourceSearchAPI {
     }
 
     public DictionaryEntry search(String term, String language) throws IOException, MediaWikiApiErrorException {
-        DictionaryEntry de = new DictionaryEntry();
+        DictionaryEntry de = new DictionaryEntry(term);
         WikibaseDataFetcher wbdf = WikibaseDataFetcher.getWikidataDataFetcher();
         wbdf.getFilter().setLanguageFilter(Collections.singleton(language));
         List<WbSearchEntitiesResult> articles = wbdf.searchEntities(term, language);

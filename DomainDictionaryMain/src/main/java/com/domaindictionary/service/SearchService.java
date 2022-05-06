@@ -1,7 +1,6 @@
 package com.domaindictionary.service;
 
-import com.domaindictionary.elasticsearch.model.DictionaryEntry;
-import com.domaindictionary.model.SearchResource;
+import com.domaindictionary.model.DictionaryEntry;
 
 import java.io.IOException;
 import java.util.Collection;

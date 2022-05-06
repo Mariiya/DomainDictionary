@@ -49,13 +49,30 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.demidko</groupId>
+            <artifactId>aot</artifactId>
+            <version>2021.11.17</version>
+        </dependency>
     </dependencies>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
-
     <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/java</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*.txt</include>
+                    <include>**/*.dat</include>
+                    <include>**/*.csv</include>
+                    <include>**/*.png</include>
+                </includes>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -65,4 +82,11 @@
         </plugins>
     </build>
 
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 </project>

@@ -1,6 +1,6 @@
 package com.domaindictionary.service;
 
-import com.domaindictionary.elasticsearch.model.DictionaryEntry;
+import com.domaindictionary.model.DictionaryEntry;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;

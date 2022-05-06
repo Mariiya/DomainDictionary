@@ -1,7 +1,7 @@
 package com.domaindictionary.service.parser;
 
-import com.domaindictionary.elasticsearch.api.EntriesLoader;
-import com.domaindictionary.elasticsearch.model.DictionaryEntry;
+import com.domaindictionary.dao.EntriesLoader;
+import com.domaindictionary.model.DictionaryEntry;
 import com.domaindictionary.model.ElectronicDictionary;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;

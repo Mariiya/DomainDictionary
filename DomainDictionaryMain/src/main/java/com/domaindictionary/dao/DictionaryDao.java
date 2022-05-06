@@ -2,13 +2,13 @@ package com.domaindictionary.dao;
 
 import com.domaindictionary.dao.mapper.ElectronicDictionaryMapper;
 import com.domaindictionary.dao.mapper.SearchResourceMapper;
-import com.domaindictionary.elasticsearch.api.EntriesLoader;
-import com.domaindictionary.elasticsearch.model.DictionaryEntry;
+import com.domaindictionary.model.DictionaryEntry;
 import com.domaindictionary.model.DomainDictionary;
 import com.domaindictionary.model.ElectronicDictionary;
 import com.domaindictionary.model.SearchResource;
 import com.domaindictionary.service.parser.ParseDictionaryFileToStorage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -32,7 +32,12 @@ public class DictionaryDao {
     }
 
     public ElectronicDictionary getElectronicDictionary(BigInteger id) {
-        return jdbcTemplate.queryForObject(Constants.GET_ELECTRONIC_DICTIONARY, new ElectronicDictionaryMapper(), id);
+        try {
+            return jdbcTemplate.queryForObject(Constants.GET_ELECTRONIC_DICTIONARY, new ElectronicDictionaryMapper(), id);
+        } catch (EmptyResultDataAccessException e) {
+
+        }
+        return null;
     }
 
     public boolean createElectronicDictionary(ElectronicDictionary dictionary) throws IOException {

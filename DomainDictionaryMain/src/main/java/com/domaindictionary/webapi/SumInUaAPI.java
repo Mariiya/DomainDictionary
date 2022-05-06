@@ -1,13 +1,12 @@
 package com.domaindictionary.webapi;
 
-import com.domaindictionary.elasticsearch.model.DictionaryEntry;
+import com.domaindictionary.model.DictionaryEntry;
 import com.domaindictionary.model.InternetResource;
 import com.domaindictionary.model.Rule;
 import com.domaindictionary.model.enumeration.ResourceSubtype;
 import com.domaindictionary.model.enumeration.ResourceType;
 import org.jsoup.Jsoup;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
 import java.math.BigInteger;

@@ -15,4 +15,7 @@ public interface Constants {
 
     String WIKIPEDIA = "wikipedia";
     String SUMINUA = "suminua";
+    String IS_SEARCH_IN_INTERNET = "isSearchInInternet";
+    String IS_DOMAIN_ANALYZE = "isDomainAnalyze";
+    String SEARCH_MARKERS = "searchMarkers";
 }
