@@ -48,28 +48,9 @@ public class ElectronicDictionarySearchService implements SearchService {
         for (String t : terms) {
             dictionaryEntries.add(search(t, params));
         }
-        splitDefinitions(dictionaryEntries);
         return dictionaryEntries;
     }
 
-    protected void splitDefinitions(Collection<DictionaryEntry> dictionaryEntries) {
-        ElectronicDictionary electronicDictionary = dictionaryDao.getElectronicDictionary(dictionaryEntries.iterator().next().getResourceId());
-        if (electronicDictionary != null) {
-            Rule rule = electronicDictionary.getRule();
-
-            for (DictionaryEntry de : dictionaryEntries) {
-                if (de!=null && de.getDefinition()!=null && de.getDefinition().size() == 1) {
-                    String definition = de.getDefinition().iterator().next();
-                    String[] definitions = definition.split("\\d{1,2}\\.");//rule.getDefinitionSeparator());
-                    List<String> toList = Arrays.asList(definitions);
-                    if (toList.size() > 2) {
-                        toList = toList.subList(1, toList.size());
-                    }
-                    de.setDefinition(toList);
-                }
-            }
-        }
-    }
 
     public Collection<DictionaryEntry> elasticSearchBatchTerms(Collection<String> terms, BigInteger resourceId) throws IOException {
        Collection<DictionaryEntry> result = new ArrayList<>();

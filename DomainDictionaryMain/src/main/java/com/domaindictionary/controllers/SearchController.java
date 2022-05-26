@@ -6,7 +6,6 @@ import com.domaindictionary.service.SearchManager;
 import com.domaindictionary.service.ResourcesBank;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;

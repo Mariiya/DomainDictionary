@@ -1,6 +1,5 @@
 package com.domaindictionary.controllers;
 
-import com.domaindictionary.dao.UserDao;
 import com.domaindictionary.model.enumeration.Role;
 import com.domaindictionary.secutity.jwt.JwtUtils;
 import com.domaindictionary.secutity.services.UserDetailsImpl;

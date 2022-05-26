@@ -94,10 +94,6 @@ public class ResourcesBank {
         return result;
     }
 
-    public ElectronicDictionary getElectronicDictionary(BigInteger resourceId) {
-        return dictionaryDao.getElectronicDictionary(resourceId);
-    }
-
     public SearchResource getResource(BigInteger id) throws FileNotFoundException {
         for (SearchResource resource : getResources()) {
             if (resource.getId().equals(id))

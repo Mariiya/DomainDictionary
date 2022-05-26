@@ -16,14 +16,12 @@ public class DomainAnalysisService {
     }
 
     public Collection<DictionaryEntry> analyze(Collection<DictionaryEntry> dictionaryEntries, Collection<String> searchTerms) throws Exception {
-        graphematicAnalysis(searchTerms);
+        searchTerms = graphematicAnalysis(searchTerms);
         Set<String> normalizedSearchTerms = morphologicalAnalysis(searchTerms);
 
         for (DictionaryEntry de : dictionaryEntries) {
-            System.out.println("before " + de.getDefinition().size());
             if (de.getDefinition() != null)
                 filterDictionaryEntry(de, normalizedSearchTerms);
-            System.out.println("after " + de.getDefinition().size());
         }
         return dictionaryEntries;
     }
@@ -77,7 +75,7 @@ public class DomainAnalysisService {
         return false;
     }
 
-    protected void graphematicAnalysis(Collection<String> searchTerms) {
+    protected Collection<String> graphematicAnalysis(Collection<String> searchTerms) {
         Collection<String> result = new ArrayList<>();
         for (String t : searchTerms) {
             t = t.trim();
@@ -87,8 +85,8 @@ public class DomainAnalysisService {
                 result.add(t);
             }
         }
-        searchTerms.clear();
-        searchTerms.addAll(result);
+
+        return result;
     }
 
     protected Set<String> morphologicalAnalysis(Collection<String> searchTerms) throws Exception {

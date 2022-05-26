@@ -108,8 +108,4 @@ return null;
         return term.length() < 100;
     }
 
-    public List<String> splitDefinitions(String definition, String definitionSeparator) {
-        String[] arr = definition.split(definitionSeparator);
-        return Arrays.asList(arr);
-    }
 }
