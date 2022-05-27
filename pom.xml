@@ -16,7 +16,6 @@
     <modules>
         <module>DomainDictionaryMain</module>
     </modules>
-    <name>diplom</name>
     <properties>
         <java.version>8</java.version>
     </properties>
