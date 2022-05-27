@@ -33,8 +33,8 @@ public class TextWrapper {
     
         public String text;
     
-        public UnicodeInfo getIndexerItem(int ind) {
-            return UnicodeInfo.ALLCHARS.get((int)text.charAt(ind));
+        public com.pullenti.morph.internal.UnicodeInfo getIndexerItem(int ind) {
+            return com.pullenti.morph.internal.UnicodeInfo.ALLCHARS.get((int)text.charAt(ind));
         }
     
         public CharsList() {

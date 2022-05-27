@@ -69,23 +69,23 @@ public class PhoneAnalyzer extends com.pullenti.ner.Analyzer {
 
     public static class PhoneAnalizerData extends com.pullenti.ner.core.AnalyzerData {
     
-        private java.util.HashMap<String, java.util.ArrayList<PhoneReferent>> m_PhonesHash = new java.util.HashMap<String, java.util.ArrayList<PhoneReferent>>();
+        private java.util.HashMap<String, java.util.ArrayList<com.pullenti.ner.phone.PhoneReferent>> m_PhonesHash = new java.util.HashMap<String, java.util.ArrayList<com.pullenti.ner.phone.PhoneReferent>>();
     
         @Override
         public com.pullenti.ner.Referent registerReferent(com.pullenti.ner.Referent referent) {
-            PhoneReferent _phone = (PhoneReferent)com.pullenti.unisharp.Utils.cast(referent, PhoneReferent.class);
+            com.pullenti.ner.phone.PhoneReferent _phone = (com.pullenti.ner.phone.PhoneReferent)com.pullenti.unisharp.Utils.cast(referent, com.pullenti.ner.phone.PhoneReferent.class);
             if (_phone == null) 
                 return null;
             String key = _phone.getNumber();
             if (key.length() >= 10) 
                 key = key.substring(3);
-            java.util.ArrayList<PhoneReferent> phLi;
-            com.pullenti.unisharp.Outargwrapper<java.util.ArrayList<PhoneReferent>> wrapphLi2859 = new com.pullenti.unisharp.Outargwrapper<java.util.ArrayList<PhoneReferent>>();
+            java.util.ArrayList<com.pullenti.ner.phone.PhoneReferent> phLi;
+            com.pullenti.unisharp.Outargwrapper<java.util.ArrayList<com.pullenti.ner.phone.PhoneReferent>> wrapphLi2859 = new com.pullenti.unisharp.Outargwrapper<java.util.ArrayList<com.pullenti.ner.phone.PhoneReferent>>();
             boolean inoutres2860 = com.pullenti.unisharp.Utils.tryGetValue(m_PhonesHash, key, wrapphLi2859);
             phLi = wrapphLi2859.value;
             if (!inoutres2860) 
-                m_PhonesHash.put(key, (phLi = new java.util.ArrayList<PhoneReferent>()));
-            for (PhoneReferent p : phLi) {
+                m_PhonesHash.put(key, (phLi = new java.util.ArrayList<com.pullenti.ner.phone.PhoneReferent>()));
+            for (com.pullenti.ner.phone.PhoneReferent p : phLi) {
                 if (p.canBeEquals(_phone, com.pullenti.ner.core.ReferentsEqualType.WITHINONETEXT)) {
                     p.mergeSlots(_phone, true);
                     return p;

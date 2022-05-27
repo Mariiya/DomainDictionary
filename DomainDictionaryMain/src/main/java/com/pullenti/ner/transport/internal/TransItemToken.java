@@ -867,7 +867,7 @@ public class TransItemToken extends com.pullenti.ner.MetaToken {
     
         public com.pullenti.ner.transport.TransportKind kind = com.pullenti.ner.transport.TransportKind.UNDEFINED;
     
-        public Typs typ = Typs.NOUN;
+        public com.pullenti.ner.transport.internal.TransItemToken.Typs typ = com.pullenti.ner.transport.internal.TransItemToken.Typs.NOUN;
     
         public boolean isDoubt;
     
@@ -876,34 +876,34 @@ public class TransItemToken extends com.pullenti.ner.MetaToken {
             this.initByNormalText(source, null);
         }
     
-        public static TransTermin _new2897(String _arg1, boolean _arg2, Typs _arg3, com.pullenti.ner.transport.TransportKind _arg4) {
+        public static TransTermin _new2897(String _arg1, boolean _arg2, com.pullenti.ner.transport.internal.TransItemToken.Typs _arg3, com.pullenti.ner.transport.TransportKind _arg4) {
             TransTermin res = new TransTermin(_arg1, _arg2);
             res.typ = _arg3;
             res.kind = _arg4;
             return res;
         }
     
-        public static TransTermin _new2900(String _arg1, boolean _arg2, Typs _arg3, String _arg4) {
+        public static TransTermin _new2900(String _arg1, boolean _arg2, com.pullenti.ner.transport.internal.TransItemToken.Typs _arg3, String _arg4) {
             TransTermin res = new TransTermin(_arg1, _arg2);
             res.typ = _arg3;
             res.acronym = _arg4;
             return res;
         }
     
-        public static TransTermin _new2901(String _arg1, boolean _arg2, Typs _arg3, com.pullenti.morph.MorphLang _arg4) {
+        public static TransTermin _new2901(String _arg1, boolean _arg2, com.pullenti.ner.transport.internal.TransItemToken.Typs _arg3, com.pullenti.morph.MorphLang _arg4) {
             TransTermin res = new TransTermin(_arg1, _arg2);
             res.typ = _arg3;
             res.lang = _arg4;
             return res;
         }
     
-        public static TransTermin _new2902(String _arg1, boolean _arg2, Typs _arg3) {
+        public static TransTermin _new2902(String _arg1, boolean _arg2, com.pullenti.ner.transport.internal.TransItemToken.Typs _arg3) {
             TransTermin res = new TransTermin(_arg1, _arg2);
             res.typ = _arg3;
             return res;
         }
     
-        public static TransTermin _new2904(String _arg1, boolean _arg2, Typs _arg3, com.pullenti.morph.MorphLang _arg4, com.pullenti.ner.transport.TransportKind _arg5) {
+        public static TransTermin _new2904(String _arg1, boolean _arg2, com.pullenti.ner.transport.internal.TransItemToken.Typs _arg3, com.pullenti.morph.MorphLang _arg4, com.pullenti.ner.transport.TransportKind _arg5) {
             TransTermin res = new TransTermin(_arg1, _arg2);
             res.typ = _arg3;
             res.lang = _arg4;

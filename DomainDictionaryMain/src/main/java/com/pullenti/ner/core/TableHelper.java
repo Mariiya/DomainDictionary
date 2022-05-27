@@ -172,7 +172,7 @@ public class TableHelper {
     
         public int rowSpan = 0;
     
-        public TableTypes typ = TableTypes.UNDEFINED;
+        public com.pullenti.ner.core.TableHelper.TableTypes typ = com.pullenti.ner.core.TableHelper.TableTypes.UNDEFINED;
     
         public com.pullenti.ner.Token src;
     
@@ -186,22 +186,22 @@ public class TableHelper {
             if (t == null) 
                 return;
             if (t.isChar((char)0x1E)) {
-                typ = TableTypes.TABLESTART;
+                typ = com.pullenti.ner.core.TableHelper.TableTypes.TABLESTART;
                 return;
             }
             if (t.isChar((char)0x1F)) {
-                typ = TableTypes.TABLEEND;
+                typ = com.pullenti.ner.core.TableHelper.TableTypes.TABLEEND;
                 return;
             }
             if (!t.isChar((char)7)) 
                 return;
             String txt = t.kit.getSofa().getText();
-            typ = TableTypes.CELLEND;
+            typ = com.pullenti.ner.core.TableHelper.TableTypes.CELLEND;
             int p = t.getBeginChar() - 1;
             if (p < 0) 
                 return;
             if (((int)txt.charAt(p)) == 0xD || ((int)txt.charAt(p)) == 0xA) {
-                typ = TableTypes.ROWEND;
+                typ = com.pullenti.ner.core.TableHelper.TableTypes.ROWEND;
                 return;
             }
             colSpan = (rowSpan = 1);

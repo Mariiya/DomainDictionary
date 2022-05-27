@@ -236,7 +236,7 @@ public class OrgItemEponymToken extends com.pullenti.ner.MetaToken {
             super(begin, end, null);
         }
     
-        public PersonItemType typ = PersonItemType.SURNAME;
+        public com.pullenti.ner._org.internal.OrgItemEponymToken.PersonItemType typ = com.pullenti.ner._org.internal.OrgItemEponymToken.PersonItemType.SURNAME;
     
         public String value;
     
@@ -260,12 +260,12 @@ public class OrgItemEponymToken extends com.pullenti.ner.MetaToken {
                     com.pullenti.ner.Token t1 = t;
                     if (t1.getNext() != null && t1.getNext().isChar('.')) 
                         t1 = t1.getNext();
-                    res.add(_new1964(t, t1, PersonItemType.INITIAL, s));
+                    res.add(_new1964(t, t1, com.pullenti.ner._org.internal.OrgItemEponymToken.PersonItemType.INITIAL, s));
                     t = t1;
                     continue;
                 }
                 if (tt.isAnd()) {
-                    res.add(_new1965(t, t, PersonItemType.AND));
+                    res.add(_new1965(t, t, com.pullenti.ner._org.internal.OrgItemEponymToken.PersonItemType.AND));
                     continue;
                 }
                 if (tt.getMorph()._getClass().isPronoun() || tt.getMorph()._getClass().isPersonalPronoun()) 
@@ -277,30 +277,30 @@ public class OrgItemEponymToken extends com.pullenti.ner.MetaToken {
                     com.pullenti.ner.Token t1 = t;
                     if (t1.getNext() != null && !t1.isWhitespaceAfter() && t1.getNext().isChar('.')) 
                         t1 = t1.getNext();
-                    res.add(_new1964(t, t1, PersonItemType.LOCASEWORD, s));
+                    res.add(_new1964(t, t1, com.pullenti.ner._org.internal.OrgItemEponymToken.PersonItemType.LOCASEWORD, s));
                     t = t1;
                     continue;
                 }
                 if (tt.getMorph()._getClass().isProperName()) 
-                    res.add(_new1964(t, t, PersonItemType.NAME, s));
+                    res.add(_new1964(t, t, com.pullenti.ner._org.internal.OrgItemEponymToken.PersonItemType.NAME, s));
                 else if ((t.getNext() != null && t.getNext().isHiphen() && (t.getNext().getNext() instanceof com.pullenti.ner.TextToken)) && !t.getNext().isWhitespaceAfter()) {
-                    res.add(_new1964(t, t.getNext().getNext(), PersonItemType.SURNAME, (s + "-" + ((com.pullenti.ner.TextToken)com.pullenti.unisharp.Utils.cast(t.getNext().getNext(), com.pullenti.ner.TextToken.class)).term)));
+                    res.add(_new1964(t, t.getNext().getNext(), com.pullenti.ner._org.internal.OrgItemEponymToken.PersonItemType.SURNAME, (s + "-" + ((com.pullenti.ner.TextToken)com.pullenti.unisharp.Utils.cast(t.getNext().getNext(), com.pullenti.ner.TextToken.class)).term)));
                     t = t.getNext().getNext();
                 }
                 else 
-                    res.add(_new1964(t, t, PersonItemType.SURNAME, s));
+                    res.add(_new1964(t, t, com.pullenti.ner._org.internal.OrgItemEponymToken.PersonItemType.SURNAME, s));
             }
             return (res.size() > 0 ? res : null);
         }
     
-        public static PersonItemToken _new1964(com.pullenti.ner.Token _arg1, com.pullenti.ner.Token _arg2, PersonItemType _arg3, String _arg4) {
+        public static PersonItemToken _new1964(com.pullenti.ner.Token _arg1, com.pullenti.ner.Token _arg2, com.pullenti.ner._org.internal.OrgItemEponymToken.PersonItemType _arg3, String _arg4) {
             PersonItemToken res = new PersonItemToken(_arg1, _arg2);
             res.typ = _arg3;
             res.value = _arg4;
             return res;
         }
     
-        public static PersonItemToken _new1965(com.pullenti.ner.Token _arg1, com.pullenti.ner.Token _arg2, PersonItemType _arg3) {
+        public static PersonItemToken _new1965(com.pullenti.ner.Token _arg1, com.pullenti.ner.Token _arg2, com.pullenti.ner._org.internal.OrgItemEponymToken.PersonItemType _arg3) {
             PersonItemToken res = new PersonItemToken(_arg1, _arg2);
             res.typ = _arg3;
             return res;

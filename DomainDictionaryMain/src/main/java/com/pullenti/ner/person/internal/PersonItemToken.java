@@ -128,7 +128,7 @@ public class PersonItemToken extends com.pullenti.ner.MetaToken {
                 m_Morph = null;
             if (m_Morph == null) {
                 m_Morph = new com.pullenti.ner.MorphCollection(null);
-                for (MorphPersonItemVariant v : vars) {
+                for (com.pullenti.ner.person.internal.PersonItemToken.MorphPersonItemVariant v : vars) {
                     m_Morph.addItem(v);
                 }
             }
@@ -138,7 +138,7 @@ public class PersonItemToken extends com.pullenti.ner.MetaToken {
     
         private com.pullenti.ner.MorphCollection m_Morph;
     
-        public java.util.ArrayList<MorphPersonItemVariant> vars = new java.util.ArrayList<MorphPersonItemVariant>();
+        public java.util.ArrayList<com.pullenti.ner.person.internal.PersonItemToken.MorphPersonItemVariant> vars = new java.util.ArrayList<com.pullenti.ner.person.internal.PersonItemToken.MorphPersonItemVariant>();
     
         public String term;
     
@@ -178,7 +178,7 @@ public class PersonItemToken extends com.pullenti.ner.MetaToken {
             StringBuilder res = new StringBuilder();
             if (term != null) 
                 res.append(term);
-            for (MorphPersonItemVariant v : vars) {
+            for (com.pullenti.ner.person.internal.PersonItemToken.MorphPersonItemVariant v : vars) {
                 res.append("; ").append(v.toString());
             }
             if (isInDictionary) 
@@ -195,10 +195,10 @@ public class PersonItemToken extends com.pullenti.ner.MetaToken {
         }
     
         public void mergeHiphen(MorphPersonItem second) {
-            java.util.ArrayList<MorphPersonItemVariant> addvars = new java.util.ArrayList<MorphPersonItemVariant>();
-            for (MorphPersonItemVariant v : vars) {
+            java.util.ArrayList<com.pullenti.ner.person.internal.PersonItemToken.MorphPersonItemVariant> addvars = new java.util.ArrayList<com.pullenti.ner.person.internal.PersonItemToken.MorphPersonItemVariant>();
+            for (com.pullenti.ner.person.internal.PersonItemToken.MorphPersonItemVariant v : vars) {
                 int ok = 0;
-                for (MorphPersonItemVariant vv : second.vars) {
+                for (com.pullenti.ner.person.internal.PersonItemToken.MorphPersonItemVariant vv : second.vars) {
                     if (((short)((vv.getGender().value()) & (v.getGender().value()))) != (com.pullenti.morph.MorphGender.UNDEFINED.value())) {
                         v.value = (v.value + "-" + vv.value);
                         ok++;
@@ -208,7 +208,7 @@ public class PersonItemToken extends com.pullenti.ner.MetaToken {
                 if (ok > 0) 
                     continue;
                 if (v.getGender() != com.pullenti.morph.MorphGender.UNDEFINED) {
-                    for (MorphPersonItemVariant vv : second.vars) {
+                    for (com.pullenti.ner.person.internal.PersonItemToken.MorphPersonItemVariant vv : second.vars) {
                         if (vv.getGender() == com.pullenti.morph.MorphGender.UNDEFINED) {
                             v.value = (v.value + "-" + vv.value);
                             ok++;
@@ -220,14 +220,14 @@ public class PersonItemToken extends com.pullenti.ner.MetaToken {
                 }
                 else {
                     String val0 = v.value;
-                    for (MorphPersonItemVariant vv : second.vars) {
+                    for (com.pullenti.ner.person.internal.PersonItemToken.MorphPersonItemVariant vv : second.vars) {
                         if (vv.getGender() != com.pullenti.morph.MorphGender.UNDEFINED) {
                             if (ok == 0) {
                                 v.value = (val0 + "-" + vv.value);
                                 v.copyFrom(vv);
                             }
                             else 
-                                addvars.add(new MorphPersonItemVariant((val0 + "-" + vv.value), vv, false));
+                                addvars.add(new com.pullenti.ner.person.internal.PersonItemToken.MorphPersonItemVariant((val0 + "-" + vv.value), vv, false));
                             ok++;
                         }
                     }
@@ -244,7 +244,7 @@ public class PersonItemToken extends com.pullenti.ner.MetaToken {
         public void addPrefix(String val) {
             if (term != null) 
                 term = val + term;
-            for (MorphPersonItemVariant v : vars) {
+            for (com.pullenti.ner.person.internal.PersonItemToken.MorphPersonItemVariant v : vars) {
                 if (v.value != null) 
                     v.value = val + v.value;
             }
@@ -253,7 +253,7 @@ public class PersonItemToken extends com.pullenti.ner.MetaToken {
         public void addPostfix(String val, com.pullenti.morph.MorphGender gen) {
             if (term != null) 
                 term = (term + "-" + val);
-            for (MorphPersonItemVariant v : vars) {
+            for (com.pullenti.ner.person.internal.PersonItemToken.MorphPersonItemVariant v : vars) {
                 if (v.value != null) {
                     v.value = (v.value + "-" + val);
                     if (gen != com.pullenti.morph.MorphGender.UNDEFINED) 
@@ -282,10 +282,10 @@ public class PersonItemToken extends com.pullenti.ner.MetaToken {
                 vars = pi.vars;
                 return;
             }
-            java.util.ArrayList<MorphPersonItemVariant> res = new java.util.ArrayList<MorphPersonItemVariant>();
-            for (MorphPersonItemVariant v : vars) {
-                for (MorphPersonItemVariant vv : pi.vars) {
-                    MorphPersonItemVariant vvv = new MorphPersonItemVariant((v.value + "-" + vv.value), v, false);
+            java.util.ArrayList<com.pullenti.ner.person.internal.PersonItemToken.MorphPersonItemVariant> res = new java.util.ArrayList<com.pullenti.ner.person.internal.PersonItemToken.MorphPersonItemVariant>();
+            for (com.pullenti.ner.person.internal.PersonItemToken.MorphPersonItemVariant v : vars) {
+                for (com.pullenti.ner.person.internal.PersonItemToken.MorphPersonItemVariant vv : pi.vars) {
+                    com.pullenti.ner.person.internal.PersonItemToken.MorphPersonItemVariant vvv = new com.pullenti.ner.person.internal.PersonItemToken.MorphPersonItemVariant((v.value + "-" + vv.value), v, false);
                     res.add(vvv);
                 }
             }
@@ -295,7 +295,7 @@ public class PersonItemToken extends com.pullenti.ner.MetaToken {
         public void correctLastnameVariants() {
             isLastnameHasStdTail = false;
             boolean strongStd = false;
-            for (MorphPersonItemVariant v : vars) {
+            for (com.pullenti.ner.person.internal.PersonItemToken.MorphPersonItemVariant v : vars) {
                 if (v.value != null) {
                     if (endsWithStdSurname(v.value) || com.pullenti.morph.LanguageHelper.endsWith(v.value, "АЯ") || com.pullenti.morph.LanguageHelper.endsWith(v.value, "ОЙ")) {
                         isLastnameHasStdTail = true;
@@ -326,7 +326,7 @@ public class PersonItemToken extends com.pullenti.ner.MetaToken {
                             vars.remove(i);
                             continue;
                         }
-                        SurnameTail t = findTail(vars.get(i).value);
+                        com.pullenti.ner.person.internal.PersonItemToken.SurnameTail t = findTail(vars.get(i).value);
                         if (t != null) {
                             if (t.gender != com.pullenti.morph.MorphGender.UNDEFINED) 
                                 vars.get(i).setGender(t.gender);
@@ -342,7 +342,7 @@ public class PersonItemToken extends com.pullenti.ner.MetaToken {
     
         public void removeNotGenitive() {
             boolean hasGen = false;
-            for (MorphPersonItemVariant v : vars) {
+            for (com.pullenti.ner.person.internal.PersonItemToken.MorphPersonItemVariant v : vars) {
                 if (v.getCase().isGenitive()) 
                     hasGen = true;
             }
@@ -355,23 +355,23 @@ public class PersonItemToken extends com.pullenti.ner.MetaToken {
         }
     
         public static void initialize() {
-            m_LastnameStdTails = new java.util.ArrayList<SurnameTail>();
-            m_LastnameStdTails.add(new SurnameTail("ОВ", com.pullenti.morph.MorphGender.MASCULINE));
-            m_LastnameStdTails.add(new SurnameTail("ОВА", com.pullenti.morph.MorphGender.FEMINIE));
-            m_LastnameStdTails.add(new SurnameTail("ЕВ", com.pullenti.morph.MorphGender.MASCULINE));
-            m_LastnameStdTails.add(new SurnameTail("ЕВА", com.pullenti.morph.MorphGender.FEMINIE));
-            m_LastnameStdTails.add(new SurnameTail("ЄВ", com.pullenti.morph.MorphGender.MASCULINE));
-            m_LastnameStdTails.add(new SurnameTail("ЄВА", com.pullenti.morph.MorphGender.FEMINIE));
-            m_LastnameStdTails.add(new SurnameTail("ИН", com.pullenti.morph.MorphGender.MASCULINE));
-            m_LastnameStdTails.add(new SurnameTail("ИНА", com.pullenti.morph.MorphGender.FEMINIE));
-            m_LastnameStdTails.add(new SurnameTail("ІН", com.pullenti.morph.MorphGender.MASCULINE));
-            m_LastnameStdTails.add(new SurnameTail("ІНА", com.pullenti.morph.MorphGender.FEMINIE));
+            m_LastnameStdTails = new java.util.ArrayList<com.pullenti.ner.person.internal.PersonItemToken.SurnameTail>();
+            m_LastnameStdTails.add(new com.pullenti.ner.person.internal.PersonItemToken.SurnameTail("ОВ", com.pullenti.morph.MorphGender.MASCULINE));
+            m_LastnameStdTails.add(new com.pullenti.ner.person.internal.PersonItemToken.SurnameTail("ОВА", com.pullenti.morph.MorphGender.FEMINIE));
+            m_LastnameStdTails.add(new com.pullenti.ner.person.internal.PersonItemToken.SurnameTail("ЕВ", com.pullenti.morph.MorphGender.MASCULINE));
+            m_LastnameStdTails.add(new com.pullenti.ner.person.internal.PersonItemToken.SurnameTail("ЕВА", com.pullenti.morph.MorphGender.FEMINIE));
+            m_LastnameStdTails.add(new com.pullenti.ner.person.internal.PersonItemToken.SurnameTail("ЄВ", com.pullenti.morph.MorphGender.MASCULINE));
+            m_LastnameStdTails.add(new com.pullenti.ner.person.internal.PersonItemToken.SurnameTail("ЄВА", com.pullenti.morph.MorphGender.FEMINIE));
+            m_LastnameStdTails.add(new com.pullenti.ner.person.internal.PersonItemToken.SurnameTail("ИН", com.pullenti.morph.MorphGender.MASCULINE));
+            m_LastnameStdTails.add(new com.pullenti.ner.person.internal.PersonItemToken.SurnameTail("ИНА", com.pullenti.morph.MorphGender.FEMINIE));
+            m_LastnameStdTails.add(new com.pullenti.ner.person.internal.PersonItemToken.SurnameTail("ІН", com.pullenti.morph.MorphGender.MASCULINE));
+            m_LastnameStdTails.add(new com.pullenti.ner.person.internal.PersonItemToken.SurnameTail("ІНА", com.pullenti.morph.MorphGender.FEMINIE));
             for (String s : new String[] {"ЕР", "РН", "ДЗЕ", "ВИЛИ", "ЯН", "УК", "ЮК", "КО", "МАН", "АНН", "ЙН", "УН", "СКУ", "СКИ", "СЬКІ", "ИЛО", "ІЛО", "АЛО", "ИК", "СОН", "РА", "НДА", "НДО", "ЕС", "АС", "АВА", "ЛС", "ЛЮС", "ЛЬС", "ЙЗ", "ЕРГ", "ИНГ", "OR", "ER", "OV", "IN", "ERG"}) {
-                m_LastnameStdTails.add(new SurnameTail(s, com.pullenti.morph.MorphGender.UNDEFINED));
+                m_LastnameStdTails.add(new com.pullenti.ner.person.internal.PersonItemToken.SurnameTail(s, com.pullenti.morph.MorphGender.UNDEFINED));
             }
             m_LatsnameSexStdTails = new java.util.ArrayList<String>(java.util.Arrays.asList(new String[] {"ОВ", "ОВА", "ЕВ", "ЄВ", "ЕВА", "ЄВA", "ИН", "ИНА", "ІН", "ІНА", "КИЙ", "КАЯ"}));
             m_LastnameAsian = new java.util.ArrayList<String>();
-            for (String s : com.pullenti.unisharp.Utils.split(ResourceHelper.getString("chinasurnames.txt"), String.valueOf('\n'), false)) {
+            for (String s : com.pullenti.unisharp.Utils.split(com.pullenti.ner.person.internal.ResourceHelper.getString("chinasurnames.txt"), String.valueOf('\n'), false)) {
                 String ss = s.trim().toUpperCase().replace("Ё", "Е");
                 if (!com.pullenti.unisharp.Utils.isNullOrEmpty(ss)) 
                     m_LastnameAsian.add(ss);
@@ -387,13 +387,13 @@ public class PersonItemToken extends com.pullenti.ner.MetaToken {
             java.util.Collections.sort(m_LastnameAsian);
         }
     
-        private static java.util.ArrayList<SurnameTail> m_LastnameStdTails;
+        private static java.util.ArrayList<com.pullenti.ner.person.internal.PersonItemToken.SurnameTail> m_LastnameStdTails;
     
         private static java.util.ArrayList<String> m_LatsnameSexStdTails;
     
         private static java.util.ArrayList<String> m_LastnameAsian;
     
-        private static SurnameTail findTail(String val) {
+        private static com.pullenti.ner.person.internal.PersonItemToken.SurnameTail findTail(String val) {
             if (val == null) 
                 return null;
             for (int i = 0; i < m_LastnameStdTails.size(); i++) {

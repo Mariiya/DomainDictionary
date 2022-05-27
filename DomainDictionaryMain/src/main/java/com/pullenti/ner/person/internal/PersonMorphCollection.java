@@ -76,10 +76,10 @@ public class PersonMorphCollection {
         }
     }
 
-    public static class SortComparer implements java.util.Comparator<PersonMorphVariant> {
+    public static class SortComparer implements java.util.Comparator<com.pullenti.ner.person.internal.PersonMorphCollection.PersonMorphVariant> {
     
         @Override
-        public int compare(PersonMorphVariant x, PersonMorphVariant y) {
+        public int compare(com.pullenti.ner.person.internal.PersonMorphCollection.PersonMorphVariant x, com.pullenti.ner.person.internal.PersonMorphCollection.PersonMorphVariant y) {
             if (x.value.indexOf('-') > 0) {
                 if ((y.value.indexOf('-') < 0) && (y.value.length() < (x.value.length() - 1))) 
                     return -1;

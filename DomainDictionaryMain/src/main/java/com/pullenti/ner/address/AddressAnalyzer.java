@@ -87,8 +87,8 @@ public class AddressAnalyzer extends com.pullenti.ner.Analyzer {
     
         @Override
         public com.pullenti.ner.Referent registerReferent(com.pullenti.ner.Referent referent) {
-            if (referent instanceof StreetReferent) {
-                ((StreetReferent)com.pullenti.unisharp.Utils.cast(referent, StreetReferent.class)).correct();
+            if (referent instanceof com.pullenti.ner.address.StreetReferent) {
+                ((com.pullenti.ner.address.StreetReferent)com.pullenti.unisharp.Utils.cast(referent, com.pullenti.ner.address.StreetReferent.class)).correct();
                 return streets.registerReferent(referent);
             }
             else 

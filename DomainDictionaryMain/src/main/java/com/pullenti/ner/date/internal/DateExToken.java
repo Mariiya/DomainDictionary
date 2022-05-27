@@ -263,11 +263,11 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
             return java.time.LocalDateTime.of(year, mon, day, 0, 0, 0);
         }
     
-        public static DateValues tryCreate(java.util.ArrayList<DateExItemToken> list, java.time.LocalDateTime today, int tense) {
+        public static DateValues tryCreate(java.util.ArrayList<com.pullenti.ner.date.internal.DateExToken.DateExItemToken> list, java.time.LocalDateTime today, int tense) {
             boolean oo = false;
             if (list != null) {
-                for (DateExItemToken v : list) {
-                    if (v.typ != DateExItemTokenType.HOUR && v.typ != DateExItemTokenType.MINUTE)
+                for (com.pullenti.ner.date.internal.DateExToken.DateExItemToken v : list) {
+                    if (v.typ != com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.HOUR && v.typ != com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.MINUTE) 
                         oo = true;
                 }
             }
@@ -276,10 +276,10 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
             if (list == null || list.size() == 0) 
                 return null;
             for (int j = 0; j < list.size(); j++) {
-                if (list.get(j).typ == DateExItemTokenType.DAYOFWEEK) {
-                    if (j > 0 && list.get(j - 1).typ == DateExItemTokenType.WEEK)
+                if (list.get(j).typ == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAYOFWEEK) {
+                    if (j > 0 && list.get(j - 1).typ == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.WEEK) 
                         break;
-                    DateExItemToken we = DateExItemToken._new634(list.get(j).getBeginToken(), list.get(j).getEndToken(), DateExItemTokenType.WEEK, true);
+                    com.pullenti.ner.date.internal.DateExToken.DateExItemToken we = com.pullenti.ner.date.internal.DateExToken.DateExItemToken._new634(list.get(j).getBeginToken(), list.get(j).getEndToken(), com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.WEEK, true);
                     if (list.get(j).isValueRelate) {
                         list.get(j).isValueRelate = false;
                         if (list.get(j).value < 0) {
@@ -292,10 +292,10 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
                 }
             }
             DateValues res = new DateValues();
-            DateExItemToken it;
+            com.pullenti.ner.date.internal.DateExToken.DateExItemToken it;
             int i = 0;
             boolean hasRel = false;
-            if ((i < list.size()) && list.get(i).typ == DateExItemTokenType.CENTURY) {
+            if ((i < list.size()) && list.get(i).typ == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.CENTURY) {
                 it = list.get(i);
                 if (!it.isValueRelate) 
                     res.year1 = (((today.getYear() / 1000)) * 1000) + (it.value * 100);
@@ -304,9 +304,9 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
                 res.year2 = res.year1 + 99;
                 i++;
             }
-            if ((i < list.size()) && list.get(i).typ == DateExItemTokenType.DECADE) {
+            if ((i < list.size()) && list.get(i).typ == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DECADE) {
                 it = list.get(i);
-                if ((i > 0 && list.get(i - 1).typ == DateExItemTokenType.CENTURY && !it.isValueRelate) && (res.year1 + 99) == res.year2) {
+                if ((i > 0 && list.get(i - 1).typ == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.CENTURY && !it.isValueRelate) && (res.year1 + 99) == res.year2) {
                     res.year1 += (((it.value - 1)) * 10);
                     res.year2 = res.year1 + 9;
                 }
@@ -317,7 +317,7 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
                 res.year2 = res.year1 + 9;
                 return res;
             }
-            if ((i < list.size()) && list.get(i).typ == DateExItemTokenType.YEAR) {
+            if ((i < list.size()) && list.get(i).typ == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.YEAR) {
                 it = list.get(i);
                 if (!it.isValueRelate) 
                     res.year1 = it.value;
@@ -332,7 +332,7 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
                 }
                 i++;
             }
-            if ((i < list.size()) && list.get(i).typ == DateExItemTokenType.HALFYEAR) {
+            if ((i < list.size()) && list.get(i).typ == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.HALFYEAR) {
                 it = list.get(i);
                 if (!it.isValueRelate) {
                     if (it.isLast || it.value == 2) {
@@ -367,7 +367,7 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
                 }
                 i++;
             }
-            if ((i < list.size()) && list.get(i).typ == DateExItemTokenType.QUARTAL) {
+            if ((i < list.size()) && list.get(i).typ == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.QUARTAL) {
                 it = list.get(i);
                 int v = 0;
                 if (!it.isValueRelate) {
@@ -399,7 +399,7 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
                 res.month2 = res.month1 + 2;
                 return res;
             }
-            if ((i < list.size()) && list.get(i).typ == DateExItemTokenType.SEASON) {
+            if ((i < list.size()) && list.get(i).typ == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.SEASON) {
                 it = list.get(i);
                 int v = 0;
                 if (!it.isValueRelate) {
@@ -441,7 +441,7 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
                     return null;
                 return res;
             }
-            if ((i < list.size()) && list.get(i).typ == DateExItemTokenType.MONTH) {
+            if ((i < list.size()) && list.get(i).typ == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.MONTH) {
                 it = list.get(i);
                 if (!it.isValueRelate) {
                     if (res.year1 == 0) {
@@ -471,7 +471,7 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
                 }
                 i++;
             }
-            if ((i < list.size()) && list.get(i).typ == DateExItemTokenType.WEEKEND && i == 0) {
+            if ((i < list.size()) && list.get(i).typ == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.WEEKEND && i == 0) {
                 it = list.get(i);
                 hasRel = true;
                 if (res.year1 == 0) 
@@ -507,7 +507,7 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
                 res.day2 = dt0.getDayOfMonth();
                 i++;
             }
-            if (((i < list.size()) && list.get(i).typ == DateExItemTokenType.WEEK && i == 0) && list.get(i).isValueRelate) {
+            if (((i < list.size()) && list.get(i).typ == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.WEEK && i == 0) && list.get(i).isValueRelate) {
                 it = list.get(i);
                 hasRel = true;
                 if (res.year1 == 0) 
@@ -541,7 +541,7 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
                 res.day2 = dt0.getDayOfMonth();
                 i++;
             }
-            if ((i < list.size()) && list.get(i).typ == DateExItemTokenType.DAY) {
+            if ((i < list.size()) && list.get(i).typ == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAY) {
                 it = list.get(i);
                 if (!it.isValueRelate) {
                     res.day1 = it.value;
@@ -593,9 +593,9 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
                 }
                 i++;
             }
-            if ((i < list.size()) && list.get(i).typ == DateExItemTokenType.DAYOFWEEK) {
+            if ((i < list.size()) && list.get(i).typ == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAYOFWEEK) {
                 it = list.get(i);
-                if ((i > 0 && list.get(i - 1).typ == DateExItemTokenType.WEEK && it.value >= 1) && it.value <= 7) {
+                if ((i > 0 && list.get(i - 1).typ == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.WEEK && it.value >= 1) && it.value <= 7) {
                     res.day1 = (res.day1 + it.value) - 1;
                     while (res.day1 > com.pullenti.unisharp.Utils.daysInMonth(res.year1, res.month1)) {
                         res.day1 -= com.pullenti.unisharp.Utils.daysInMonth(res.year1, res.month1);
@@ -813,7 +813,7 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
             super(begin, end, null);
         }
     
-        public DateExItemTokenType typ = DateExItemTokenType.UNDEFINED;
+        public com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType typ = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.UNDEFINED;
     
         public int value;
     
@@ -842,36 +842,36 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
             if (t == null || level > 10) 
                 return null;
             if (t.isValue("СЕГОДНЯ", "СЬОГОДНІ")) 
-                return _new640(t, t, DateExItemTokenType.DAY, 0, true);
+                return _new640(t, t, com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAY, 0, true);
             if (t.isValue("ЗАВТРА", null)) 
-                return _new640(t, t, DateExItemTokenType.DAY, 1, true);
+                return _new640(t, t, com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAY, 1, true);
             if (t.isValue("ЗАВТРАШНИЙ", "ЗАВТРАШНІЙ") && t.getNext() != null && t.getNext().isValue("ДЕНЬ", null)) 
-                return _new640(t, t.getNext(), DateExItemTokenType.DAY, 1, true);
+                return _new640(t, t.getNext(), com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAY, 1, true);
             if (t.isValue("ПОСЛЕЗАВТРА", "ПІСЛЯЗАВТРА")) 
-                return _new640(t, t, DateExItemTokenType.DAY, 2, true);
+                return _new640(t, t, com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAY, 2, true);
             if (t.isValue("ПОСЛЕЗАВТРАШНИЙ", "ПІСЛЯЗАВТРАШНІЙ") && t.getNext() != null && t.getNext().isValue("ДЕНЬ", null)) 
-                return _new640(t, t.getNext(), DateExItemTokenType.DAY, 2, true);
+                return _new640(t, t.getNext(), com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAY, 2, true);
             if (t.isValue("ВЧЕРА", "ВЧОРА")) 
-                return _new640(t, t, DateExItemTokenType.DAY, -1, true);
+                return _new640(t, t, com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAY, -1, true);
             if (t.isValue("ВЧЕРАШНИЙ", "ВЧОРАШНІЙ") && t.getNext() != null && t.getNext().isValue("ДЕНЬ", null)) 
-                return _new640(t, t.getNext(), DateExItemTokenType.DAY, -1, true);
+                return _new640(t, t.getNext(), com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAY, -1, true);
             if (t.isValue("ПОЗАВЧЕРА", "ПОЗАВЧОРА")) 
-                return _new640(t, t, DateExItemTokenType.DAY, -2, true);
+                return _new640(t, t, com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAY, -2, true);
             if (t.isValue("ПОЗАВЧЕРАШНИЙ", "ПОЗАВЧОРАШНІЙ") && t.getNext() != null && t.getNext().isValue("ДЕНЬ", null)) 
-                return _new640(t, t.getNext(), DateExItemTokenType.DAY, -2, true);
+                return _new640(t, t.getNext(), com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAY, -2, true);
             if (t.isValue("ПОЛЧАСА", "ПІВГОДИНИ")) 
-                return _new640(t, t, DateExItemTokenType.MINUTE, 30, true);
+                return _new640(t, t, com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.MINUTE, 30, true);
             if (t.isValue("ЗИМА", null)) 
-                return _new659(t, t, DateExItemTokenType.SEASON, 1);
+                return _new659(t, t, com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.SEASON, 1);
             if (t.isValue("ВЕСНА", null)) 
-                return _new659(t, t, DateExItemTokenType.SEASON, 2);
+                return _new659(t, t, com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.SEASON, 2);
             if (t.isValue("ЛЕТО", "ЛІТО") && !t.isValue("ЛЕТ", null)) 
-                return _new659(t, t, DateExItemTokenType.SEASON, 3);
+                return _new659(t, t, com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.SEASON, 3);
             if (t.isValue("ОСЕНЬ", "ОСЕНІ")) 
-                return _new659(t, t, DateExItemTokenType.SEASON, 4);
+                return _new659(t, t, com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.SEASON, 4);
             if (prev != null && prev.size() > 0) {
                 if (((t.isValue("Т", null) && t.getNext() != null && t.getNext().isChar('.')) && t.getNext().getNext() != null && t.getNext().getNext().isValue("Г", null)) && t.getNext().getNext().getNext() != null && t.getNext().getNext().getNext().isChar('.')) 
-                    return _new634(t, t.getNext().getNext().getNext(), DateExItemTokenType.YEAR, true);
+                    return _new634(t, t.getNext().getNext().getNext(), com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.YEAR, true);
             }
             com.pullenti.ner.core.NounPhraseToken npt = com.pullenti.ner.core.NounPhraseHelper.tryParse(t, com.pullenti.ner.core.NounPhraseParseAttr.of((com.pullenti.ner.core.NounPhraseParseAttr.PARSENUMERICASADJECTIVE.value()) | (com.pullenti.ner.core.NounPhraseParseAttr.PARSEPREPOSITION.value())), 0, null);
             if (npt != null && npt.getBeginToken() == npt.getEndToken()) {
@@ -904,13 +904,13 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
                         }
                         return res0;
                     }
-                    DateItemToken dtt = DateItemToken.tryParse(t, null, false);
-                    if (dtt != null && dtt.typ == DateItemToken.DateItemType.YEAR)
-                        return _new659(t, dtt.getEndToken(), DateExItemTokenType.YEAR, dtt.intValue);
+                    com.pullenti.ner.date.internal.DateItemToken dtt = com.pullenti.ner.date.internal.DateItemToken.tryParse(t, null, false);
+                    if (dtt != null && dtt.typ == com.pullenti.ner.date.internal.DateItemToken.DateItemType.YEAR) 
+                        return _new659(t, dtt.getEndToken(), com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.YEAR, dtt.intValue);
                     if (t.getNext() != null && t.getNext().isValue("ЧИСЛО", null)) {
                         DateExItemToken ne = tryParse(t.getNext().getNext(), prev, level + 1, false);
-                        if (ne != null && ne.typ == DateExItemTokenType.MONTH)
-                            return _new659(t, t.getNext(), DateExItemTokenType.DAY, ((com.pullenti.ner.NumberToken)com.pullenti.unisharp.Utils.cast(t, com.pullenti.ner.NumberToken.class)).getIntValue());
+                        if (ne != null && ne.typ == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.MONTH) 
+                            return _new659(t, t.getNext(), com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAY, ((com.pullenti.ner.NumberToken)com.pullenti.unisharp.Utils.cast(t, com.pullenti.ner.NumberToken.class)).getIntValue());
                     }
                 }
                 int delt = 0;
@@ -947,7 +947,7 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
                             _next.setBeginToken(t);
                             _next.isLast = true;
                             _next.isValueRelate = true;
-                            if (_next.typ == DateExItemTokenType.HALFYEAR) {
+                            if (_next.typ == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.HALFYEAR) {
                                 _next.value = 2;
                                 _next.isValueRelate = false;
                             }
@@ -963,26 +963,26 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
                             break;
                         com.pullenti.ner.date.DateReferent dr = (com.pullenti.ner.date.DateReferent)com.pullenti.unisharp.Utils.cast(tt.getReferent(), com.pullenti.ner.date.DateReferent.class);
                         if (dr != null && dr.isRelative()) {
-                            DateExItemTokenType ty0 = DateExItemTokenType.UNDEFINED;
+                            com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType ty0 = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.UNDEFINED;
                             for (com.pullenti.ner.Slot s : dr.getSlots()) {
                                 if (com.pullenti.unisharp.Utils.stringsEq(s.getTypeName(), com.pullenti.ner.date.DateReferent.ATTR_MONTH)) 
-                                    ty0 = DateExItemTokenType.MONTH;
+                                    ty0 = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.MONTH;
                                 else if (com.pullenti.unisharp.Utils.stringsEq(s.getTypeName(), com.pullenti.ner.date.DateReferent.ATTR_YEAR)) 
-                                    ty0 = DateExItemTokenType.YEAR;
+                                    ty0 = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.YEAR;
                                 else if (com.pullenti.unisharp.Utils.stringsEq(s.getTypeName(), com.pullenti.ner.date.DateReferent.ATTR_DAY)) 
-                                    ty0 = DateExItemTokenType.DAY;
+                                    ty0 = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAY;
                                 else if (com.pullenti.unisharp.Utils.stringsEq(s.getTypeName(), com.pullenti.ner.date.DateReferent.ATTR_WEEK)) 
-                                    ty0 = DateExItemTokenType.WEEK;
+                                    ty0 = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.WEEK;
                                 else if (com.pullenti.unisharp.Utils.stringsEq(s.getTypeName(), com.pullenti.ner.date.DateReferent.ATTR_CENTURY)) 
-                                    ty0 = DateExItemTokenType.CENTURY;
+                                    ty0 = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.CENTURY;
                                 else if (com.pullenti.unisharp.Utils.stringsEq(s.getTypeName(), com.pullenti.ner.date.DateReferent.ATTR_QUARTAL)) 
-                                    ty0 = DateExItemTokenType.QUARTAL;
+                                    ty0 = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.QUARTAL;
                                 else if (com.pullenti.unisharp.Utils.stringsEq(s.getTypeName(), com.pullenti.ner.date.DateReferent.ATTR_HALFYEAR)) 
-                                    ty0 = DateExItemTokenType.HALFYEAR;
+                                    ty0 = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.HALFYEAR;
                                 else if (com.pullenti.unisharp.Utils.stringsEq(s.getTypeName(), com.pullenti.ner.date.DateReferent.ATTR_DECADE)) 
-                                    ty0 = DateExItemTokenType.DECADE;
+                                    ty0 = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DECADE;
                             }
-                            if (ty0 != DateExItemTokenType.UNDEFINED)
+                            if (ty0 != com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.UNDEFINED) 
                                 return _new640(t, t, ty0, delt, true);
                         }
                         if (com.pullenti.ner.core.MiscHelper.canBeStartOfSentence(tt)) 
@@ -991,75 +991,75 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
                 }
                 return null;
             }
-            DateExItemTokenType ty = DateExItemTokenType.HOUR;
+            com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.HOUR;
             int val = 0;
             if (npt.noun.isValue("ГОД", "РІК") || npt.noun.isValue("ГОДИК", null) || npt.noun.isValue("ЛЕТ", null)) 
-                ty = DateExItemTokenType.YEAR;
+                ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.YEAR;
             else if (npt.noun.isValue("ПОЛГОДА", "ПІВРОКУ") || npt.noun.isValue("ПОЛУГОДИЕ", "ПІВРІЧЧЯ")) 
-                ty = DateExItemTokenType.HALFYEAR;
+                ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.HALFYEAR;
             else if (npt.noun.isValue("ВЕК", null) || npt.noun.isValue("СТОЛЕТИЕ", "СТОЛІТТЯ")) 
-                ty = DateExItemTokenType.CENTURY;
+                ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.CENTURY;
             else if (npt.noun.isValue("КВАРТАЛ", null)) 
-                ty = DateExItemTokenType.QUARTAL;
+                ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.QUARTAL;
             else if (npt.noun.isValue("ДЕСЯТИЛЕТИЕ", "ДЕСЯТИЛІТТЯ") || npt.noun.isValue("ДЕКАДА", null)) 
-                ty = DateExItemTokenType.DECADE;
+                ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DECADE;
             else if (npt.noun.isValue("МЕСЯЦ", "МІСЯЦЬ")) 
-                ty = DateExItemTokenType.MONTH;
+                ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.MONTH;
             else if (npt.noun.isValue("ДЕНЬ", null) || npt.noun.isValue("ДЕНЕК", null)) {
                 if (npt.getEndToken().getNext() != null && npt.getEndToken().getNext().isValue("НЕДЕЛЯ", "ТИЖДЕНЬ")) 
                     return null;
-                ty = DateExItemTokenType.DAY;
+                ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAY;
             }
             else if (npt.noun.isValue("ЧИСЛО", null) && npt.adjectives.size() > 0 && (npt.adjectives.get(0).getBeginToken() instanceof com.pullenti.ner.NumberToken)) 
-                ty = DateExItemTokenType.DAY;
+                ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAY;
             else if (npt.noun.isValue("НЕДЕЛЯ", "ТИЖДЕНЬ") || npt.noun.isValue("НЕДЕЛЬКА", null)) {
                 if (t.getPrevious() != null && t.getPrevious().isValue("ДЕНЬ", null)) 
                     return null;
                 if (t.getPrevious() != null && ((t.getPrevious().isValue("ЗА", null) || t.getPrevious().isValue("НА", null)))) 
-                    ty = DateExItemTokenType.WEEK;
+                    ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.WEEK;
                 else if (t.isValue("ЗА", null) || t.isValue("НА", null)) 
-                    ty = DateExItemTokenType.WEEK;
+                    ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.WEEK;
                 else 
-                    ty = DateExItemTokenType.WEEK;
+                    ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.WEEK;
             }
             else if (npt.noun.isValue("ВЫХОДНОЙ", "ВИХІДНИЙ")) 
-                ty = DateExItemTokenType.WEEKEND;
+                ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.WEEKEND;
             else if (npt.noun.isValue("ЧАС", "ГОДИНА") || npt.noun.isValue("ЧАСИК", null) || npt.noun.isValue("ЧАСОК", null)) 
-                ty = DateExItemTokenType.HOUR;
+                ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.HOUR;
             else if (npt.noun.isValue("МИНУТА", "ХВИЛИНА") || npt.noun.isValue("МИНУТКА", null)) 
-                ty = DateExItemTokenType.MINUTE;
+                ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.MINUTE;
             else if (npt.noun.isValue("ПОНЕДЕЛЬНИК", "ПОНЕДІЛОК")) {
-                ty = DateExItemTokenType.DAYOFWEEK;
+                ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAYOFWEEK;
                 val = 1;
             }
             else if (npt.noun.isValue("ВТОРНИК", "ВІВТОРОК")) {
-                ty = DateExItemTokenType.DAYOFWEEK;
+                ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAYOFWEEK;
                 val = 2;
             }
             else if (npt.noun.isValue("СРЕДА", "СЕРЕДА")) {
-                ty = DateExItemTokenType.DAYOFWEEK;
+                ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAYOFWEEK;
                 val = 3;
             }
             else if (npt.noun.isValue("ЧЕТВЕРГ", "ЧЕТВЕР")) {
-                ty = DateExItemTokenType.DAYOFWEEK;
+                ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAYOFWEEK;
                 val = 4;
             }
             else if (npt.noun.isValue("ПЯТНИЦЯ", null)) {
-                ty = DateExItemTokenType.DAYOFWEEK;
+                ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAYOFWEEK;
                 val = 5;
             }
             else if (npt.noun.isValue("СУББОТА", "СУБОТА")) {
-                ty = DateExItemTokenType.DAYOFWEEK;
+                ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAYOFWEEK;
                 val = 6;
             }
             else if (npt.noun.isValue("ВОСКРЕСЕНЬЕ", "НЕДІЛЯ") || npt.noun.isValue("ВОСКРЕСЕНИЕ", null)) {
-                ty = DateExItemTokenType.DAYOFWEEK;
+                ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAYOFWEEK;
                 val = 7;
             }
             else {
-                DateItemToken dti = DateItemToken.tryParse(npt.getEndToken(), null, false);
-                if (dti != null && dti.typ == DateItemToken.DateItemType.MONTH) {
-                    ty = DateExItemTokenType.MONTH;
+                com.pullenti.ner.date.internal.DateItemToken dti = com.pullenti.ner.date.internal.DateItemToken.tryParse(npt.getEndToken(), null, false);
+                if (dti != null && dti.typ == com.pullenti.ner.date.internal.DateItemToken.DateItemType.MONTH) {
+                    ty = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.MONTH;
                     val = dti.intValue;
                 }
                 else 
@@ -1070,7 +1070,7 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
             for (int i = 0; i < npt.adjectives.size(); i++) {
                 com.pullenti.ner.MetaToken a = npt.adjectives.get(i);
                 if (a.isValue("СЛЕДУЮЩИЙ", "НАСТУПНИЙ") || a.isValue("БУДУЩИЙ", "МАЙБУТНІЙ") || a.isValue("БЛИЖАЙШИЙ", "НАЙБЛИЖЧИЙ")) {
-                    if (res.value == 0 && ty != DateExItemTokenType.WEEKEND)
+                    if (res.value == 0 && ty != com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.WEEKEND) 
                         res.value = 1;
                     res.isValueRelate = true;
                 }
@@ -1087,7 +1087,7 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
                     heg = true;
                 }
                 else if (a.getBeginToken() == a.getEndToken() && (a.getBeginToken() instanceof com.pullenti.ner.NumberToken) && ((com.pullenti.ner.NumberToken)com.pullenti.unisharp.Utils.cast(a.getBeginToken(), com.pullenti.ner.NumberToken.class)).getIntValue() != null) {
-                    if (res.typ != DateExItemTokenType.DAYOFWEEK)
+                    if (res.typ != com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAYOFWEEK) 
                         res.value = ((com.pullenti.ner.NumberToken)com.pullenti.unisharp.Utils.cast(a.getBeginToken(), com.pullenti.ner.NumberToken.class)).getIntValue();
                 }
                 else if (a.isValue("ЭТОТ", "ЦЕЙ") || a.isValue("ТЕКУЩИЙ", "ПОТОЧНИЙ")) 
@@ -1112,7 +1112,7 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
                     res.isLast = true;
                     res.value = -1;
                 }
-                else if (a.isValue("БЛИЖАЙШИЙ", "НАЙБЛИЖЧИЙ") && res.typ == DateExItemTokenType.DAYOFWEEK) {
+                else if (a.isValue("БЛИЖАЙШИЙ", "НАЙБЛИЖЧИЙ") && res.typ == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAYOFWEEK) {
                 }
                 else 
                     return null;
@@ -1128,7 +1128,7 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
                         }
                         else if (t.getMorphClassInDictionary().isPreposition()) {
                         }
-                        else if (ty == DateExItemTokenType.YEAR || ty == DateExItemTokenType.MONTH || ty == DateExItemTokenType.WEEK) {
+                        else if (ty == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.YEAR || ty == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.MONTH || ty == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.WEEK) {
                         }
                         else 
                             return null;
@@ -1194,22 +1194,22 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
                 if (t.getPrevious() != null && t.getPrevious().isValue("ПО", null)) 
                     return null;
             }
-            if (ch && res.typ != DateExItemTokenType.DAY) {
-                if (res.typ == DateExItemTokenType.WEEK) {
+            if (ch && res.typ != com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAY) {
+                if (res.typ == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.WEEK) {
                     res.value *= 7;
-                    res.typ = DateExItemTokenType.DAY;
+                    res.typ = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAY;
                 }
-                else if (res.typ == DateExItemTokenType.MONTH) {
+                else if (res.typ == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.MONTH) {
                     res.value *= 30;
-                    res.typ = DateExItemTokenType.DAY;
+                    res.typ = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAY;
                 }
-                else if (res.typ == DateExItemTokenType.QUARTAL) {
+                else if (res.typ == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.QUARTAL) {
                     res.value *= 91;
-                    res.typ = DateExItemTokenType.DAY;
+                    res.typ = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAY;
                 }
-                else if (res.typ == DateExItemTokenType.YEAR) {
+                else if (res.typ == com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.YEAR) {
                     res.value *= 365;
-                    res.typ = DateExItemTokenType.DAY;
+                    res.typ = com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType.DAY;
                 }
             }
             return res;
@@ -1224,14 +1224,14 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
             return 0;
         }
     
-        public static DateExItemToken _new634(com.pullenti.ner.Token _arg1, com.pullenti.ner.Token _arg2, DateExItemTokenType _arg3, boolean _arg4) {
+        public static DateExItemToken _new634(com.pullenti.ner.Token _arg1, com.pullenti.ner.Token _arg2, com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType _arg3, boolean _arg4) {
             DateExItemToken res = new DateExItemToken(_arg1, _arg2);
             res.typ = _arg3;
             res.isValueRelate = _arg4;
             return res;
         }
     
-        public static DateExItemToken _new637(com.pullenti.ner.Token _arg1, com.pullenti.ner.Token _arg2, DateExItemTokenType _arg3, int _arg4, com.pullenti.ner.date.DateReferent _arg5) {
+        public static DateExItemToken _new637(com.pullenti.ner.Token _arg1, com.pullenti.ner.Token _arg2, com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType _arg3, int _arg4, com.pullenti.ner.date.DateReferent _arg5) {
             DateExItemToken res = new DateExItemToken(_arg1, _arg2);
             res.typ = _arg3;
             res.value = _arg4;
@@ -1239,7 +1239,7 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
             return res;
         }
     
-        public static DateExItemToken _new640(com.pullenti.ner.Token _arg1, com.pullenti.ner.Token _arg2, DateExItemTokenType _arg3, int _arg4, boolean _arg5) {
+        public static DateExItemToken _new640(com.pullenti.ner.Token _arg1, com.pullenti.ner.Token _arg2, com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType _arg3, int _arg4, boolean _arg5) {
             DateExItemToken res = new DateExItemToken(_arg1, _arg2);
             res.typ = _arg3;
             res.value = _arg4;
@@ -1247,14 +1247,14 @@ public class DateExToken extends com.pullenti.ner.MetaToken {
             return res;
         }
     
-        public static DateExItemToken _new659(com.pullenti.ner.Token _arg1, com.pullenti.ner.Token _arg2, DateExItemTokenType _arg3, int _arg4) {
+        public static DateExItemToken _new659(com.pullenti.ner.Token _arg1, com.pullenti.ner.Token _arg2, com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType _arg3, int _arg4) {
             DateExItemToken res = new DateExItemToken(_arg1, _arg2);
             res.typ = _arg3;
             res.value = _arg4;
             return res;
         }
     
-        public static DateExItemToken _new721(com.pullenti.ner.Token _arg1, com.pullenti.ner.Token _arg2, DateExItemTokenType _arg3) {
+        public static DateExItemToken _new721(com.pullenti.ner.Token _arg1, com.pullenti.ner.Token _arg2, com.pullenti.ner.date.internal.DateExToken.DateExItemTokenType _arg3) {
             DateExItemToken res = new DateExItemToken(_arg1, _arg2);
             res.typ = _arg3;
             return res;

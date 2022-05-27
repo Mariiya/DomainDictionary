@@ -144,7 +144,7 @@ public class PartToken extends com.pullenti.ner.MetaToken {
                 if (ok) {
                     com.pullenti.ner.Token tt = getEndToken().getNext().getNext();
                     if (tt != null) {
-                        if ((tt.getReferent() instanceof com.pullenti.ner.decree.DecreeReferent) || PartToken.tryAttach(tt, null, false, false) != null)
+                        if ((tt.getReferent() instanceof com.pullenti.ner.decree.DecreeReferent) || com.pullenti.ner.decree.internal.PartToken.tryAttach(tt, null, false, false) != null) 
                             setEndToken(this.getEndToken().getNext());
                     }
                 }

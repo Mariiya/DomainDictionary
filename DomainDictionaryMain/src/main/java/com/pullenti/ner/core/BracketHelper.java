@@ -160,8 +160,8 @@ public class BracketHelper {
             source = t;
             if (t instanceof com.pullenti.ner.TextToken) 
                 _char = ((com.pullenti.ner.TextToken)com.pullenti.unisharp.Utils.cast(t, com.pullenti.ner.TextToken.class)).term.charAt(0);
-            canBeOpen = BracketHelper.canBeStartOfSequence(t, false, false);
-            canBeClose = BracketHelper.canBeEndOfSequence(t, false, null, false);
+            canBeOpen = com.pullenti.ner.core.BracketHelper.canBeStartOfSequence(t, false, false);
+            canBeClose = com.pullenti.ner.core.BracketHelper.canBeEndOfSequence(t, false, null, false);
         }
     
         public com.pullenti.ner.Token source;

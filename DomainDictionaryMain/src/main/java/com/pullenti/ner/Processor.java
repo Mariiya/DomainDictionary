@@ -411,9 +411,9 @@ public class Processor implements AutoCloseable {
 
     public static class ProgressChangedEventHandler_OnProgressHandler implements com.pullenti.unisharp.ProgressEventHandler {
     
-        private Processor m_Source;
+        private com.pullenti.ner.Processor m_Source;
     
-        private ProgressChangedEventHandler_OnProgressHandler(Processor src) {
+        private ProgressChangedEventHandler_OnProgressHandler(com.pullenti.ner.Processor src) {
             super();
             m_Source = src;
         }
@@ -431,9 +431,9 @@ public class Processor implements AutoCloseable {
 
     public static class CancelEventHandler_OnCancel implements com.pullenti.unisharp.CancelEventHandler {
     
-        private Processor m_Source;
+        private com.pullenti.ner.Processor m_Source;
     
-        private CancelEventHandler_OnCancel(Processor src) {
+        private CancelEventHandler_OnCancel(com.pullenti.ner.Processor src) {
             super();
             m_Source = src;
         }

@@ -71,11 +71,11 @@ public class IntOntologyCollection {
         m_Termins.add(nt);
     }
 
-    public static class OntologyTermin extends Termin {
+    public static class OntologyTermin extends com.pullenti.ner.core.Termin {
     
-        public IntOntologyItem owner;
+        public com.pullenti.ner.core.IntOntologyItem owner;
     
-        public static OntologyTermin _new504(IntOntologyItem _arg1, Object _arg2) {
+        public static OntologyTermin _new504(com.pullenti.ner.core.IntOntologyItem _arg1, Object _arg2) {
             OntologyTermin res = new OntologyTermin();
             res.owner = _arg1;
             res.tag = _arg2;

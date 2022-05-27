@@ -2846,7 +2846,7 @@ public class DecreeAnalyzer extends com.pullenti.ner.Analyzer {
     
         public boolean hasOtherRef;
     
-        public DecreeReferent real;
+        public com.pullenti.ner.decree.DecreeReferent real;
     
         @Override
         public String toString() {
@@ -2917,7 +2917,7 @@ public class DecreeAnalyzer extends com.pullenti.ner.Analyzer {
             }
             if (t.isValue("К", null) && t.getNext() != null) 
                 t = t.getNext();
-            if (t != null && (t.getReferent() instanceof DecreeReferent))
+            if (t != null && (t.getReferent() instanceof com.pullenti.ner.decree.DecreeReferent)) 
                 return null;
             com.pullenti.ner.Token tt = com.pullenti.ner.decree.internal.DecreeToken.isKeyword(t, false);
             boolean br = false;
@@ -2927,8 +2927,8 @@ public class DecreeAnalyzer extends com.pullenti.ner.Analyzer {
                     br = true;
             }
             if (!(tt instanceof com.pullenti.ner.TextToken)) {
-                if ((tt instanceof com.pullenti.ner.ReferentToken) && (tt.getReferent() instanceof DecreeReferent))
-                    return _new1183(t, tt, (DecreeReferent)com.pullenti.unisharp.Utils.cast(tt.getReferent(), DecreeReferent.class));
+                if ((tt instanceof com.pullenti.ner.ReferentToken) && (tt.getReferent() instanceof com.pullenti.ner.decree.DecreeReferent)) 
+                    return _new1183(t, tt, (com.pullenti.ner.decree.DecreeReferent)com.pullenti.unisharp.Utils.cast(tt.getReferent(), com.pullenti.ner.decree.DecreeReferent.class));
                 return null;
             }
             if (tt.chars.isAllLower()) {
@@ -2988,7 +2988,7 @@ public class DecreeAnalyzer extends com.pullenti.ner.Analyzer {
             return res;
         }
     
-        public static ThisDecree _new1183(com.pullenti.ner.Token _arg1, com.pullenti.ner.Token _arg2, DecreeReferent _arg3) {
+        public static ThisDecree _new1183(com.pullenti.ner.Token _arg1, com.pullenti.ner.Token _arg2, com.pullenti.ner.decree.DecreeReferent _arg3) {
             ThisDecree res = new ThisDecree(_arg1, _arg2);
             res.real = _arg3;
             return res;

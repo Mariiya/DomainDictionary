@@ -342,8 +342,8 @@ public class KeywordAnalyzer extends com.pullenti.ner.Analyzer {
     
         @Override
         public int compare(com.pullenti.ner.Referent x, com.pullenti.ner.Referent y) {
-            double d1 = ((KeywordReferent)com.pullenti.unisharp.Utils.cast(x, KeywordReferent.class)).rank;
-            double d2 = ((KeywordReferent)com.pullenti.unisharp.Utils.cast(y, KeywordReferent.class)).rank;
+            double d1 = ((com.pullenti.ner.keyword.KeywordReferent)com.pullenti.unisharp.Utils.cast(x, com.pullenti.ner.keyword.KeywordReferent.class)).rank;
+            double d2 = ((com.pullenti.ner.keyword.KeywordReferent)com.pullenti.unisharp.Utils.cast(y, com.pullenti.ner.keyword.KeywordReferent.class)).rank;
             if (d1 > d2) 
                 return -1;
             if (d1 < d2) 

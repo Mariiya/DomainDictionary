@@ -67,7 +67,7 @@ public class TerminCollection {
     
         public java.util.HashMap<Short, CharNode> children;
     
-        public java.util.ArrayList<Termin> termins;
+        public java.util.ArrayList<com.pullenti.ner.core.Termin> termins;
         public CharNode() {
         }
     }

@@ -439,10 +439,10 @@ public class Termin {
 
     public static class Abridge {
     
-        public java.util.ArrayList<AbridgePart> parts = new java.util.ArrayList<AbridgePart>();
+        public java.util.ArrayList<com.pullenti.ner.core.Termin.AbridgePart> parts = new java.util.ArrayList<com.pullenti.ner.core.Termin.AbridgePart>();
     
         public void addPart(String val, boolean hasDelim) {
-            parts.add(AbridgePart._new585(val, hasDelim));
+            parts.add(com.pullenti.ner.core.Termin.AbridgePart._new585(val, hasDelim));
         }
     
         public String tail;
@@ -452,13 +452,13 @@ public class Termin {
             if (tail != null) 
                 return (parts.get(0).toString() + "-" + tail);
             StringBuilder res = new StringBuilder();
-            for (AbridgePart p : parts) {
+            for (com.pullenti.ner.core.Termin.AbridgePart p : parts) {
                 res.append(p);
             }
             return res.toString();
         }
     
-        public TerminToken tryAttach(com.pullenti.ner.Token t0) {
+        public com.pullenti.ner.core.TerminToken tryAttach(com.pullenti.ner.Token t0) {
             com.pullenti.ner.TextToken t1 = (com.pullenti.ner.TextToken)com.pullenti.unisharp.Utils.cast(t0, com.pullenti.ner.TextToken.class);
             if (t1 == null) 
                 return null;
@@ -522,7 +522,7 @@ public class Termin {
                         point = false;
                     tt = tt.getNext();
                 }
-                TerminToken res = TerminToken._new586(t0, te, t0 == te);
+                com.pullenti.ner.core.TerminToken res = com.pullenti.ner.core.TerminToken._new586(t0, te, t0 == te);
                 if (point) 
                     res.setMorph(new com.pullenti.ner.MorphCollection(null));
                 return res;
@@ -535,7 +535,7 @@ public class Termin {
                 return null;
             if (t1.term.charAt(0) != tail.charAt(0)) 
                 return null;
-            return new TerminToken(t0, t1);
+            return new com.pullenti.ner.core.TerminToken(t0, t1);
         }
         public Abridge() {
         }

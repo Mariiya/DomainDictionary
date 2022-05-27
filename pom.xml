@@ -8,7 +8,7 @@
         <version>2.5.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.domaindictionary</groupId>
+    <groupId>com.pullenti</groupId>
     <artifactId>diplom</artifactId>
     <version>1.0</version>
     <modelVersion>4.0.0</modelVersion>
