@@ -1,8 +1,13 @@
 <button class="floating-btn" (click)="search()">SEARCH</button>
-<div mat-dialog-actions>
+<div mat-dialog-actions style="width: 100%">
   <mat-accordion>
-  <app-search-resources (selectedResource)="onResourceChanged($event)"></app-search-resources>
-   <app-search-params style="width: 100%;"></app-search-params>
+    <app-search-resources (selectedResource)="onResourceChanged($event)"></app-search-resources>
+    <app-search-params
+    (languageParam) = "setLanguage($event)"
+    (isDomainAnalyzeParam) = "setDomainAnalyzeParam($event)"
+    (isFullTextSearchParam) = "setFullTextSearchParam($event)"
+    (isSearchInInternetParam) = "setSearchInInternetParam($event)"
+    ></app-search-params>
   </mat-accordion>
 </div>
 
@@ -10,19 +15,30 @@
   <mat-card-header>
     <mat-card-title>Results</mat-card-title>
   </mat-card-header>
-  <div class="mat-elevation-z8" >
-    <table [dataSource]="datasourceDE" #table class="mat-elevation-z8" mat-table matSort text-align="center" >
+  <div class="mat-elevation-z8">
+    <table [dataSource]="datasourceDE" #table class="mat-elevation-z8" mat-table matSort text-align="center">
       <ng-container matColumnDef="term">
-        <th *matHeaderCellDef mat-header-cell mat-sort-header style="font-size: 16px"> Term</th>
-        <td *matCellDef="let de" mat-cell>
-          <div class="center" fxFlexFill matRipple>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header style="font-size: 16px;"> Term</th>
+        <td  style="min-width: 20px;max-width:50px; overflow: hidden" *matCellDef="let de" mat-cell>
+          <div class="center"  style="min-width: 20px;max-width: 50px;overflow: hidden" fxFlexFill matRipple>
             {{de.term}}
           </div>
         </td>
       </ng-container>
       <ng-container matColumnDef="definition">
-        <th *matHeaderCellDef mat-header-cell style="font-size: 16px"> Definitions</th>
-        <td *matCellDef="let de" mat-cell> {{de.definition}} </td>
+        <th *matHeaderCellDef mat-header-cell style="font-size: 16px;"> Definitions</th>
+        <td *matCellDef="let de" mat-cell>
+          <mat-selection-list #definitions [multiple]="false">
+            <mat-list-option *ngFor="let def of de.definition" [value]="def" style="height: fit-content">
+              <div fxLayout="row" style="overflow-y: scroll; height: fit-content">
+                <input matInput [disabled]="!isEditable"  [ngModel]="def"  type="text" class="form-control">
+                <button *ngIf="isEditable" style="position: relative; float: right; margin: -2px;" mat-icon-button color="warn" (click)="deleteDefinition(de,def)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </mat-list-option>
+          </mat-selection-list>
+        </td>
       </ng-container>
 
       <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
@@ -34,8 +50,9 @@
   </mat-card-content>
 </mat-card>
 <mat-card-actions fxLayout="row" fxLayoutGap="20px">
-  <button mat-flat-button class = "control-btn" color="primary" (click)="notImpl()">EDIT</button>
-  <button mat-flat-button class = "control-btn" (click)="saveDomainDictionary()" color="primary">SAVE</button>
+  <button mat-flat-button class="control-btn" color="primary" (click)="edit(true)">EDIT</button>
+  <button *ngIf = "isEditable" mat-flat-button class="control-btn" color="primary" (click)="edit(false)">DONE</button>
+  <button mat-flat-button class="control-btn" (click)="saveDomainDictionary()" color="primary">SAVE</button>
 </mat-card-actions>
 <div *ngIf="loading" style="  position: absolute;
   top: 50%;

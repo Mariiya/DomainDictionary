@@ -40,7 +40,11 @@ export class FillParamsComponent implements OnInit {
     // @ts-ignore
     this.ruleValue.articleSeparator = this.reference.formGroup.get('articleSeparator').value;
     if (this.isCustomArticleSeparator) {
+
       this.ruleValue.articleSeparator = this.reference.formGroup.controls.articleSeparatorInput.value;
+      console.log("YESq " +this.reference.formGroup.controls.articleSeparatorInput.value)
+      console.log("yes3 "+ this.reference.formGroup.controls.articleSeparatorInput)
+      console.log("YES2 " + this.ruleValue.articleSeparator)
     } else {
       this.ruleValue.articleSeparator = this.reference.formGroup.controls.articleSeparator.value;
     }
@@ -67,7 +71,7 @@ export class FillParamsComponent implements OnInit {
       this.reference.formGroup.controls.articleSeparatorInput.value.remote;
     }
     this.isCustomArticleSeparator = val;
-    console.log(" this.articleSeparatorInput " + this.reference.formGroup.controls.articleSeparatorInput)
+    console.log(" this.articleSeparatorInput " + this.reference.formGroup.controls.articleSeparatorInput.value)
   }
 
   constructor(public dialog: MatDialog, public resourcesService: ResourceBankService) {

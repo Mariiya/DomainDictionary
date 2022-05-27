@@ -16,8 +16,8 @@ import {HelperService} from "../../../services/helper.service";
 })
 export class SearchMainComponent implements OnInit {
   @Output()
-  numberOfDE = new EventEmitter <number>();
-
+  numberOfDE = new EventEmitter<number>();
+  searchParams: Map<string, any> = new Map<string, any>();
   displayedColumns: string[] = ['term', 'definition'];
 
   // @ts-ignore
@@ -35,8 +35,7 @@ export class SearchMainComponent implements OnInit {
   // @ts-ignore
   subscription: Subscription;
   loading: boolean = false;
-  selectedResource: number = -1;
-
+  isEditable = false;
 
   ngOnInit() {
     this.datasourceDE.paginator = this.paginator;
@@ -44,6 +43,11 @@ export class SearchMainComponent implements OnInit {
       let de = new DictionaryEntry(0, "....", ["..........."]);
       this.datasourceDE.data.push(de);
     }
+    this.searchParams.set('language', 'ru');
+    this.searchParams.set('isDomainAnalyze', true);
+    this.searchParams.set('isFullTextSearch', true);
+    this.searchParams.set('isSearchInInternet', true);
+
   }
 
   getTerms(): string[] {
@@ -54,9 +58,7 @@ export class SearchMainComponent implements OnInit {
     })
   }
 
-  notImpl() {
-    this.helper.openSnackBar("Not yet implemented", 'OK');
-  }
+  selectedResource: number = -1;
 
   search() {
     const t = this.getTerms();
@@ -69,8 +71,9 @@ export class SearchMainComponent implements OnInit {
         return;
       } else {
         this.loading = true;
+        this.searchParams.set('resourceId', String(this.selectedResource))
         // @ts-ignore
-        this.service.searchTerms(t, this.selectedResource)
+        this.service.searchTerms(t, this.searchParams)
           .subscribe(data => {
               if (data == null || data.length == 0) {
                 this.helper.openSnackBar("Nothing found", "OK");
@@ -111,14 +114,43 @@ export class SearchMainComponent implements OnInit {
 
   onResourceChanged(value: number) {
     this.selectedResource = value;
-    console.log('selectedResource ' + this.selectedResource)
+  }
+
+  deleteDefinition(dictionaryEntry: DictionaryEntry, definition: string) {
+    this.datasourceDE.data.forEach(function (de) {
+      if (de.id == dictionaryEntry.id) {
+        if (de.definition != null) {
+          de.definition.forEach(function (def, index) {
+            if (def == definition && de != null && de.definition != null) {
+              de.definition.splice(index, 1);
+            }
+          })
+        }
+      }
+    });
+  }
+
+  edit(enable: boolean) {
+    this.isEditable = enable;
+  }
+
+  setLanguage(value: string) {
+    console.log("l: "+ value)
+    this.searchParams.set('language', value);
+  }
+
+  setDomainAnalyzeParam(value: boolean) {
+    this.searchParams.set('isDomainAnalyze', value);
+  }
+
+  setFullTextSearchParam(value: boolean) {
+    this.searchParams.set('isFullTextSearch', value);
+  }
+
+  setSearchInInternetParam(value: boolean) {
+    this.searchParams.set('isSearchInInternet', value);
   }
 
 }
 
-export interface SearchResults {
-  term: string;
-  number: number;
-  definition: string;
-}
 

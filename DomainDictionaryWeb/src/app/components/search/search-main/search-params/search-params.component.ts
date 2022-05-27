@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import {ThemePalette} from "@angular/material/core";
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-search-params',
@@ -8,60 +7,59 @@ import {ThemePalette} from "@angular/material/core";
 })
 export class SearchParamsComponent implements OnInit {
 
-  constructor() { }
+  constructor() {  }
 
   ngOnInit(): void {
+   this.initParams();
   }
 
-  allComplete: boolean = false;
+  @Output()
+  languageParam = new EventEmitter<string>();
+  @Output()
+  isSearchInInternetParam = new EventEmitter<boolean>();
+  @Output()
+  isDomainAnalyzeParam = new EventEmitter<boolean>();
+  @Output()
+  isFullTextSearchParam = new EventEmitter<boolean>();
+  languageRU: boolean = false;
+  languageUA: boolean = true;
+  languageEN: boolean = false;
 
-  updateAllComplete() {
-    this.allComplete = this.task.subtasks != null && this.task.subtasks.every((t: { completed: any; }) => t.completed);
+  initParams(){
+      this.languageParam.emit('ua');
+      this.isFullTextSearchParam.emit(true);
+      this.isSearchInInternetParam.emit(true);
+      this.isDomainAnalyzeParam.emit(true);
   }
 
-  someComplete(): boolean {
-    if (this.task.subtasks == null) {
-      return false;
+  setFullTextSearchParam(value:boolean){
+    this.isFullTextSearchParam.emit(value);
+  }
+
+  setDomainAnalyzeParam(value:boolean){
+    this.isDomainAnalyzeParam.emit(value);
+  }
+
+  setSearchInInternetParam(value:boolean){
+    console.log(value)
+    this.isSearchInInternetParam.emit(value);
+  }
+
+  languageChange(languageName:string, value: boolean){
+    this.languageRU = false;
+    this.languageUA = false;
+    this.languageEN = false;
+    if(languageName =='languageRU') {
+      this.languageRU = value;
+      this.languageParam.emit('ru');
     }
-    return this.task.subtasks.filter((t: { completed: any; }) => t.completed).length > 0 && !this.allComplete;
-  }
-
-  setAll(completed: boolean) {
-    this.allComplete = completed;
-    if (this.task.subtasks == null) {
-      return;
+    if(languageName=='languageEN') {
+      this.languageEN = value;
+      this.languageParam.emit('en');
     }
-    this.task.subtasks.forEach((t: { completed: boolean; }) => t.completed = completed);
+    if(languageName=='languageUA') {
+      this.languageUA = value;
+      this.languageParam.emit('ua');
+    }
   }
-
-
-  task: Task = {
-    name: 'Search settings',
-    completed: false,
-    color: 'primary',
-    subtasks: [
-      {name: 'Full text search', completed: false, color: 'primary'},
-      {name: 'Analyze Domain', completed: false, color: 'accent'},
-      {name: 'Search on Web', completed: false, color: 'warn'}
-    ]
-  };
-
-  language: Task = {
-    name: 'Select language',
-    completed: false,
-    color: 'primary',
-    subtasks: [
-      {name: 'Russian', completed: false, color: 'primary'},
-      {name: 'Ukrainian', completed: false, color: 'accent'},
-      {name: 'English', completed: false, color: 'warn'}
-    ]
-  };
-
-}
-
-export interface Task {
-  name: string;
-  completed: boolean;
-  color: ThemePalette;
-  subtasks?: Task[];
 }

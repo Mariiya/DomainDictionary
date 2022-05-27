@@ -29,8 +29,6 @@ export class FileService {
   saveDomainDictionary(datasourceDE: DictionaryEntry[]): Observable<Blob> {
     return this.http.post(`${this.url}file/save-domain-dictionary`, datasourceDE, {responseType: 'blob'}).pipe(
       catchError((err) => {
-        console.log(err)
-        console.error(err.message);
         this.openSnackBar('Data not found', 'OK')
         return throwError(err);    //Rethrow it back to component
       })

@@ -24,3 +24,7 @@ $my-app-theme: mat-light-theme((
 ));
 
 @include angular-material-theme($my-app-theme);
+@font-face {
+  font-family: "pencilPete";
+  src: local("pencilPete"), url(./assets/fonts/PPETRIAL.ttf) format("truetype");
+}

@@ -49,6 +49,6 @@ export class HomeComponent implements OnInit {
   }
 
   onResourceChanged(value:number){
-    this.numberOfDE=value;
+    this.numberOfDE=(value/2);
   }
 }

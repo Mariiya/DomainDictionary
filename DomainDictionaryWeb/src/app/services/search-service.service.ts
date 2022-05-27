@@ -14,30 +14,20 @@ export class SearchServiceService {
   private baseURL = this.url + 'search';
 
 
-  constructor(private httpClient: HttpClient, public helper:HelperService) {
+  constructor(private httpClient: HttpClient, public helper: HelperService) {
   }
 
-  searchTerms(terms: String[], resourceId: number): Observable<DictionaryEntry[]> | null {
-    if(terms.length == 0 || terms.length==1 && terms[0] == ''){
+  searchTerms(terms: String[], params: Map<string, string>): Observable<DictionaryEntry[]> | null {
+    if (terms.length == 0 || terms.length == 1 && terms[0] == '') {
       this.helper.openSnackBar("Terms list is empty", "OK");
-     return null;
-    }
-    if (resourceId == -1) {
-      this.helper.openSnackBar("Select Search Resource", "OK");
       return null;
-    } else {
-         const headerDict = {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Access-Control-Allow-Headers': 'Content-Type',
-      }
-
-      const requestOptions = {
-        headers: new Headers(headerDict),
-      };
-
-      return this.httpClient.get<DictionaryEntry[]>(`${this.baseURL}?terms=${terms}&resourceId=${resourceId}`);
     }
+    let url = this.baseURL + '?terms=' + terms;
+    params.forEach(function (value, key) {
+      url = url + '&' + key + '=' + value;
+    });
+    return this.httpClient.get<DictionaryEntry[]>(url);
+
   }
 
   handleError(error: HttpErrorResponse) {
@@ -45,7 +35,7 @@ export class SearchServiceService {
     error = error.error;
     errorMessage = errorMessage.concat(error.error);
 
-   this.helper.openSnackBar(errorMessage, "OK");
+    this.helper.openSnackBar(errorMessage, "OK");
   }
 
 }

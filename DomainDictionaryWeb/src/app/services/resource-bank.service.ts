@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {TokenStorageService} from "./token-storage.service";
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import {Observable} from "rxjs";
 export class ResourceBankService {
   private url = environment.url + 'dictionary/';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private tokenStorage: TokenStorageService) {
   }
 
   getPossibleResourceSubtypes(type: string): Observable<any> {
@@ -41,6 +42,10 @@ export class ResourceBankService {
 
   geNumberOfResources(): Observable<any> {
     return this.http.get(this.url + 'number-of-resources');
+  }
+
+  geNumberOfDDByUser(id: number): Observable<any> {
+    return this.http.get(this.url + 'number-or-dd/'+ id);
   }
 
 
