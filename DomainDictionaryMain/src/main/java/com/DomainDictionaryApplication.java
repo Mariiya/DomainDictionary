@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.PropertySource;
 
 
-@PropertySource("classpath:application.properties")
+@PropertySource(value = "classpath:application.properties",ignoreResourceNotFound = true)
 @SpringBootApplication
 public class DomainDictionaryApplication {
 
