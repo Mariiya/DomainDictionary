@@ -3,7 +3,7 @@ package com.domaindictionary.secutity;
 import com.domaindictionary.secutity.jwt.AuthEntryPointJwt;
 import com.domaindictionary.secutity.jwt.AuthTokenFilter;
 import com.domaindictionary.secutity.jwt.JwtUtils;
-import com.domaindictionary.secutity.services.UserDetailsServiceImpl;
+import com.domaindictionary.secutity.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired(required = true)
     private JwtUtils jwtUtils;
     @Autowired(required = true)
-    private UserDetailsServiceImpl userDetailsService;
+    private UserService userDetailsService;
     private final AuthEntryPointJwt unauthorizedHandler;
 
     @Autowired

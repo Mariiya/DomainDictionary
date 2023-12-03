@@ -18,7 +18,6 @@ public class UserDao {
 
     private static final Logger log = Logger.getLogger(UserDao.class.getName());
     private final JdbcTemplate jdbcTemplate;
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
     public UserDao(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {

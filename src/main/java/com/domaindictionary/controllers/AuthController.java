@@ -6,7 +6,7 @@ import com.domaindictionary.model.User;
 import com.domaindictionary.model.enumeration.Role;
 import com.domaindictionary.secutity.jwt.JwtUtils;
 import com.domaindictionary.secutity.services.UserDetailsImpl;
-import com.domaindictionary.secutity.services.UserDetailsServiceImpl;
+import com.domaindictionary.secutity.services.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,7 @@ public class AuthController {
     @Autowired
     private  AuthenticationManager authenticationManager;
     @Autowired
-    private  UserDetailsServiceImpl userDetailsService;
+    private UserService userDetailsService;
     @Autowired
     private  JwtUtils jwtUtils;
 

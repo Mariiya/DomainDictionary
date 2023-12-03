@@ -1,32 +1,32 @@
 package com.domaindictionary.controllers;
 
-import com.domaindictionary.model.SearchResource;
-import com.domaindictionary.service.ResourcesBank;
-import com.domaindictionary.service.SearchManager;
+import com.domaindictionary.model.Entry;
+import com.domaindictionary.model.ThesaurusEntry;
+import com.domaindictionary.service.SearchOrchestrator;
 import com.domaindictionary.model.DictionaryEntry;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigInteger;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/search")
 public class SearchController {
-    private final ResourcesBank bank;
-    private final SearchManager searchManager;
 
-    public SearchController(SearchManager searchManager, ResourcesBank bank) {
-        this.searchManager = searchManager;
-        this.bank = bank;
+    private final SearchOrchestrator searchOrchestrator;
+
+    public SearchController(SearchOrchestrator searchOrchestrator) {
+        this.searchOrchestrator = searchOrchestrator;
     }
 
     @GetMapping()
-    public List<DictionaryEntry> search(@RequestParam List<String> terms, @RequestParam Map<String,Object> params) throws Exception {
-        BigInteger resourceId = new BigInteger((String) params.get("resourceId"));
-        SearchResource searchResource = bank.getResource(resourceId);
-        params.put("searchResource", searchResource);
-        return searchManager.search(terms, params);
+    public Collection<DictionaryEntry> search(@RequestParam List<String> terms, @RequestParam boolean isAnalyzeEnable) throws Exception {
+        return searchOrchestrator.search(terms, isAnalyzeEnable);
+    }
+
+    @GetMapping()
+    public Collection<ThesaurusEntry> searchRelations(@RequestParam List<String> terms) {
+        return searchOrchestrator.searchRelations(terms);
     }
 
 

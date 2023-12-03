@@ -2,7 +2,6 @@ package com.domaindictionary.webapi;
 
 import com.domaindictionary.model.InternetResource;
 import com.domaindictionary.model.Rule;
-import com.domaindictionary.model.enumeration.ResourceSubtype;
 import com.domaindictionary.model.enumeration.ResourceType;
 import com.domaindictionary.model.DictionaryEntry;
 import org.jsoup.Jsoup;

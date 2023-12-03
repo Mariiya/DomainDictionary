@@ -3,7 +3,6 @@ package com.domaindictionary.webapi;
 import com.domaindictionary.model.DictionaryEntry;
 import com.domaindictionary.model.InternetResource;
 import com.domaindictionary.model.Rule;
-import com.domaindictionary.model.enumeration.ResourceSubtype;
 import com.domaindictionary.model.enumeration.ResourceType;
 import org.springframework.stereotype.Component;
 import org.wikidata.wdtk.datamodel.interfaces.EntityDocument;

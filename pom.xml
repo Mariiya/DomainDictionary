@@ -173,6 +173,15 @@
             <artifactId>aot</artifactId>
             <version>2021.11.17</version>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+            <version>2.15.2</version>
+        </dependency>
     </dependencies>
     <repositories>
         <repository>
@@ -180,6 +189,7 @@
             <url>https://jitpack.io</url>
         </repository>
     </repositories>
+
     <build>
             <resources>
             <resource>

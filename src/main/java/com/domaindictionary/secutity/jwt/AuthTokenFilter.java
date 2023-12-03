@@ -1,6 +1,6 @@
 package com.domaindictionary.secutity.jwt;
 
-import com.domaindictionary.secutity.services.UserDetailsServiceImpl;
+import com.domaindictionary.secutity.services.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,14 +17,14 @@ import java.io.IOException;
 
 public class AuthTokenFilter extends OncePerRequestFilter {
 
-    public AuthTokenFilter(JwtUtils jwtUtils, UserDetailsServiceImpl userDetailsService) {
+    public AuthTokenFilter(JwtUtils jwtUtils, UserService userDetailsService) {
         this.jwtUtils = jwtUtils;
         this.userDetailsService = userDetailsService;
     }
 
     private final JwtUtils jwtUtils;
 
-    private final UserDetailsServiceImpl userDetailsService;
+    private final UserService userDetailsService;
 
     private static final Logger logger = Logger.getLogger(AuthTokenFilter.class);
 
