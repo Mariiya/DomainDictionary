@@ -5,5 +5,6 @@ public enum RelationType {
     HYPONYMY,
     ANTONYM,
     ENTAILMENT,
-    MERONYMY
+    MERONYMY,
+    SYNONYM
 }

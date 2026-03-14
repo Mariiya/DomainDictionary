@@ -1,0 +1,28 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: dd-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-domaindictionary}
+      POSTGRES_USER: ${POSTGRES_USER:-dduser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ddpass}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  elasticsearch:
+    image: elasticsearch:8.17.0
+    container_name: dd-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+
+volumes:
+  pgdata:
+  esdata:

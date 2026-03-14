@@ -1,91 +1,110 @@
 package com.domaindictionary.dao;
 
-import com.domaindictionary.model.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.elasticsearch.action.delete.DeleteRequest;
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.search.MultiSearchRequest;
-import org.elasticsearch.action.search.MultiSearchResponse;
-import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.update.UpdateRequest;
-import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.common.unit.Fuzziness;
-import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch.core.*;
+import co.elastic.clients.elasticsearch.core.bulk.BulkOperation;
+import co.elastic.clients.elasticsearch.core.search.Hit;
+import com.domaindictionary.model.elasticsearch.DictionaryEntryDoc;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-import java.util.Collection;
+import java.util.*;
 
 @Repository
+@RequiredArgsConstructor
 public class DictionaryEntryDao {
+    private static final Logger log = LoggerFactory.getLogger(DictionaryEntryDao.class);
+    private final ElasticsearchClient client;
 
-    private final RestHighLevelClient client;
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    public DictionaryEntryDao(RestHighLevelClient client) {
-        this.client = client;
+    public void saveOrUpdate(DictionaryEntryDoc entry) throws IOException {
+        client.index(i -> i
+                .index(DictionaryEntryDoc.INDEX)
+                .id(entry.getId())
+                .document(entry));
     }
 
-    public void saveOrUpdate(DictionaryEntry entry) throws IOException {
-        IndexRequest indexRequest = new IndexRequest(DictionaryEntry.INDEX)
-                .id(entry.getId())
-                .source(OBJECT_MAPPER.writeValueAsString(entry), XContentType.JSON);
-
-        UpdateRequest updateRequest = new UpdateRequest(DictionaryEntry.INDEX, entry.getId())
-                .doc(OBJECT_MAPPER.writeValueAsString(entry), XContentType.JSON)
-                .upsert(indexRequest);
-
-        client.update(updateRequest, RequestOptions.DEFAULT);
+    public void bulkInsert(List<DictionaryEntryDoc> entries) throws IOException {
+        if (entries.isEmpty()) return;
+        List<BulkOperation> operations = entries.stream()
+                .map(entry -> BulkOperation.of(op -> op
+                        .index(idx -> idx
+                                .index(DictionaryEntryDoc.INDEX)
+                                .id(entry.getId())
+                                .document(entry))))
+                .toList();
+        BulkResponse response = client.bulk(b -> b.operations(operations));
+        if (response.errors()) {
+            log.error("Bulk insert had errors");
+        }
     }
 
-    public void saveOrUpdate(ThesaurusEntry entry) throws IOException {
-        IndexRequest indexRequest = new IndexRequest(ThesaurusEntry.INDEX)
-                .id(entry.getId())
-                .source(OBJECT_MAPPER.writeValueAsString(entry), XContentType.JSON);
+    public List<DictionaryEntryDoc> search(List<String> terms) throws IOException {
+        List<DictionaryEntryDoc> results = new ArrayList<>();
+        for (String term : terms) {
+            List<DictionaryEntryDoc> found = searchOneTerm(term);
+            if (found.isEmpty()) {
+                found = fuzzySearchOneTerm(term);
+            }
+            if (!found.isEmpty()) {
+                // Merge definitions for same term
+                DictionaryEntryDoc merged = DictionaryEntryDoc.builder()
+                        .term(term)
+                        .definitions(new ArrayList<>())
+                        .build();
+                for (DictionaryEntryDoc doc : found) {
+                    if (doc.getDefinitions() != null) {
+                        merged.getDefinitions().addAll(doc.getDefinitions());
+                    }
+                }
+                results.add(merged);
+            }
+        }
+        return results;
+    }
 
-        UpdateRequest updateRequest = new UpdateRequest(ThesaurusEntry.INDEX, entry.getId())
-                .doc(OBJECT_MAPPER.writeValueAsString(entry), XContentType.JSON)
-                .upsert(indexRequest);
+    public List<DictionaryEntryDoc> searchOneTerm(String term) throws IOException {
+        SearchResponse<DictionaryEntryDoc> response = client.search(s -> s
+                .index(DictionaryEntryDoc.INDEX)
+                .query(q -> q.match(m -> m.field("term").query(term))),
+                DictionaryEntryDoc.class);
+        return response.hits().hits().stream()
+                .map(Hit::source)
+                .filter(Objects::nonNull)
+                .toList();
+    }
 
-        client.update(updateRequest, RequestOptions.DEFAULT);
+    public List<DictionaryEntryDoc> fuzzySearchOneTerm(String term) throws IOException {
+        SearchResponse<DictionaryEntryDoc> response = client.search(s -> s
+                .index(DictionaryEntryDoc.INDEX)
+                .query(q -> q.fuzzy(f -> f
+                        .field("term")
+                        .value(term)
+                        .fuzziness("AUTO"))),
+                DictionaryEntryDoc.class);
+        return response.hits().hits().stream()
+                .map(Hit::source)
+                .filter(Objects::nonNull)
+                .toList();
     }
 
     public void delete(String id) throws IOException {
-        DeleteRequest deleteRequest = new DeleteRequest(DictionaryEntry.INDEX, id);
-        client.delete(deleteRequest, RequestOptions.DEFAULT);
+        client.delete(d -> d.index(DictionaryEntryDoc.INDEX).id(id));
     }
 
+    public void deleteByResourceId(Long resourceId) throws IOException {
+        client.deleteByQuery(d -> d
+                .index(DictionaryEntryDoc.INDEX)
+                .query(q -> q.term(t -> t.field("resourceId").value(resourceId))));
+    }
 
-    public MultiSearchResponse search(Collection<String> terms) throws IOException {
-        MultiSearchRequest request = new MultiSearchRequest();
-        for (String t : terms) {
-            SearchRequest firstSearchRequest = new SearchRequest(DictionaryEntry.INDEX);
-            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-            searchSourceBuilder.query(QueryBuilders.matchQuery("term", t).fuzziness(Fuzziness.AUTO).boost(1.0f)
-                    .prefixLength(0).fuzzyTranspositions(true));
-            firstSearchRequest.source(searchSourceBuilder);
-            request.add(firstSearchRequest);
+    public void ensureIndexExists() throws IOException {
+        boolean exists = client.indices().exists(e -> e.index(DictionaryEntryDoc.INDEX)).value();
+        if (!exists) {
+            client.indices().create(c -> c.index(DictionaryEntryDoc.INDEX));
         }
-
-        return client.msearch(request, RequestOptions.DEFAULT);
-
-    }
-
-    public SearchResponse elasticSearchOneTerm(String term) throws IOException {
-        SearchRequest searchRequest = new SearchRequest(DictionaryEntry.INDEX);
-        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-
-        QueryBuilder query = QueryBuilders.boolQuery()
-                .must(QueryBuilders.matchQuery("term", term).fuzziness(Fuzziness.ONE).boost(1.0f)
-                        .prefixLength(0).fuzzyTranspositions(true));
-
-        sourceBuilder.query(query);
-        searchRequest.source(sourceBuilder);
-
-        return client.search(searchRequest, RequestOptions.DEFAULT);
     }
 }

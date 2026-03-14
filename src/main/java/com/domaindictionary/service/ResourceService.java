@@ -1,160 +1,116 @@
 package com.domaindictionary.service;
 
-
-import com.domaindictionary.dao.DictionaryDao;
 import com.domaindictionary.dao.DictionaryEntryDao;
-import com.domaindictionary.model.*;
+import com.domaindictionary.dto.SaveResourceRequest;
+import com.domaindictionary.dto.SearchResult;
+import com.domaindictionary.model.ElectronicDictionary;
+import com.domaindictionary.model.Rule;
+import com.domaindictionary.model.User;
 import com.domaindictionary.model.enumeration.ResourceType;
+import com.domaindictionary.repository.ElectronicDictionaryRepository;
+import com.domaindictionary.repository.UserRepository;
 import com.domaindictionary.service.parser.DictionaryParser;
-import com.domaindictionary.utils.RegexConstants;
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfWriter;
-import lombok.AllArgsConstructor;
-import org.apache.log4j.Logger;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Text;
+import com.itextpdf.layout.properties.TextAlignment;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.nio.charset.StandardCharsets;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ResourceService {
-    private static final Logger LOG = Logger.getLogger(ResourceService.class);
-    private final DictionaryDao dictionaryDao;
+
+    private final ElectronicDictionaryRepository dictionaryRepository;
+    private final UserRepository userRepository;
+    private final DictionaryParser dictionaryParser;
     private final DictionaryEntryDao dictionaryEntryDao;
-    private final FileService filedService;
-    private final DictionaryParser parser;
-    private ByteArrayOutputStream out;
 
-    public File saveResource(InternalResource resource, User user) throws DocumentException, IOException {
-        ByteArrayInputStream document = null;
-        if (resource instanceof ElectronicDictionary) {
-            if (((ElectronicDictionary) resource).getType() == ResourceType.GLOSSARY) {
-                document = createGlossary((ElectronicDictionary) resource, user);
-            } else {
-                document = createDomainDictionary((ElectronicDictionary) resource, user);
+    public byte[] generateDocument(SaveResourceRequest request, Long userId) {
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            PdfDocument pdf = new PdfDocument(new PdfWriter(out));
+            Document document = new Document(pdf);
+
+            PdfFont font;
+            try {
+                font = PdfFontFactory.createFont("src/main/resources/fonts/arial.ttf",
+                        com.itextpdf.io.font.PdfEncodings.IDENTITY_H);
+            } catch (Exception e) {
+                font = PdfFontFactory.createFont();
             }
-        } else if (resource instanceof Thesaurus) {
-            document = createThesaurus((Thesaurus) resource, user);
-        }
 
-        String path = filedService.saveToFile(document, user.getName());
-        resource.setPathToFile(path);
-        saveResource(resource, document);
-        return filedService.extractFile(path);
-    }
+            // Title
+            String title = switch (request.getType()) {
+                case GLOSSARY -> "Glossary";
+                case DOMAIN -> "Domain Dictionary";
+                default -> "Dictionary";
+            };
 
-    private void saveResource(InternalResource r, ByteArrayInputStream document) throws IOException {
-        String generatedFilePath = filedService.createAndSaveFile(document, r.getPathToFile());
-        if (!generatedFilePath.isEmpty()) {
-            r.setPathToFile(generatedFilePath);
-            for (InternalResource resource : dictionaryDao.getResources()) {
-                if (resource != null && resource.getName() != null
-                        && resource.getName().equals(r.getName())) {
-                    r.setName(r.getName() + "_" + r.getId());
+            document.add(new Paragraph(title)
+                    .setFont(font).setFontSize(18)
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setMarginBottom(20));
+
+            // Entries
+            for (SearchResult entry : request.getEntries()) {
+                Paragraph p = new Paragraph();
+                p.add(new Text(entry.getTerm()).setFont(font).setFontSize(14).setBold());
+                if (entry.getDefinitions() != null && !entry.getDefinitions().isEmpty()) {
+                    p.add(new Text(" — " + String.join("; ", entry.getDefinitions()))
+                            .setFont(font).setFontSize(12));
                 }
+                document.add(p);
             }
-            dictionaryDao.createDictionary(r);
-            if (r instanceof ElectronicDictionary
-                    && ((ElectronicDictionary) r).getType() == ResourceType.SYSTEM_GENERAL) {
-                parser.parse((ElectronicDictionary) r);
-            }
+
+            document.close();
+
+            // Save to DB
+            User user = userRepository.findById(userId).orElse(null);
+            ElectronicDictionary dict = ElectronicDictionary.builder()
+                    .name(request.getName())
+                    .language(request.getLanguage())
+                    .type(request.getType())
+                    .createdBy(user)
+                    .build();
+            dictionaryRepository.save(dict);
+
+            return out.toByteArray();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to generate PDF", e);
         }
     }
 
-    public Collection<String> getPossibleRelators() {
-        return RegexConstants.getTemplatesForRelator();
-    }
+    public void uploadAndParseDictionary(MultipartFile file, String name, String language, Long userId,
+                                         String articleSeparator, String termSeparator, String definitionSeparator) throws IOException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-    public Collection<String> getPossibleArticleSeparator() {
-        return RegexConstants.getTemplatesForArticleSeparator();
-    }
+        Rule rule = Rule.builder()
+                .articleSeparator(articleSeparator)
+                .termSeparator(termSeparator)
+                .definitionSeparator(definitionSeparator)
+                .build();
 
-    private ByteArrayInputStream createGlossary(ElectronicDictionary dictionary, User user) {
-        return createGlossary(dictionary, user);
-    }
+        ElectronicDictionary dict = ElectronicDictionary.builder()
+                .name(name)
+                .language(language)
+                .type(ResourceType.SYSTEM_GENERAL)
+                .createdBy(user)
+                .rule(rule)
+                .build();
+        dict = dictionaryRepository.save(dict);
 
-    private ByteArrayInputStream createThesaurus(Thesaurus thesaurus, User user) throws DocumentException, IOException {
-        Document document = getDocumentWithHeading("Thesaurus");
-        String FONT_MAIN = "/src/main/resources/fonts/arial.ttf";
-        BaseFont bf = BaseFont.createFont(FONT_MAIN, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-
-        Font fontTerm = new Font(bf, 14, Font.BOLD);
-        Font fontDefinition = new Font(bf, 14, Font.NORMAL);
-        Paragraph p2 = new Paragraph();
-        for (ThesaurusEntry entry : thesaurus.getEntries()) {
-            p2.setFont(fontTerm);
-            p2.add(entry.getTerm());
-            p2.setFont(fontDefinition);
-            p2.add(" - " + entry.getRelations() + '\n');
-            p2.setSpacingAfter(1);//no alignment
-        }
-        document.add(p2);
-
-        document.close();
-        return new ByteArrayInputStream(out.toByteArray());
-    }
-
-
-    private ByteArrayInputStream createDomainDictionary(ElectronicDictionary dictionary, User user) throws DocumentException, IOException {
-        Document document = getDocumentWithHeading("Domain Dictionary");
-        String FONT_MAIN = "/src/main/resources/fonts/arial.ttf";
-        BaseFont bf = BaseFont.createFont(FONT_MAIN, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-
-        Font fontTerm = new Font(bf, 14, Font.BOLD);
-        Font fontDefinition = new Font(bf, 14, Font.NORMAL);
-
-        Paragraph p2 = new Paragraph();
-        for (DictionaryEntry entry : dictionary.getEntries()) {
-            p2.setFont(fontTerm);
-            p2.add(entry.getTerm());
-            p2.setFont(fontDefinition);
-            p2.add(" - " + entry.getDefinition() + '\n');
-            p2.setSpacingAfter(1);//no alignment
-        }
-        document.add(p2);
-
-        document.close();
-        return new ByteArrayInputStream(out.toByteArray());
-    }
-
-    private Document getDocumentWithHeading(String title) throws DocumentException, IOException {
-        Document document = new Document();
-        String FONT_MAIN = "/src/main/resources/fonts/arial.ttf";
-        BaseFont bf = BaseFont.createFont(FONT_MAIN, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-        Font fontTitle = new Font(bf, 16, Font.NORMAL);
-
-        PdfWriter.getInstance(document, out);
-        document.open();
-        Paragraph p = new Paragraph();
-        p.setFont(fontTitle);
-        p.add(title + " \n" + '\n');
-        p.setAlignment(Element.ALIGN_CENTER);
-        document.add(p);
-        return document;
-    }
-
-    public File editDictionary(InternalResource resource) throws DocumentException, IOException {
-        dictionaryDao.updateDictionary(resource);
-        dictionaryEntryDao.updateEntries(resource.getEntries());
-        return saveResource(resource, resource.getUser());
-    }
-
-    public void deleteNewDictionary(String resourceId) {
-        dictionaryDao.deleteDictionary(resourceId);
-        dictionaryEntryDao.removeEntries(resourceId);
-    }
-
-    public void deleteDictionary(String resourceId, User user) {
-        deleteNewDictionary(resourceId);
-        filedService.removeFile(getResource(resourceId).getPathToFile());
-    }
-
-    public InternalResource getResource(String resourceId) {
-        return dictionaryDao.getResource(resourceId);
+        String content = new String(file.getBytes(), StandardCharsets.UTF_8);
+        dictionaryParser.parseAndLoad(content, dict);
     }
 }

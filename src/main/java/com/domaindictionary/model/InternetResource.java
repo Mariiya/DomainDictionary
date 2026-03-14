@@ -1,21 +1,25 @@
 package com.domaindictionary.model;
 
-import com.domaindictionary.model.enumeration.ResourceType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
-import java.math.BigInteger;
-
+@Entity
+@Table(name = "internet_resource")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class InternetResource {
 
-    private BigInteger id;
-    private String name;
-    private String url;
-    private ResourceType type;
-    private Rule rule;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String url;
+
+    private String language;
 }

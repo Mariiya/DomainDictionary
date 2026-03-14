@@ -1,95 +1,63 @@
 package com.domaindictionary.service.parser;
 
+import com.domaindictionary.dao.DictionaryEntryDao;
 import com.domaindictionary.model.ElectronicDictionary;
-import com.domaindictionary.dao.EntriesLoader;
-import com.domaindictionary.model.DictionaryEntry;
-import org.apache.log4j.Logger;
+import com.domaindictionary.model.elasticsearch.DictionaryEntryDoc;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class DictionaryParser {
-    private static final Logger LOG = Logger.getLogger(DictionaryParser.class);
-    private final EntriesLoader entriesLoader;
+    private static final Logger log = LoggerFactory.getLogger(DictionaryParser.class);
 
-    public DictionaryParser(EntriesLoader entriesLoader) {
-        this.entriesLoader = entriesLoader;
-    }
+    private final DictionaryEntryDao dictionaryEntryDao;
 
-    public void parse(ElectronicDictionary dictionary) throws IOException {
-        initializeEntries(dictionary);
-    }
+    public void parseAndLoad(String content, ElectronicDictionary dictionary) throws IOException {
+        dictionaryEntryDao.ensureIndexExists();
 
-    private void initializeEntries(ElectronicDictionary dictionary) throws IOException {
-        BufferedReader br = readFile(dictionary.getPathToFile());
-        List<DictionaryEntry> entries = new ArrayList<>();
-        StringBuffer builder = new StringBuffer();
-        String line;
-        try {
-            while ((line = br.readLine()) != null) {
-                if (!line.trim().contains(dictionary.getRule().getArticleSeparator())
-                        || !line.trim().equals(dictionary.getRule().getArticleSeparator())) {
-                    builder.append(line);
-                } else {
-                    DictionaryEntry entry = createEntry(dictionary, String.valueOf(builder));
-                    if (entry.getTerm().length() == 0 || entry.getDefinition().toString().length() == 0)
-                        continue;
-                    if (isTermValid(entry.getTerm()) && entry.getDefinition().toString().length() < 1999) {
-                        entries.add(entry);
-                        if (entries.size() > 1000) {
-                            entriesLoader.insertDictionaryEntry(entries);
-                            entries.clear();
-                        }
-                    }
-                    builder.delete(0, builder.length());
-                }
-            }
-            entriesLoader.insertDictionaryEntry(entries);
-            br.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String articleSep = dictionary.getRule().getArticleSeparator();
+        String termSep = dictionary.getRule().getTermSeparator();
 
-        entriesLoader.insertDictionaryEntry(entries);
-    }
+        String[] articles = content.split(articleSep);
+        List<DictionaryEntryDoc> batch = new ArrayList<>();
 
-    private BufferedReader readFile(String filePath) throws FileNotFoundException {
-        FileInputStream fstream = null;
-        if (Files.exists(Paths.get((filePath)))) {
-            fstream = new FileInputStream(filePath);
+        for (String article : articles) {
+            String trimmed = article.trim();
+            if (trimmed.isEmpty()) continue;
 
-        } else {
-            LOG.error("Dictionary file not found. File path: " + filePath);
-            throw new FileNotFoundException("Error during opening file");
-        }
-        return new BufferedReader(new InputStreamReader(fstream));
-    }
+            int sepIdx = trimmed.indexOf(termSep);
+            if (sepIdx <= 0) continue;
 
-    private DictionaryEntry createEntry(ElectronicDictionary electronicDictionary, String str) {
-        String term = "", definition = "";
+            String term = trimmed.substring(0, sepIdx).trim();
+            String definition = trimmed.substring(sepIdx + termSep.length()).trim();
 
-        for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) == electronicDictionary.getRule().getTermSeparator().charAt(0)) {
-                term = str.substring(0, i);
-                definition = str.substring(i);
-                break;
+            if (term.isEmpty() || definition.isEmpty()) continue;
+            if (term.length() > 100 || definition.length() > 2000) continue;
+
+            DictionaryEntryDoc entry = DictionaryEntryDoc.builder()
+                    .id(UUID.randomUUID().toString())
+                    .term(term)
+                    .resourceId(dictionary.getId())
+                    .definitions(Collections.singletonList(definition))
+                    .build();
+            batch.add(entry);
+
+            if (batch.size() >= 500) {
+                dictionaryEntryDao.bulkInsert(batch);
+                batch.clear();
             }
         }
-        DictionaryEntry e = new DictionaryEntry();
-        e.setTerm(term);
-        e.setDefinition(Collections.singletonList(definition));
-        e.setResourceId(electronicDictionary.getId());
-        return e;
-    }
 
-    private boolean isTermValid(String term) {
-        return term.length() < 100;
-    }
+        if (!batch.isEmpty()) {
+            dictionaryEntryDao.bulkInsert(batch);
+        }
 
+        log.info("Parsed and loaded dictionary '{}': {} entries", dictionary.getName(), articles.length);
+    }
 }

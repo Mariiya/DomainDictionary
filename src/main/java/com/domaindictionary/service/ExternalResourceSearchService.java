@@ -1,87 +1,83 @@
 package com.domaindictionary.service;
 
-import com.domaindictionary.model.DictionaryEntry;
+import com.domaindictionary.dto.SearchResult;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.*;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class ExternalResourceSearchService {
+    private static final Logger log = LoggerFactory.getLogger(ExternalResourceSearchService.class);
+    private final ClaudeApiService claudeApiService;
 
-    public List<DictionaryEntry> search(List<String> terms) {
-        List<DictionaryEntry> result = new ArrayList<>();
+    public ExternalResourceSearchService(ClaudeApiService claudeApiService) {
+        this.claudeApiService = claudeApiService;
+    }
 
-        for (String term : terms) {
-            String definition = getResponse(
-                    "Hi, give me just a definition of a term in this term language: " + term);
-
-            DictionaryEntry e = new DictionaryEntry();
-            e.setDefinition(Collections.singletonList(definition));
-            e.setTerm(term);
-            result.add(e);
+    public SearchResult search(String term) {
+        // 1. Try Wikipedia first
+        SearchResult wikiResult = searchWikipedia(term);
+        if (wikiResult != null) {
+            return wikiResult;
         }
 
-        return result;
+        // 2. Fallback to Claude API
+        return searchViaClaude(term);
     }
 
-    public List<String> getLinksToExternalResources(List<String> terms) {
-        String result = getResponse(
-                "Hi, give me just a list of sites with dictionaries. " +
-                        "Separate them with #");
-        return Arrays.asList(result.split("#"));
-    }
-
-    public static String getResponse(String request) {
-        String url = "https://api.openai.com/v1/chat/completions";
-        String apiKey = "YOUR API KEY HERE";
-        String model = "gpt-3.5-turbo";
-
+    private SearchResult searchWikipedia(String term) {
         try {
-            URL obj = new URL(url);
-            HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Authorization", "Bearer " + apiKey);
-            connection.setRequestProperty("Content-Type", "application/json");
-
-            // The request body
-            String body = "{\"model\": \"" + model + "\", \"messages\": [{\"role\": \"user\", \"content\": \"" + term + "\"}]}";
-            connection.setDoOutput(true);
-            OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-            writer.write(body);
-            writer.flush();
-            writer.close();
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String line;
-
-            StringBuffer response = new StringBuffer();
-
-            while ((line = br.readLine()) != null) {
-                response.append(line);
+            String encoded = URLEncoder.encode(term, StandardCharsets.UTF_8);
+            // Try Ukrainian Wikipedia first, then English
+            for (String lang : List.of("uk", "en")) {
+                String url = "https://" + lang + ".wikipedia.org/wiki/" + encoded;
+                Document doc = Jsoup.connect(url)
+                        .userAgent("DomainDictionary/1.0")
+                        .timeout(5000)
+                        .get();
+                Element firstParagraph = doc.select("#mw-content-text .mw-parser-output > p:not(.mw-empty-elt)").first();
+                if (firstParagraph != null) {
+                    String text = firstParagraph.text().trim();
+                    if (!text.isEmpty() && text.length() > 20) {
+                        return SearchResult.builder()
+                                .term(term)
+                                .definitions(List.of(text))
+                                .source("wikipedia-" + lang)
+                                .build();
+                    }
+                }
             }
-            br.close();
-
-            // calls the method to extract the message.
-            return extractMessageFromJSONResponse(response.toString());
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            log.debug("Wikipedia search failed for '{}': {}", term, e.getMessage());
         }
+        return null;
     }
 
-    public static String extractMessageFromJSONResponse(String response) {
-        int start = response.indexOf("content") + 11;
-
-        int end = response.indexOf("\"", start);
-
-        return response.substring(start, end);
-
+    private SearchResult searchViaClaude(String term) {
+        try {
+            String definition = claudeApiService.getDefinition(term);
+            if (definition != null && !definition.isBlank()) {
+                return SearchResult.builder()
+                        .term(term)
+                        .definitions(List.of(definition))
+                        .source("claude-api")
+                        .build();
+            }
+        } catch (Exception e) {
+            log.warn("Claude API search failed for '{}': {}", term, e.getMessage());
+        }
+        return SearchResult.builder()
+                .term(term)
+                .definitions(Collections.emptyList())
+                .source("not_found")
+                .build();
     }
-
 }

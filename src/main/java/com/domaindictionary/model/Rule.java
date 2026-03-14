@@ -1,19 +1,26 @@
 package com.domaindictionary.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
-import java.math.BigInteger;
-
+@Entity
+@Table(name = "rule")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Rule {
-    private BigInteger id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "article_separator")
     private String articleSeparator;
+
+    @Column(name = "term_separator")
     private String termSeparator;
+
+    @Column(name = "definition_separator")
     private String definitionSeparator;
 }
